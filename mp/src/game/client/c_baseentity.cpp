@@ -4749,7 +4749,7 @@ C_BaseEntity *C_BaseEntity::Instance( int iEnt )
 	return ClientEntityList().GetBaseEntity( iEnt );
 }
 
-#ifndef SDK2013CE
+#ifndef SDK2013CE_BUILD
 
 #ifdef WIN32
 #pragma warning( push )
@@ -4757,7 +4757,7 @@ C_BaseEntity *C_BaseEntity::Instance( int iEnt )
 #pragma warning( pop )
 #endif
 
-#endif // !SDK2013CE
+#endif // !SDK2013CE_BUILD
 
 //-----------------------------------------------------------------------------
 // Purpose: 

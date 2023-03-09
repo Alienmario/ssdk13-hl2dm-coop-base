@@ -8,7 +8,7 @@
 
 #include "cbase.h"
 
-#ifdef SDK2013CE
+#ifdef SDK2013CE_BUILD
 #include <typeinfo>
 
 #else
@@ -22,7 +22,7 @@
 #else
 #error "need typeinfo defined"
 #endif
-#endif // SDK2013CE
+#endif // SDK2013CE_BUILD
 
 #include "player.h"
 #include "ai_basenpc.h"

@@ -79,11 +79,11 @@ public:
 	QAngle	m_angRotation;
 	Vector	m_vOriginVelocity;
 	int		m_nLastFramecount : 31;
-#ifdef SDK2013CE
+#ifdef SDK2013CE_BUILD
 	bool	m_bAnglesComputed : 1;
 #else	
 	int		m_bAnglesComputed : 1;
-#endif // SDK2013CE
+#endif // SDK2013CE_BUILD
 
 };
 

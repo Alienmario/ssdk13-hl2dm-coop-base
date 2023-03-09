@@ -19,7 +19,7 @@ bool PlayerHasMegaPhysCannon();
 void PhysCannonForceDrop( CBaseCombatWeapon *pActiveWeapon, CBaseEntity *pOnlyIfHoldingThis );
 void PhysCannonBeginUpgrade( CBaseAnimating *pAnim );
 
-#ifdef SDK2013CE
+#ifdef SDK2013CE_BUILD
 bool PhysCannonAccountableForObject( CBaseCombatWeapon *pPhysCannon, CBaseEntity *pObject );
 #endif
 

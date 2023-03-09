@@ -20,12 +20,12 @@ enum NormalDecodeMode_t
 	NORMAL_DECODE_ATI2N_ALPHA	= 2
 };
 
-#ifndef SDK2013CE
+#ifndef SDK2013CE_BUILD
 // Forward declaration
 #ifdef _WIN32
 typedef enum _D3DFORMAT D3DFORMAT;
 #endif
-#endif // !SDK2013CE
+#endif // !SDK2013CE_BUILD
 
 //-----------------------------------------------------------------------------
 // The various image format types
@@ -108,7 +108,7 @@ enum ImageFormat
 	NUM_IMAGE_FORMATS
 };
 
-#ifndef SDK2013CE
+#ifndef SDK2013CE_BUILD
 #if defined( POSIX  ) || defined( DX_TO_GL_ABSTRACTION )
 typedef enum _D3DFORMAT
 	{

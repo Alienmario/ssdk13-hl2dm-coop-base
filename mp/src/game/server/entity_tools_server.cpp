@@ -14,10 +14,10 @@
 #include "sceneentity.h"
 #include "particles/particles.h"
 
-#ifdef SDK2013CE
+#ifdef SDK2013CE_BUILD
 #include "icommandline.h"
 #include "tier0/memdbgon.h"
-#endif // SDK2013CE
+#endif // SDK2013CE_BUILD
 
 
 

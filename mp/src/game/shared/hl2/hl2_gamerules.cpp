@@ -10,9 +10,7 @@
 #include "ammodef.h"
 #include "hl2_shareddefs.h"
 
-#ifdef CLIENT_DLL
-
-#else
+#ifndef CLIENT_DLL
 	#include "player.h"
 	#include "game.h"
 	#include "gamerules.h"

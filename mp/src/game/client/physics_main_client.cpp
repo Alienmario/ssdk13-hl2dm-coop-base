@@ -6,11 +6,11 @@
 //=============================================================================//
 #include "cbase.h"
 #include "c_baseentity.h"
-#ifndef SDK2013CE
+#ifndef SDK2013CE_BUILD
 #ifdef WIN32
 #include <typeinfo.h>
 #endif
-#endif // !SDK2013CE
+#endif // !SDK2013CE_BUILD
 #include "tier0/vprof.h"
 
 // memdbgon must be the last include file in a .cpp file!!!

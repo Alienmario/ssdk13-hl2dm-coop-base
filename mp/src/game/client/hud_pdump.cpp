@@ -16,7 +16,7 @@
 
 static CPDumpPanel *g_pPDumpPanel = NULL;
 
-#ifndef SDK2013CE
+#ifndef SDK2013CE_BUILD
 
 
 
@@ -29,7 +29,7 @@ static CPDumpPanel *g_pPDumpPanel = NULL;
 #pragma warning( pop )
 #endif
 
-#endif // !SDK2013CE
+#endif // !SDK2013CE_BUILD
 using namespace vgui;
 
 CPDumpPanel *GetPDumpPanel()

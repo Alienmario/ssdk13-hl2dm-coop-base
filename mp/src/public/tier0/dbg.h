@@ -15,9 +15,9 @@
 #include "basetypes.h"
 #include "dbgflag.h"
 #include "platform.h"
-//#ifndef SDK2013CE
+//#ifndef SDK2013CE_BUILD
 //#include <math.h>
-//#endif // !SDK2013CE
+//#endif // !SDK2013CE_BUILD
 #include <stdio.h>
 #include <stdarg.h>
 
