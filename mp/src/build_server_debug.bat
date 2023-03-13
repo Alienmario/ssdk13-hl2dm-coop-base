@@ -1,4 +1,5 @@
 @echo off
+title DBG SOURCESDK SERVER COMPILE
 
 :start
 cls

@@ -1,4 +1,5 @@
 @echo off
+title REL SOURCESDK SERVER COMPILE
 
 :start
 cls
