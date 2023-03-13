@@ -2142,6 +2142,16 @@ CWeaponPhysCannon::FindObjectResult_t CWeaponPhysCannon::FindObject( void )
 		{
 			m_flLastDenySoundPlayed = true;
 			WeaponSound( SPECIAL3 );
+
+			// FIX sound for owner
+#if !defined( CLIENT_DLL )
+			const char *shootsound = GetShootSound( SPECIAL3 );
+			if (shootsound && shootsound[0])
+			{
+				CSingleUserRecipientFilter filter(pPlayer);
+				EmitSound( filter, pPlayer->entindex(), shootsound, NULL ); 
+			}
+#endif
 		}
 
 		return OBJECT_NOT_FOUND;
