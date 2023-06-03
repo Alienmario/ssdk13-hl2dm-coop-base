@@ -8,6 +8,8 @@
 #include "npcevent.h"
 #include "in_buttons.h"
 #include "weapon_rpg.h"
+#include "soundent.h"
+#include "ai_basenpc.h"
 
 #ifdef CLIENT_DLL
 	#include "c_hl2mp_player.h"
@@ -584,6 +586,10 @@ void CMissile::SeekThink( void )
 		}
 	}
 
+	if( GetOwnerEntity() && GetOwnerEntity()->IsNPC() ) {
+		pBestDot = GetOwnerEntity()->GetEnemy();
+	}
+
 	//If we have a dot target
 	if ( pBestDot == NULL )
 	{
@@ -594,10 +600,18 @@ void CMissile::SeekThink( void )
 
 	CLaserDot *pLaserDot = (CLaserDot *)pBestDot;
 	Vector	targetPos;
-
 	float flHomingSpeed; 
-	Vector vecLaserDotPosition;
-	ComputeActualDotPosition( pLaserDot, &targetPos, &flHomingSpeed );
+
+	if ( GetOwnerEntity()->IsNPC() )
+	{
+		flHomingSpeed = RPG_HOMING_SPEED;
+		targetPos = pBestDot->BodyTarget( GetAbsOrigin(), false );
+	}
+	else
+	{
+		ComputeActualDotPosition( pLaserDot, &targetPos, &flHomingSpeed );
+	}
+
 
 	if ( IsSimulatingOnAlternateTicks() )
 		flHomingSpeed *= 2;
@@ -1315,7 +1329,19 @@ acttable_t	CWeaponRPG::m_acttable[] =
 	{ ACT_HL2MP_GESTURE_RANGE_ATTACK,	ACT_HL2MP_GESTURE_RANGE_ATTACK_RPG,	false },
 	{ ACT_HL2MP_GESTURE_RELOAD,			ACT_HL2MP_GESTURE_RELOAD_RPG,		false },
 	{ ACT_HL2MP_JUMP,					ACT_HL2MP_JUMP_RPG,					false },
-	{ ACT_RANGE_ATTACK1,				ACT_RANGE_ATTACK_RPG,				false },
+	{ ACT_RANGE_ATTACK1,				ACT_RANGE_ATTACK_RPG,				true },
+	
+	{ ACT_IDLE_RELAXED,				ACT_IDLE_RPG_RELAXED,			true },
+	{ ACT_IDLE_STIMULATED,			ACT_IDLE_ANGRY_RPG,				true },
+	{ ACT_IDLE_AGITATED,			ACT_IDLE_ANGRY_RPG,				true },
+
+	{ ACT_IDLE,						ACT_IDLE_RPG,					true },
+	{ ACT_IDLE_ANGRY,				ACT_IDLE_ANGRY_RPG,				true },
+	{ ACT_WALK,						ACT_WALK_RPG,					true },
+	{ ACT_WALK_CROUCH,				ACT_WALK_CROUCH_RPG,			true },
+	{ ACT_RUN,						ACT_RUN_RPG,					true },
+	{ ACT_RUN_CROUCH,				ACT_RUN_CROUCH_RPG,				true },
+	{ ACT_COVER_LOW,				ACT_COVER_LOW_RPG,				true },
 };
 
 IMPLEMENT_ACTTABLE(CWeaponRPG);
@@ -2210,6 +2236,92 @@ void CLaserDot::TurnOff( void )
 //-----------------------------------------------------------------------------
 void CLaserDot::MakeInvisible( void )
 {
+}
+
+void CWeaponRPG::Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator )
+{
+	switch( pEvent->event )
+	{
+		case EVENT_WEAPON_SMG1:
+		{
+			if ( m_hMissile != NULL )
+				return;
+
+			Vector	muzzlePoint;
+			QAngle	vecAngles;
+
+			muzzlePoint = GetOwner()->Weapon_ShootPosition();
+
+			CAI_BaseNPC *npc = pOperator->MyNPCPointer();
+			ASSERT( npc != NULL );
+
+			Vector vecShootDir = npc->GetActualShootTrajectory( muzzlePoint );
+
+			// look for a better launch location
+			Vector altLaunchPoint;
+			if (GetAttachment( "missile", altLaunchPoint ))
+			{
+				// check to see if it's relativly free
+				trace_t tr;
+				AI_TraceHull( altLaunchPoint, altLaunchPoint + vecShootDir * (10.0f*12.0f), Vector( -24, -24, -24 ), Vector( 24, 24, 24 ), MASK_NPCSOLID, NULL, &tr );
+
+				if( tr.fraction == 1.0)
+				{
+					muzzlePoint = altLaunchPoint;
+				}
+			}
+
+			VectorAngles( vecShootDir, vecAngles );
+
+			m_hMissile = CMissile::Create( muzzlePoint, vecAngles, GetOwner()->edict() );
+			if( m_hMissile ) 
+				m_hMissile->SetDamage( 100.0 );
+			// NPCs always get a grace period
+			//m_hMissile->SetGracePeriod( 0.5 );
+
+			pOperator->DoMuzzleFlash();
+
+			WeaponSound( SINGLE_NPC );
+
+			// Make sure our laserdot is off
+			m_bGuiding = false;
+
+			if ( m_hLaserDot )
+			{
+				m_hLaserDot->TurnOff();
+			}
+		}
+		break;
+
+		default:
+			BaseClass::Operator_HandleAnimEvent( pEvent, pOperator );
+			break;
+	}
+}
+
+CUtlVector<CMissile::CustomDetonator_t> CMissile::gm_CustomDetonators;
+
+void CMissile::AddCustomDetonator( CBaseEntity *pEntity, float radius, float height )
+{
+	int i = gm_CustomDetonators.AddToTail();
+	gm_CustomDetonators[i].hEntity = pEntity;
+	gm_CustomDetonators[i].radiusSq = Square( radius );
+	gm_CustomDetonators[i].halfHeight = height * 0.5f;
+}
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void CMissile::RemoveCustomDetonator( CBaseEntity *pEntity )
+{
+	for ( int i = 0; i < gm_CustomDetonators.Count(); i++ )
+	{
+		if ( gm_CustomDetonators[i].hEntity == pEntity )
+		{
+			gm_CustomDetonators.FastRemove( i );
+			break;
+		}
+	}
 }
 
 #ifdef CLIENT_DLL

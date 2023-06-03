@@ -569,7 +569,7 @@ bool CBaseServerVehicle::CheckExitPoint( float yaw, int distance, Vector *pEndPo
   	*pEndPoint = vecStart + vecDir * distance;
   
   	trace_t tr;
-  	UTIL_TraceHull( vecStart, *pEndPoint, VEC_HULL_MIN, VEC_HULL_MAX, MASK_PLAYERSOLID, m_pVehicle, COLLISION_GROUP_NONE, &tr );
+  	UTIL_TraceHull( vecStart, *pEndPoint, VEC_HULL_MIN, VEC_HULL_MAX, MASK_PLAYERSOLID, m_pVehicle, COLLISION_GROUP_PLAYER, &tr );
 
 	if ( tr.fraction < 1.0 )
 		return false;
@@ -1086,7 +1086,7 @@ bool CBaseServerVehicle::HandlePassengerExit( CBaseCombatCharacter *pPassenger )
 	if ( pPlayer != NULL )
 	{
 		// Clear hud hints
-		UTIL_HudHintText( pPlayer, "" );
+		// UTIL_HudHintText( pPlayer, "" );
 
 		vbs_sound_update_t params;
 		InitSoundParams(params);
@@ -1143,7 +1143,7 @@ bool CBaseServerVehicle::HandlePassengerExit( CBaseCombatCharacter *pPassenger )
 				// To prevent anything moving into the volume the player's going to occupy at the end of the exit
 				// NOTE: Set the player as the blocker's owner so the player is allowed to intersect it
 				Vector vecExitFeetPoint = vecExitPoint - VEC_VIEW;
-				m_hExitBlocker = CEntityBlocker::Create( vecExitFeetPoint, VEC_HULL_MIN, VEC_HULL_MAX, pPlayer, true );
+				// m_hExitBlocker = CEntityBlocker::Create( vecExitFeetPoint, VEC_HULL_MIN, VEC_HULL_MAX, pPlayer, true );
 
 				// We may as well stand where we're going to get out at and stop being parented
 				pPlayer->SetAbsOrigin( vecExitFeetPoint );
@@ -1376,7 +1376,7 @@ int CBaseServerVehicle::GetExitAnimToUse( Vector &vecEyeExitEndpoint, bool &bAll
 		Vector vecExitEndPoint = tr.endpos;
 
 		// Make sure we can trace to the center of the exit point
-		UTIL_TraceLine( vecViewOrigin, vecExitEndPoint, MASK_PLAYERSOLID, pAnimating, COLLISION_GROUP_NONE, &tr );
+		UTIL_TraceLine( vecViewOrigin, vecExitEndPoint, MASK_PLAYERSOLID, pAnimating, COLLISION_GROUP_PLAYER, &tr );
 
 		if ( tr.fraction != 1.0 )
 		{

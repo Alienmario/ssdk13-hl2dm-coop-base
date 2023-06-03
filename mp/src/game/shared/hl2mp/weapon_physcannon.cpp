@@ -754,7 +754,7 @@ void CPlayerPickupController::Init( CBasePlayer *pPlayer, CBaseEntity *pObject )
 	{
 		if ( !pPlayer->GetActiveWeapon()->Holster() )
 		{
-			Shutdown();
+			// Shutdown();
 			return;
 		}
 	}
@@ -874,6 +874,12 @@ void CPlayerPickupController::Use( CBaseEntity *pActivator, CBaseEntity *pCaller
 		// +ATTACK will throw phys objects
 		if ( m_pPlayer->m_nButtons & IN_ATTACK )
 		{
+			if ( pPhys == NULL )
+			{
+				Shutdown();
+				return;
+			}
+
 			Shutdown( true );
 			Vector vecLaunch;
 			m_pPlayer->EyeVectors( &vecLaunch );
@@ -2137,24 +2143,23 @@ CWeaponPhysCannon::FindObjectResult_t CWeaponPhysCannon::FindObject( void )
 
 	if ( CanPickupObject( pEntity ) == false )
 	{
-		// Make a noise to signify we can't pick this up
-		if ( !m_flLastDenySoundPlayed )
+		CBaseEntity *pNewObject = Pickup_OnFailedPhysGunPickup( pEntity, start );
+		if ( pNewObject && CanPickupObject( pNewObject ) )
 		{
-			m_flLastDenySoundPlayed = true;
-			WeaponSound( SPECIAL3 );
-
-			// FIX sound for owner
-#if !defined( CLIENT_DLL )
-			const char *shootsound = GetShootSound( SPECIAL3 );
-			if (shootsound && shootsound[0])
-			{
-				CSingleUserRecipientFilter filter(pPlayer);
-				EmitSound( filter, pPlayer->entindex(), shootsound, NULL ); 
-			}
-#endif
+			pEntity = pNewObject;
 		}
+		else
+		{
+			// Make a noise to signify we can't pick this up
+			if ( !m_flLastDenySoundPlayed )
+			{
+				m_flLastDenySoundPlayed = true;
+				IPredictionSystem::SuppressHostEvents(NULL);
+				WeaponSound( SPECIAL3 );
+			}
 
-		return OBJECT_NOT_FOUND;
+			return OBJECT_NOT_FOUND;
+		}
 	}
 
 	// Check to see if the object is constrained + needs to be ripped off...
@@ -3600,6 +3605,19 @@ CBaseEntity *PhysCannonGetHeldEntity( CBaseCombatWeapon *pActiveWeapon )
 	}
 
 	return NULL;
+}
+
+CBaseEntity *GetPlayerHeldEntity( CBasePlayer *pPlayer )
+{
+	CBaseEntity *pObject = NULL;
+	CPlayerPickupController *pPlayerPickupController = (CPlayerPickupController *)(pPlayer->GetUseEntity());
+
+	if ( pPlayerPickupController )
+	{
+		pObject = pPlayerPickupController->GetGrabController().GetAttached();
+	}
+
+	return pObject;
 }
 
 float PlayerPickupGetHeldObjectMass( CBaseEntity *pPickupControllerEntity, IPhysicsObject *pHeldObject )

@@ -875,7 +875,7 @@ void CNPC_Combine_Cannon::StartTask( const Task_t *pTask )
 
 	case TASK_CANNON_PAINT_ENEMY:
 		{
-			if ( GetEnemy()->IsPlayer() )
+			if ( GetEnemy() && GetEnemy()->IsPlayer() )
 			{
 				float delay = random->RandomFloat( 0.0f, 0.3f );
 			

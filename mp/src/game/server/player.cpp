@@ -914,7 +914,7 @@ void CBasePlayer::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &v
 				return;
 
 			// Prevent team damage here so blood doesn't appear
-			if ( info.GetAttacker()->IsPlayer() )
+			// if ( info.GetAttacker()->IsPlayer() )
 			{
 				if ( !g_pGameRules->FPlayerCanTakeDamage( this, info.GetAttacker(), info ) )
 					return;
@@ -5525,13 +5525,21 @@ void CBasePlayer::LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExi
 	if ( vecExitPoint == vec3_origin )
 	{
 		// FIXME: this might fail to find a safe exit point!!
-		pVehicle->GetPassengerExitPoint( nRole, &vNewPos, &qAngles );
+		if ( pVehicle->GetPassengerExitPoint( nRole, &vNewPos, &qAngles ) == false )
+			vNewPos = GetAbsOrigin();
 	}
 	else
 	{
 		vNewPos = vecExitPoint;
 		qAngles = vecExitAngles;
 	}
+	trace_t tr;
+	UTIL_TraceHull( vNewPos, vNewPos, VEC_HULL_MIN, VEC_HULL_MAX, MASK_PLAYERSOLID, NULL, COLLISION_GROUP_PLAYER, &tr );
+	if ( tr.startsolid && tr.fraction < 1.0 )
+	{
+		vNewPos = GetAbsOrigin();
+	}
+	
 	OnVehicleEnd( vNewPos );
 	SetAbsOrigin( vNewPos );
 	SetAbsAngles( qAngles );

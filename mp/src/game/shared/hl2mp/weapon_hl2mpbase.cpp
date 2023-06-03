@@ -177,16 +177,12 @@ void CWeaponHL2MPBase::Materialize( void )
 		DoMuzzleFlash();
 	}
 
+	VPhysicsInitNormal( SOLID_BBOX, GetSolidFlags() | FSOLID_TRIGGER, false );
+	SetMoveType( MOVETYPE_VPHYSICS );
+
 	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
 	{
-		VPhysicsInitNormal( SOLID_BBOX, GetSolidFlags() | FSOLID_TRIGGER, false );
-		SetMoveType( MOVETYPE_VPHYSICS );
-
 		HL2MPRules()->AddLevelDesignerPlacedObject( this );
-	}
-
-	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
-	{
 		if ( GetOriginalSpawnOrigin() == vec3_origin )
 		{
 			m_vOriginalSpawnOrigin = GetAbsOrigin();

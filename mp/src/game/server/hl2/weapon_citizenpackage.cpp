@@ -10,8 +10,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-IMPLEMENT_SERVERCLASS_ST(CWeaponCitizenPackage, DT_WeaponCitizenPackage)
-END_SEND_TABLE()
+// IMPLEMENT_SERVERCLASS_ST(CWeaponCitizenPackage, DT_WeaponCitizenPackage)
+// END_SEND_TABLE()
 
 BEGIN_DATADESC( CWeaponCitizenPackage )
 END_DATADESC()
@@ -52,13 +52,13 @@ class CWeaponCitizenSuitcase : public CWeaponCitizenPackage
 {
 	DECLARE_CLASS( CWeaponCitizenSuitcase, CWeaponCitizenPackage );
 public:
-	DECLARE_SERVERCLASS();
+	// DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();	
 	DECLARE_ACTTABLE();
 };
 
-IMPLEMENT_SERVERCLASS_ST(CWeaponCitizenSuitcase, DT_WeaponCitizenSuitcase)
-END_SEND_TABLE()
+// IMPLEMENT_SERVERCLASS_ST(CWeaponCitizenSuitcase, DT_WeaponCitizenSuitcase)
+// END_SEND_TABLE()
 
 BEGIN_DATADESC( CWeaponCitizenSuitcase )
 END_DATADESC()

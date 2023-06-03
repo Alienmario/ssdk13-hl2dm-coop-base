@@ -230,11 +230,11 @@ static const char *pFollowerBoneNames[] =
 {
 	// Head
 	"Combine_Strider.Body_Bone",
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	"Combine_Strider.Neck_Bone",
 	"Combine_Strider.Gun_Bone1",
 	"Combine_Strider.Gun_Bone2",
-#endif //HL2_EPISODIC
+// #endif //HL2_EPISODIC
 
 	// lower legs
 	"Combine_Strider.Leg_Left_Bone1",
@@ -251,11 +251,11 @@ static const char *pFollowerBoneNames[] =
 enum
 {
 	STRIDER_BODY_FOLLOWER_INDEX = 0,
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	STRIDER_NECK_FOLLOWER_INDEX,
 	STRIDER_GUN1_FOLLOWER_INDEX,
 	STRIDER_GUN2_FOLLOWER_INDEX,
-#endif //HL2_EPISODIC
+// #endif //HL2_EPISODIC
 	
 	STRIDER_LEFT_LEG_FOLLOWER_INDEX,
 	STRIDER_RIGHT_LEG_FOLLOWER_INDEX,
@@ -295,9 +295,9 @@ LINK_ENTITY_TO_CLASS( npc_strider, CNPC_Strider );
 
 BEGIN_DATADESC( CNPC_Strider )
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	DEFINE_UTLVECTOR( m_hAttachedBusters,	FIELD_EHANDLE ),
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	DEFINE_EMBEDDED( m_EnemyUpdatedTimer ),
 	DEFINE_EMBEDDEDBYREF( m_pMinigun ),
@@ -652,7 +652,7 @@ void CNPC_Strider::PostNPCInit()
 		RemoveFlag( FL_FLY );
 	}
 
-	m_PlayerFreePass.SetPassTarget( UTIL_PlayerByIndex(1) );
+	m_PlayerFreePass.SetPassTarget( UTIL_GetNearestPlayer(GetAbsOrigin()) );
 	
 	AI_FreePassParams_t freePassParams = 
 	{
@@ -723,9 +723,9 @@ void CNPC_Strider::UpdateOnRemove()
 {
 	m_BoneFollowerManager.DestroyBoneFollowers();
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	m_hAttachedBusters.Purge();
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	BaseClass::UpdateOnRemove();
 }
@@ -754,10 +754,10 @@ Class_T CNPC_Strider::Classify()
 //---------------------------------------------------------
 bool CNPC_Strider::ShouldAttractAutoAim( CBaseEntity *pAimingEnt )
 {
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	if( m_hAttachedBusters.Count() > 0 )
 		return false;
-#endif//HL2_EPISODIC
+// #endif//HL2_EPISODIC
 
 	return BaseClass::ShouldAttractAutoAim( pAimingEnt );
 }
@@ -777,8 +777,8 @@ int	CNPC_Strider::DrawDebugTextOverlays()
 			EntityText(text_offset,CFmtStr("Free pass: %.1f", m_PlayerFreePass.GetTimeRemaining()),0);
 			text_offset++;
 		}
-
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex(1);
+		
+		CBaseEntity *pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin());
 		if ( pPlayer )
 		{
 			if ( GetSenses()->ShouldSeeEntity( pPlayer ) && GetSenses()->CanSeeEntity( pPlayer ) )
@@ -3013,7 +3013,7 @@ void CNPC_Strider::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &
 		}
 	}
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 
 	// Attempt to hit strider busters in the area
 	float flDistSqr;
@@ -3034,7 +3034,7 @@ void CNPC_Strider::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &
 		}
 	}
 
-#endif	//HL2_EPISODIC
+// #endif	//HL2_EPISODIC
 
 	if ( (info.GetDamageType() & DMG_BULLET) && ricochetBullets )
 	{
@@ -3129,8 +3129,7 @@ int CNPC_Strider::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 			{
 				// See if the person that injured me is an NPC.
 				CAI_BaseNPC *pAttacker = dynamic_cast<CAI_BaseNPC *>( info.GetAttacker() );
-				CBasePlayer *pPlayer = AI_GetSinglePlayer();
-
+				CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 				if( pAttacker && pAttacker->IsAlive() && pPlayer )
 				{
 					if( pAttacker->GetSquad() != NULL && pAttacker->IsInPlayerSquad() )
@@ -3351,7 +3350,7 @@ bool CNPC_Strider::BecomeRagdoll( const CTakeDamageInfo &info, const Vector &for
 	{
 		// Otherwise just keel over
 		CRagdollProp *pRagdoll = NULL;
-		CBasePlayer *pPlayer = AI_GetSinglePlayer();
+		CBasePlayer *pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin()); 
 		if ( pPlayer && mat_dxlevel.GetInt() > 0 )
 		{
 			int dxlevel = mat_dxlevel.GetInt();
@@ -4328,7 +4327,7 @@ void CNPC_Strider::StompHit( int followerBoneIndex )
 	CBaseEntity *pEnemy = GetEnemy();
 	CAI_BaseNPC *pNPC = pEnemy ? pEnemy->MyNPCPointer() : NULL;
 	bool bIsValidTarget = pNPC && pNPC->GetModelPtr();
-	if ( HasSpawnFlags( SF_CAN_STOMP_PLAYER ) )
+	if ( HasSpawnFlags( SF_CAN_STOMP_PLAYER ) ) 
 	{
 		bIsValidTarget = bIsValidTarget || ( pEnemy && pEnemy->IsPlayer() );
 	}
@@ -4769,7 +4768,7 @@ bool CNPC_Strider::ShouldProbeCollideAgainstEntity( CBaseEntity *pEntity )
 // Purpose: Lets us keep track of attached Strider busters
 // Input  : *pAttached - strider buster that is attached
 //-----------------------------------------------------------------------------
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 void CNPC_Strider::StriderBusterAttached( CBaseEntity *pAttached )
 {
 	// Add another to the list
@@ -4791,7 +4790,7 @@ void CNPC_Strider::StriderBusterDetached( CBaseEntity *pAttached )
 	}
 }
 
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 //-----------------------------------------------------------------------------
 //

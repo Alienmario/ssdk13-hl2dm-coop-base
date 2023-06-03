@@ -301,6 +301,8 @@ protected:
 	// Used to turn the keepupright off after a short time
 	float		m_flTurnOffKeepUpright;
 	float		m_flNoImpactDamageTime;
+public:
+	bool IsLocked( void ) { return m_bLocked; }
 };
 
 

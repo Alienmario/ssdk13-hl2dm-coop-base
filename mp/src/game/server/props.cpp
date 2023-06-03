@@ -79,12 +79,12 @@ ConVar func_breakdmg_explosive( "func_breakdmg_explosive", "1.25" );
 
 ConVar sv_turbophysics( "sv_turbophysics", "0", FCVAR_REPLICATED, "Turns on turbo physics" );
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	#define PROP_FLARE_LIFETIME 30.0f
 	#define PROP_FLARE_IGNITE_SUBSTRACT 5.0f
 	CBaseEntity *CreateFlare( Vector vOrigin, QAngle Angles, CBaseEntity *pOwner, float flDuration );
 	void KillFlare( CBaseEntity *pOwnerEntity, CBaseEntity *pEntity, float flKillTime );
-#endif
+// #endif
 
 
 //-----------------------------------------------------------------------------
@@ -246,9 +246,9 @@ void CBaseProp::Precache( void )
 	PrecacheScriptSound( "Metal.SawbladeStick" );
 	PrecacheScriptSound( "PropaneTank.Burst" );
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	UTIL_PrecacheOther( "env_flare" );
-#endif
+// #endif
 
 	BaseClass::Precache();
 }
@@ -1008,7 +1008,7 @@ void CBreakableProp::BreakablePropTouch( CBaseEntity *pOther )
 		}
 	}
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	if ( m_hFlareEnt )
 	{
 		CAI_BaseNPC *pNPC = pOther->MyNPCPointer();
@@ -1025,7 +1025,7 @@ void CBreakableProp::BreakablePropTouch( CBaseEntity *pOther )
 			}
 		}
 	}
-#endif
+// #endif
 }
 
 //-----------------------------------------------------------------------------
@@ -1463,16 +1463,16 @@ void CBreakableProp::OnPhysGunPickup( CBasePlayer *pPhysGunUser, PhysGunPickup_t
 	m_bOriginalBlockLOS = BlocksLOS();
 	SetBlocksLOS( false );
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	if ( HasInteraction( PROPINTER_PHYSGUN_CREATE_FLARE ) )
 	{
 		CreateFlare( PROP_FLARE_LIFETIME );
 	}
-#endif
+// #endif
 }
 
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 //-----------------------------------------------------------------------------
 // Purpose: Create a flare at the attachment point
 //-----------------------------------------------------------------------------
@@ -1506,7 +1506,7 @@ void CBreakableProp::CreateFlare( float flLifetime )
 		AddEffects( EF_NOSHADOW );
 	}
 }
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -1732,9 +1732,10 @@ void CBreakableProp::Break( CBaseEntity *pBreaker, const CTakeDamageInfo &info )
 		WRITE_ANGLES( GetAbsAngles() );
 		MessageEnd();
 
-#ifndef HL2MP
-		UTIL_Remove( this );
-#endif
+// #ifndef HL2MP
+		if (!this->ClassMatches("prop_physics_respawnable"))
+			UTIL_Remove( this );
+// #endif
 		return;
 	}
 
@@ -1798,9 +1799,10 @@ void CBreakableProp::Break( CBaseEntity *pBreaker, const CTakeDamageInfo &info )
 		}
 	}
 
-#ifndef HL2MP
-	UTIL_Remove( this );
-#endif
+// #ifndef HL2MP
+	if (!this->ClassMatches("prop_physics_respawnable"))
+		UTIL_Remove( this );
+// #endif
 }
 
 
@@ -2875,7 +2877,7 @@ int CPhysicsProp::ObjectCaps()
 	{
 		caps |= FCAP_IMPULSE_USE;
 
-		if( hl2_episodic.GetBool() && HasInteraction( PROPINTER_PHYSGUN_CREATE_FLARE )  )
+		if(/*  hl2_episodic.GetBool() && */ HasInteraction( PROPINTER_PHYSGUN_CREATE_FLARE )  )
 		{
 			caps |= FCAP_USE_IN_RADIUS;
 		}
@@ -3106,7 +3108,7 @@ int CPhysicsProp::OnTakeDamage( const CTakeDamageInfo &info )
 
 				int dangerRadius = 256; // generous radius to begin with
 
-				if( hl2_episodic.GetBool() )
+				// if( hl2_episodic.GetBool() )
 				{
 					// In Episodic, burning items (such as destroyed APCs) are making very large
 					// danger sounds which frighten NPCs. This danger sound was designed to frighten

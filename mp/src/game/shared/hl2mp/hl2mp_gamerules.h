@@ -148,6 +148,8 @@ public:
 
 	virtual bool IsConnectedUserInfoChangeAllowed( CBasePlayer *pPlayer );
 	
+	void InitDefaultAIRelationships(void);
+
 private:
 	
 	CNetworkVar( bool, m_bTeamPlayEnabled );

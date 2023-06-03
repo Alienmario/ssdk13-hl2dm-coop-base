@@ -30,7 +30,7 @@ BEGIN_DATADESC( CMessage )
 	DEFINE_INPUTFUNC( FIELD_VOID, "ShowMessage", InputShowMessage ),
 
 	DEFINE_OUTPUT(m_OnShowMessage, "OnShowMessage"),
-
+	DEFINE_THINKFUNC( TimerThink ),
 END_DATADESC()
 
 
@@ -85,12 +85,64 @@ void CMessage::Precache( void )
 	}
 }
 
+// extern const char *UTIL_TranslateMsg( const char *szLanguage, const char *msg );
+
+void CMessage::TimerThink( void )
+{
+	SetNextThink( gpGlobals->curtime + 0.25 );
+
+	if( m_ShowTime <= gpGlobals->curtime ) {
+		SetThink( NULL );
+		if( m_spawnflags & SF_MESSAGE_ONCE )
+			UTIL_Remove( this );
+	}
+
+	hudtextparms_s tTextParam;
+	tTextParam.x = 0.02;
+	tTextParam.y = 0.02;
+	tTextParam.effect = 0;
+	tTextParam.r1 = 117;
+	tTextParam.g1 = 80;
+	tTextParam.b1 = 0;
+	tTextParam.a1 = 255;
+	tTextParam.fadeinTime = 0;
+	tTextParam.fadeoutTime = 0;
+	tTextParam.holdTime = 2,0;
+	tTextParam.fxTime = 0;
+	tTextParam.channel = 3;
+
+	if ( m_spawnflags & SF_MESSAGE_ALL )
+	{
+		for( int i=1; i<=gpGlobals->maxClients; i++ )
+		{
+			CBasePlayer *player = UTIL_PlayerByIndex( i );
+			if ( player && !player->IsFakeClient() ) {
+				// const char *szLanguage = engine->GetClientConVarValue( ENTINDEX( player ), "cl_language" );
+				// const char *msg = UTIL_TranslateMsg( szLanguage, STRING( m_iszMessage ) );
+				UTIL_HudMessage( player, tTextParam, STRING( m_iszMessage ) );
+			}
+		}
+		return;
+	}
+
+	if( pActivator )
+	{
+		// const char *szLanguage = engine->GetClientConVarValue( ENTINDEX( pActivator ), "cl_language" );
+		// const char *msg = UTIL_TranslateMsg( szLanguage, STRING( m_iszMessage ) );
+		UTIL_HudMessage( ToBasePlayer( pActivator ), tTextParam, STRING( m_iszMessage ));
+	}
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: Input handler for showing the message and/or playing the sound.
 //-----------------------------------------------------------------------------
 void CMessage::InputShowMessage( inputdata_t &inputdata )
 {
+	m_ShowTime = gpGlobals->curtime + 20;
+
+	SetThink( &CMessage::TimerThink );
+	SetNextThink( gpGlobals->curtime + 0.25 );
+
 	CBaseEntity *pPlayer = NULL;
 
 	if ( m_spawnflags & SF_MESSAGE_ALL )
@@ -105,11 +157,12 @@ void CMessage::InputShowMessage( inputdata_t &inputdata )
 		}
 		else
 		{
-			pPlayer = (gpGlobals->maxClients > 1) ? NULL : UTIL_GetLocalPlayer();
+			pPlayer = UTIL_GetLocalPlayer();
 		}
 
 		if ( pPlayer && pPlayer->IsPlayer() )
 		{
+			pActivator = pPlayer;
 			UTIL_ShowMessage( STRING( m_iszMessage ), ToBasePlayer( pPlayer ) );
 		}
 	}
@@ -129,7 +182,7 @@ void CMessage::InputShowMessage( inputdata_t &inputdata )
 
 	if ( m_spawnflags & SF_MESSAGE_ONCE )
 	{
-		UTIL_Remove( this );
+		//UTIL_Remove( this );
 	}
 
 	m_OnShowMessage.FireOutput( inputdata.pActivator, this );

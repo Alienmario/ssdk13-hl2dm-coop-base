@@ -473,14 +473,6 @@ void CAI_ScriptConditions::EvaluationThink()
 
 	int iActorsDone = 0;
 
-#ifdef HL2_DLL
-	if( AI_GetSinglePlayer()->GetFlags() & FL_NOTARGET )
-	{
-		ScrCondDbgMsg( ("%s WARNING: Player is NOTARGET. This will affect all LOS conditiosn involving the player!\n", GetDebugName()) );
-	}
-#endif
-
-
 	for ( int i = 0; i < m_ElementList.Count(); )
 	{
 		CAI_ScriptConditionsElement *pConditionElement = &m_ElementList[i];
@@ -527,13 +519,19 @@ void CAI_ScriptConditions::EvaluationThink()
 			continue;
 		}
 
+		CBasePlayer *pPlayer = GetPlayer( pActor );
+		if (!pPlayer)
+		{
+			continue;
+		}
+
 		bool      result = true;
 		const int nEvaluators = sizeof( gm_Evaluators ) / sizeof( gm_Evaluators[0] );
 
 		EvalArgs_t args =
 		{
 			pActor,
-			GetPlayer(),
+			pPlayer,
 			m_hTarget.Get()
 		};
 

@@ -38,6 +38,9 @@ public:
 	{
 		if ( m_distSq != 0 )
 		{
+			if( !pEntity1 || !pEntity2 )
+				return false;
+
 			float distSq = ( pEntity1->GetAbsOrigin() - pEntity2->GetAbsOrigin() ).LengthSqr();
 			bool fInside = ( distSq < m_distSq );
 
@@ -170,7 +173,14 @@ private:
 #ifndef HL2_EPISODIC
 	CBaseEntity *GetActor()		{ return m_hActor.Get();			}
 #endif
-	CBasePlayer *GetPlayer()	{ return UTIL_GetLocalPlayer();	}
+	CBasePlayer *GetPlayer( CBaseEntity *pActor ) {
+		if( pActor )
+			return UTIL_GetNearestPlayer( pActor->GetAbsOrigin() );
+		else if( m_hTarget.Get() )
+			return UTIL_GetNearestPlayer( m_hTarget.Get()->GetAbsOrigin() );
+		
+		return UTIL_GetLocalPlayer();
+	}
 
 	//---------------------------------
 

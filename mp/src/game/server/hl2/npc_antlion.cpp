@@ -30,7 +30,7 @@
 #include "props.h"
 #include "particle_parse.h"
 #include "ai_tacticalservices.h"
-
+#define HL2_EPISODIC 1
 #ifdef HL2_EPISODIC
 #include "grenade_spit.h"
 #endif
@@ -109,7 +109,7 @@ int g_interactionAntlionFoundTarget = 0;
 int g_interactionAntlionFiredAtTarget = 0;
 
 #define	ANTLION_MODEL			"models/antlion.mdl"
-#define ANTLION_WORKER_MODEL	"models/antlion_worker.mdl"
+#define ANTLION_WORKER_MODEL	"models/hl2/antlion_wo.mdl"
 
 #define	ANTLION_BURROW_IN	0
 #define	ANTLION_BURROW_OUT	1
@@ -188,7 +188,8 @@ CNPC_Antlion::CNPC_Antlion( void )
 }
 
 LINK_ENTITY_TO_CLASS( npc_antlion, CNPC_Antlion );
-
+LINK_ENTITY_TO_CLASS( npc_antlion_worker, CNPC_Antlion );
+LINK_ENTITY_TO_CLASS( npc_antlionworker, CNPC_Antlion );
 //==================================================
 // CNPC_Antlion::m_DataDesc
 //==================================================
@@ -259,6 +260,15 @@ BEGIN_DATADESC( CNPC_Antlion )
 	// DEFINE_FIELD( FIELD_SHORT, m_hFootstep ),
 END_DATADESC()
 
+bool CNPC_Antlion::IsWorker( void )
+{ 
+	if( FClassnameIs(this,"npc_antlion_worker") )
+		return true;
+	if( FClassnameIs(this,"npc_antlionworker") )
+		return true;
+	return HasSpawnFlags( SF_ANTLION_WORKER ); 
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -272,16 +282,16 @@ void CNPC_Antlion::Spawn( void )
 #endif // _XBOX
 
 #ifdef HL2_EPISODIC
-	if ( IsWorker() )
+	if ( IsWorker() || FClassnameIs(this,"npc_antlion_worker") || FClassnameIs(this,"npc_antlionworker"))
 	{
 		SetModel( ANTLION_WORKER_MODEL );
 		AddSpawnFlags( SF_NPC_LONG_RANGE );
-		SetBloodColor( BLOOD_COLOR_ANTLION_WORKER );
+		SetBloodColor( BLOOD_COLOR_YELLOW );
 	}
 	else
 	{
 		SetModel( ANTLION_MODEL );
-		SetBloodColor( BLOOD_COLOR_ANTLION );
+		SetBloodColor( BLOOD_COLOR_YELLOW );
 	}
 #else
 	SetModel( ANTLION_MODEL );
@@ -2418,7 +2428,7 @@ int CNPC_Antlion::SelectSchedule( void )
 	case NPC_STATE_COMBAT:
 		{
 			// Worker-only AI
-			if ( hl2_episodic.GetBool() && IsWorker() )
+			if ( IsWorker() )
 			{
 				// Melee attack if we can
 				if ( HasCondition( COND_CAN_MELEE_ATTACK1 ) )
@@ -2562,7 +2572,7 @@ int CNPC_Antlion::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 {
 	CTakeDamageInfo newInfo = info;
 
-	if( hl2_episodic.GetBool() && antlion_easycrush.GetBool() )
+	if( antlion_easycrush.GetBool() )
 	{
 		if( newInfo.GetDamageType() & DMG_CRUSH )
 		{
@@ -2609,7 +2619,7 @@ int CNPC_Antlion::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 void CNPC_Antlion::CascadePush( const Vector &vecForce )
 {
 	// Controlled via this convar until this is proven worthwhile
-	if ( hl2_episodic.GetBool() == false /*|| g_antlion_cascade_push.GetBool() == false*/ )
+	if ( g_antlion_cascade_push.GetBool() == false )
 		return;
 
 	Vector vecForceDir = vecForce;
@@ -2686,37 +2696,19 @@ void CNPC_Antlion::TraceAttack( const CTakeDamageInfo &info, const Vector &vecDi
 		if ( !IsRunningDynamicInteraction() )
  		{
 			//Grenades, physcannons, and physics impacts make us fuh-lip!
-			
-			if( hl2_episodic.GetBool() )
+			PainSound( newInfo );
+
+			if( GetFlags() & FL_ONGROUND )
 			{
-				PainSound( newInfo );
-
-				if( GetFlags() & FL_ONGROUND )
-				{
-					// Only flip if on the ground.
-					SetCondition( COND_ANTLION_FLIPPED );
-				}
-
-				Vector vecForce = ( vecShoveDir * random->RandomInt( 500.0f, 1000.0f ) ) + Vector(0,0,64.0f);
-
-				CascadePush( vecForce );
-				ApplyAbsVelocityImpulse( vecForce );
-				SetGroundEntity( NULL );
+				// Only flip if on the ground.
+				SetCondition( COND_ANTLION_FLIPPED );
 			}
-			else
-			{
-				//Don't flip off the deck
-				if ( GetFlags() & FL_ONGROUND )
-				{
-					PainSound( newInfo );
 
-					SetCondition( COND_ANTLION_FLIPPED );
+			Vector vecForce = ( vecShoveDir * random->RandomInt( 500.0f, 1000.0f ) ) + Vector(0,0,64.0f);
 
-					//Get tossed!
-					ApplyAbsVelocityImpulse( ( vecShoveDir * random->RandomInt( 500.0f, 1000.0f ) ) + Vector(0,0,64.0f) );
-					SetGroundEntity( NULL );
-				}
-			}
+			CascadePush( vecForce );
+			ApplyAbsVelocityImpulse( vecForce );
+			SetGroundEntity( NULL );
 		}
 	}
 
@@ -3499,21 +3491,13 @@ void CNPC_Antlion::CreateDust( bool placeDecal )
 
 	if ( tr.fraction < 1.0f )
 	{
-		const surfacedata_t *pdata = physprops->GetSurfaceData( tr.surface.surfaceProps );
-
-		if ( hl2_episodic.GetBool() == true || ( pdata->game.material == CHAR_TEX_CONCRETE ) || 
-			 ( pdata->game.material == CHAR_TEX_DIRT ) ||
-			 ( pdata->game.material == CHAR_TEX_SAND ) ) 
+		if ( !m_bSuppressUnburrowEffects )
 		{
-
-			if ( !m_bSuppressUnburrowEffects )
-			{
-				UTIL_CreateAntlionDust( tr.endpos + Vector(0,0,24), GetAbsAngles() );
+			UTIL_CreateAntlionDust( tr.endpos + Vector(0,0,24), GetAbsAngles() );
 				
-				if ( placeDecal )
-				{
-					UTIL_DecalTrace( &tr, "Antlion.Unburrow" );
-				}
+			if ( placeDecal )
+			{
+				UTIL_DecalTrace( &tr, "Antlion.Unburrow" );
 			}
 		}
 	}
@@ -4153,13 +4137,10 @@ void CNPC_Antlion::Touch( CBaseEntity *pOther )
 //-----------------------------------------------------------------------------
 bool CNPC_Antlion::OverrideMoveFacing( const AILocalMoveGoal_t &move, float flInterval )
 {
-	if ( hl2_episodic.GetBool() )
+	if ( IsWorker() && GetEnemy() )
 	{
-		if ( IsWorker() && GetEnemy() )
-		{
-			AddFacingTarget( GetEnemy(), GetEnemy()->WorldSpaceCenter(), 1.0f, 0.2f );
-			return BaseClass::OverrideMoveFacing( move, flInterval );
-		}
+		AddFacingTarget( GetEnemy(), GetEnemy()->WorldSpaceCenter(), 1.0f, 0.2f );
+		return BaseClass::OverrideMoveFacing( move, flInterval );
 	}
 
 	//Adrian: Make antlions face the thumper while they flee away.
@@ -4421,7 +4402,7 @@ void CNPC_Antlion::DoPoisonBurst()
 //-----------------------------------------------------------------------------
 bool CNPC_Antlion::IsHeavyDamage( const CTakeDamageInfo &info )
 {
-	if ( hl2_episodic.GetBool() && IsWorker() )
+	if ( IsWorker() )
 	{
 		if ( m_nSustainedDamage + info.GetDamage() > 6 )
 			return true;
@@ -5074,10 +5055,12 @@ AI_END_CUSTOM_NPC()
 bool IsAntlionWorker( CBaseEntity *pEntity )
 {
 	// Must at least be valid and an antlion
-	return ( pEntity != NULL && 
-			 pEntity->Classify() == CLASS_ANTLION && 
-			 pEntity->HasSpawnFlags( SF_ANTLION_WORKER ) &&
-			 dynamic_cast<CNPC_Antlion *>(pEntity) != NULL );	// Save this as the last step
+	if (pEntity == NULL || pEntity->Classify() != CLASS_ANTLION)
+	{
+		return false;
+	}
+	CNPC_Antlion *pAntlion = dynamic_cast<CNPC_Antlion *>(pEntity);
+	return (pAntlion && pAntlion->IsWorker()); 
 }
 
 //-----------------------------------------------------------------------------

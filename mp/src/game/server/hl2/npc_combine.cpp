@@ -348,7 +348,7 @@ void CNPC_Combine::Spawn( void )
 	m_flAlertPatrolTime			= 0;
 
 	m_flNextAltFireTime = gpGlobals->curtime;
-
+	m_iNumGrenades = 5;
 	NPCInit();
 }
 

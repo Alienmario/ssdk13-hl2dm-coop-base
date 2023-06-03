@@ -223,6 +223,7 @@ public:
 	DECLARE_SERVERCLASS();
 	DEFINE_CUSTOM_AI;
 
+	bool	ShouldUseFixedPatrolLogic() { return true; }
 	void	PlayPatrolLoop( void );
 	void	PlayAngryLoop( void );
 
@@ -2373,7 +2374,7 @@ void CNPC_CombineGunship::UpdateRotorSoundPitch( int iPitch )
 	controller.SoundChangePitch( m_pAirExhaustSound, iPitch, 0.1 );
 
 	// FIXME: Doesn't work in multiplayer
-	CBaseEntity *pPlayer = UTIL_PlayerByIndex(1);
+	CBaseEntity *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	if (pPlayer)
 	{
 		Vector pos;

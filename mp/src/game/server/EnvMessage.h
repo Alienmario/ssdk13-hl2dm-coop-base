@@ -27,7 +27,7 @@ public:
 	void	Precache( void );
 
 	inline void SetMessage( string_t iszMessage ) { m_iszMessage = iszMessage; }
-
+	void TimerThink( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 private:
@@ -38,7 +38,10 @@ private:
 	float m_MessageVolume;
 	int m_MessageAttenuation;
 	float m_Radius;
-
+	//hl2mp.ru
+	float m_ShowTime;
+	EHANDLE pActivator;
+	//end hl2mp.ru
 	DECLARE_DATADESC();
 
 	string_t m_sNoise;

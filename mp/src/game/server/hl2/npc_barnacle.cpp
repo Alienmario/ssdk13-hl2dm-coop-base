@@ -660,8 +660,13 @@ bool CNPC_Barnacle::CanPickup( CBaseCombatCharacter *pBCC )
 	if( !pBCC )
 		return true;
 
-	// Don't pickup turrets
-	if( FClassnameIs( pBCC, "npc_turret_floor" ) )
+	// Don't pickup
+	if( FClassnameIs( pBCC, "npc_turret_floor" )
+		|| FClassnameIs( pBCC, "npc_rollermine" )
+		|| FClassnameIs( pBCC, "npc_portal_turret_floor" )
+		|| FClassnameIs( pBCC, "npc_portal_turret_rpg" )
+		|| FClassnameIs( pBCC, "npc_manhack" )
+		|| FClassnameIs( pBCC, "hornet" ) )
 		return false;
 
 	// Don't pick up a dead player or NPC

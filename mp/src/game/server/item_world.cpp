@@ -206,11 +206,13 @@ void CItem::Spawn( void )
 	SetThink( &CItem::FallThink );
 	SetNextThink( gpGlobals->curtime + 0.1f );
 #endif
+	m_vOriginalSpawnOrigin = GetAbsOrigin();
+	m_vOriginalSpawnAngles = GetAbsAngles();
 }
 
 unsigned int CItem::PhysicsSolidMaskForEntity( void ) const
 { 
-	return BaseClass::PhysicsSolidMaskForEntity() | CONTENTS_PLAYERCLIP;
+	return BaseClass::PhysicsSolidMaskForEntity() /* | CONTENTS_PLAYERCLIP */;
 }
 
 void CItem::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )

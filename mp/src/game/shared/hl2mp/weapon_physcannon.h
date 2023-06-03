@@ -28,5 +28,7 @@ float PlayerPickupGetHeldObjectMass( CBaseEntity *pPickupControllerEntity, IPhys
 float PhysCannonGetHeldObjectMass( CBaseCombatWeapon *pActiveWeapon, IPhysicsObject *pHeldObject );
 
 CBaseEntity *PhysCannonGetHeldEntity( CBaseCombatWeapon *pActiveWeapon );
+CBaseEntity *GetPlayerHeldEntity( CBasePlayer *pPlayer );
+
 
 #endif // WEAPON_PHYSCANNON_H

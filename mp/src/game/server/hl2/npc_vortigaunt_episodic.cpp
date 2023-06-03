@@ -442,7 +442,7 @@ void CNPC_Vortigaunt::RunTask( const Task_t *pTask )
 	case TASK_VORTIGAUNT_WAIT_FOR_PLAYER:
 	{
 		// Wait for the player to get near (before starting the bugbait sequence)
-		CBasePlayer *pPlayer = AI_GetSinglePlayer();
+		CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 		if ( pPlayer != NULL )
 		{
 			GetMotor()->SetIdealYawToTargetAndUpdate( pPlayer->GetAbsOrigin(), AI_KEEP_YAW_SPEED );
@@ -897,7 +897,7 @@ void CNPC_Vortigaunt::HandleAnimEvent( animevent_t *pEvent )
 				// HACK: If we've still failed, just spawn it on the player 
 				if ( i == iNumAttempts )
 				{
-					CBasePlayer	*pPlayer = AI_GetSinglePlayer();
+					CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 					if ( pPlayer )
 					{
 						vecSpawnOrigin = pPlayer->WorldSpaceCenter();
@@ -1424,6 +1424,9 @@ bool CNPC_Vortigaunt::ShouldHealTarget( CBaseEntity *pTarget )
 	if ( pPlayer == NULL )
 		return false;
 
+	if( IRelationType( pPlayer ) != D_LI )
+		return false;
+	
 	// Make sure the player's got a suit
 	if ( pPlayer->IsSuitEquipped() == false )
 		return false;
@@ -1686,7 +1689,7 @@ void CNPC_Vortigaunt::MaintainHealSchedule( void )
 		return;
 
 	// For now, we only heal the player
-	CBasePlayer *pPlayer = AI_GetSinglePlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	if ( pPlayer == NULL )
 		return;
 
@@ -2343,7 +2346,7 @@ Disposition_t CNPC_Vortigaunt::IRelationType( CBaseEntity *pTarget )
 bool CNPC_Vortigaunt::HealGestureHasLOS( void )
 {
 	//For now the player is always our target
-	CBaseEntity *pTargetEnt = AI_GetSinglePlayer();
+	CBasePlayer *pTargetEnt = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	if ( pTargetEnt == NULL )
 		return false;
 

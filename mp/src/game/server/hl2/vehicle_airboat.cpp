@@ -1141,7 +1141,7 @@ void CPropAirboat::Think(void)
 		// The first few time we get into the jeep, print the jeep help
 		if ( m_iNumberOfEntries < hud_airboathint_numentries.GetInt() && !m_bExitAnimOn )
 		{
-			UTIL_HudHintText( m_hPlayer, "#Valve_Hint_BoatKeys" );
+			// UTIL_HudHintText( m_hPlayer, "#Valve_Hint_BoatKeys" );
 			m_iNumberOfEntries++;
 		}
 		

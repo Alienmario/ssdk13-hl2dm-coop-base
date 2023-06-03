@@ -781,7 +781,8 @@ bool ShouldRemoveThisRagdoll( CBaseAnimating *pRagdoll )
 	}
 
 #else
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	return true;
+	/* CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 
 	if( !UTIL_FindClientInPVS( pRagdoll->edict() ) )
 	{
@@ -796,7 +797,7 @@ bool ShouldRemoveThisRagdoll( CBaseAnimating *pRagdoll )
 			 NDebugOverlay::Line( pRagdoll->GetAbsOrigin(), pRagdoll->GetAbsOrigin() + Vector( 0, 0, 64 ), 0, 0, 255, true, 5 );
 		
 		return true;
-	}
+	} */
 
 #endif
 

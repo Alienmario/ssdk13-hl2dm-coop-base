@@ -637,26 +637,73 @@ CBasePlayer* UTIL_PlayerByUserId( int userID )
 }
 
 //
-// Return the local player.
-// If this is a multiplayer game, return NULL.
+// Return the first player which passes the conditions, or null.
 // 
-CBasePlayer *UTIL_GetLocalPlayer( void )
+CBasePlayer *UTIL_GetLocalPlayer(void)
 {
-	if ( gpGlobals->maxClients > 1 )
+	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		if ( developer.GetBool() )
-		{
-			Assert( !"UTIL_GetLocalPlayer" );
-			
-#ifdef	DEBUG
-			Warning( "UTIL_GetLocalPlayer() called in multiplayer game.\n" );
-#endif
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex(i);
+		if ( pPlayer && pPlayer->IsConnected() && !pPlayer->IsFakeClient() && pPlayer->IsAlive() ) {
+			return pPlayer;
 		}
+	}
+	return NULL;
+}
 
-		return NULL;
+CBasePlayer *UTIL_GetNearestPlayer(const Vector& pos)
+{
+	CBasePlayer *pPlayer = NULL;
+	float	flNearestDistSqr = FLT_MAX;
+	float	flDistSqr;
+	for (int iClient = 1; iClient <= gpGlobals->maxClients; ++iClient)
+	{
+		CBasePlayer *pEnt = UTIL_PlayerByIndex(iClient);
+		if (!pEnt || pEnt->IsDisconnecting() || pEnt->IsFakeClient() || !pEnt->IsAlive() )
+			continue;
+
+		// Distance is the deciding factor
+		flDistSqr = (pos - pEnt->GetAbsOrigin()).LengthSqr();
+
+		// Closer, take it
+		if (flDistSqr < flNearestDistSqr)
+		{
+			flNearestDistSqr = flDistSqr;
+			pPlayer = pEnt;
+		}
 	}
 
-	return UTIL_PlayerByIndex( 1 );
+	return pPlayer;
+}
+
+CBasePlayer *UTIL_GetNearestVisiblePlayer(CBaseEntity *pEntity, int mask)
+{
+	if( !pEntity )
+		return NULL;
+
+	const Vector& pos = pEntity->GetAbsOrigin();
+
+	CBasePlayer *pPlayer = NULL;
+	float	flNearestDistSqr = FLT_MAX;
+	float	flDistSqr;
+	for (int iClient = 1; iClient <= gpGlobals->maxClients; ++iClient)
+	{
+		CBasePlayer *pEnt = UTIL_PlayerByIndex(iClient);
+		if (!pEnt || pEnt->IsDisconnecting() || pEnt->IsFakeClient() || !pEnt->IsAlive() )
+			continue;
+
+		// Distance is the deciding factor
+		flDistSqr = (pos - pEnt->GetAbsOrigin()).LengthSqr();
+
+		// Closer, take it
+		if (flDistSqr < flNearestDistSqr && pEntity->FVisible(pEnt, mask))
+		{
+			flNearestDistSqr = flDistSqr;
+			pPlayer = pEnt;
+		}
+	}
+
+	return pPlayer;
 }
 
 //
@@ -664,7 +711,9 @@ CBasePlayer *UTIL_GetLocalPlayer( void )
 // 
 CBasePlayer *UTIL_GetListenServerHost( void )
 {
+	return UTIL_GetLocalPlayer();
 	// no "local player" if this is a dedicated server or a single player game
+	/*
 	if (engine->IsDedicatedServer())
 	{
 		Assert( !"UTIL_GetListenServerHost" );
@@ -673,6 +722,7 @@ CBasePlayer *UTIL_GetListenServerHost( void )
 	}
 
 	return UTIL_PlayerByIndex( 1 );
+	*/
 }
 
 
@@ -869,7 +919,7 @@ void UTIL_ScreenShake( const Vector &center, float amplitude, float frequency, f
 	}
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
 
 		//
 		// Only start shakes for players that are on the ground unless doing an air shake.
@@ -886,7 +936,7 @@ void UTIL_ScreenShake( const Vector &center, float amplitude, float frequency, f
 		if (localAmplitude < 0)
 			continue;
 
-		TransmitShakeEvent( (CBasePlayer *)pPlayer, localAmplitude, frequency, duration, eCommand );
+		TransmitShakeEvent( pPlayer, localAmplitude, frequency, duration, eCommand );
 	}
 }
 
@@ -902,7 +952,7 @@ void UTIL_ScreenShakeObject( CBaseEntity *pEnt, const Vector &center, float ampl
 	CBaseEntity *pHighestParent = pEnt->GetRootMoveParent();
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
 		if (!pPlayer)
 			continue;
 
@@ -941,7 +991,7 @@ void UTIL_ScreenShakeObject( CBaseEntity *pEnt, const Vector &center, float ampl
 				continue;
 		}
 
-		TransmitShakeEvent( (CBasePlayer *)pPlayer, localAmplitude, frequency, duration, eCommand );
+		TransmitShakeEvent( pPlayer, localAmplitude, frequency, duration, eCommand );
 	}
 }
 
@@ -1048,7 +1098,6 @@ void UTIL_ScreenFade( CBaseEntity *pEntity, const color32 &color, float fadeTime
 	UTIL_ScreenFadeWrite( fade, pEntity );
 }
 
-
 void UTIL_HudMessage( CBasePlayer *pToPlayer, const hudtextparms_t &textparms, const char *pMessage )
 {
 	CRecipientFilter filter;
@@ -1097,7 +1146,7 @@ void UTIL_HudHintText( CBaseEntity *pEntity, const char *pMessage )
 
 	CSingleUserRecipientFilter user( (CBasePlayer *)pEntity );
 	user.MakeReliable();
-	UserMessageBegin( user, "KeyHintText" );
+	UserMessageBegin( user, "HintText" );
 		WRITE_BYTE( 1 );	// one string
 		WRITE_STRING( pMessage );
 	MessageEnd();
@@ -1309,6 +1358,79 @@ void UTIL_SetSize( CBaseEntity *pEnt, const Vector &vecMin, const Vector &vecMax
 //-----------------------------------------------------------------------------
 void UTIL_SetModel( CBaseEntity *pEntity, const char *pModelName )
 {
+	// ToDo Move to specific classes
+	if ( !pEntity->IsPlayer() )
+	{
+		const char *newModel = NULL;
+		if (FClassnameIs(pEntity, "npc_combine_s")) {
+			if (strcmpi(pModelName, "models/combine_soldier.mdl") == 0){
+				newModel = "models/hl2/combine_soldier.mdl";
+			}
+			else if (strcmpi(pModelName, "models/combine_soldier_prisonguard.mdl") == 0){
+				newModel = "models/hl2/combine_soldier_prisonguard.mdl";
+			}
+			else if (strcmpi(pModelName, "models/combine_super_soldier.mdl") == 0){
+				newModel = "models/hl2/combine_super_soldier.mdl";
+			}
+			else {
+				newModel = "models/hl2/combine_soldier.mdl";
+			}
+		}
+		/*else if (FClassnameIs(pEntity, "npc_citizen")) {
+			newModel = UTIL_VarArgs( "models/hl2/humans/%s/%s", g_ppszModelLocs[rand() % 2], g_ppszRandomHeads[rand() % 15] );
+		}*/
+		if ((strcmpi(pModelName, "models/police.mdl") == 0) || (strcmpi(pModelName, "models/police_cheaple.mdl") == 0)) {
+			newModel = "models/hl2/police.mdl";
+		}
+		else if (strcmpi(pModelName, "models/barney.mdl") == 0) {
+			newModel = "models/hl2/barney.mdl";
+		}
+		else if (strcmpi(pModelName, "models/breen.mdl") == 0) {
+			newModel = "models/hl2/breen.mdl";
+		}
+		else if (strcmpi(pModelName, "models/breen_monitor.mdl") == 0) {
+			newModel = "models/hl2/breen_monitor.mdl";
+		}
+		else if (strcmpi(pModelName, "models/alyx.mdl") == 0) {
+			newModel = "models/hl2/alyx.mdl";
+		}
+		else if (strcmpi(pModelName, "models/gman.mdl") == 0) {
+			newModel = "models/hl2/gman.mdl";
+		}
+		else if (strcmpi(pModelName, "models/gman_high.mdl") == 0) {
+			newModel = "models/hl2/gman_high.mdl";
+		}
+		else if (strcmpi(pModelName, "models/monk.mdl") == 0) {
+			newModel = "models/hl2/monk.mdl";
+		}
+		else if (strcmpi(pModelName, "models/kleiner.mdl") == 0) {
+			newModel = "models/hl2/kleiner.mdl";
+		}
+		else if (strcmpi(pModelName, "models/eli.mdl") == 0) {
+			newModel = "models/hl2/eli.mdl";
+		}
+		else if (strcmpi(pModelName, "models/monk.mdl") == 0) {
+			newModel = "models/hl2/monk.mdl";
+		}
+		else if (strcmpi(pModelName, "models/mossman.mdl") == 0) {
+			newModel = "models/hl2/mossman.mdl";
+		}
+		else if (strcmpi(pModelName, "models/odessa.mdl") == 0) {
+			newModel = "models/hl2/odessa.mdl";
+		}
+		else if (strcmpi(pModelName, "models/stalker.mdl") == 0) {
+			newModel = "models/hl2/stalker.mdl";
+		}
+		if (newModel)
+		{
+			if (!engine->IsModelPrecached(newModel))
+			{
+				engine->PrecacheModel(newModel, false);
+			}
+			pModelName = newModel;
+		}
+	}
+
 	// check to see if model was properly precached
 	int i = modelinfo->GetModelIndex( pModelName );
 	if ( i == -1 )	

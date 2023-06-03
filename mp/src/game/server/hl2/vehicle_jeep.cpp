@@ -135,13 +135,14 @@ BEGIN_DATADESC( CPropJeep )
 	DEFINE_INPUTFUNC( FIELD_VOID, "ShowHudHint", InputShowHudHint ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "StartRemoveTauCannon", InputStartRemoveTauCannon ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "FinishRemoveTauCannon", InputFinishRemoveTauCannon ),
+	DEFINE_KEYFIELD( m_bHasGun, FIELD_BOOLEAN, "m_bHasGun" ),
 
 	DEFINE_THINKFUNC( JeepSeagullThink ),
 END_DATADESC()
 
-IMPLEMENT_SERVERCLASS_ST( CPropJeep, DT_PropJeep )
+/* IMPLEMENT_SERVERCLASS_ST( CPropJeep, DT_PropJeep )
 	SendPropBool( SENDINFO( m_bHeadlightIsOn ) ),
-END_SEND_TABLE();
+END_SEND_TABLE(); */
 
 // This is overriden for the episodic jeep
 #ifndef HL2_EPISODIC
@@ -677,7 +678,7 @@ void CPropJeep::Think( void )
 {
 	BaseClass::Think();
 
-	CBasePlayer	*pPlayer = UTIL_GetLocalPlayer();
+	CBasePlayer	*pPlayer = m_hPlayer;
 
 	if ( m_bEngineLocked )
 	{
@@ -891,6 +892,8 @@ ConVar hap_jeep_cannon_mag("hap_jeep_cannon_mag", "10", 0);
 //-----------------------------------------------------------------------------
 void CPropJeep::FireCannon( void )
 {
+	m_nSpinPos += JEEP_GUN_SPIN_RATE;
+	SetPoseParameter( JEEP_GUN_SPIN, m_nSpinPos );
 	//Don't fire again if it's been too soon
 	if ( m_flCannonTime > gpGlobals->curtime )
 		return;
@@ -927,7 +930,7 @@ void CPropJeep::FireCannon( void )
 	EmitSound( sndFilter, entindex(), "PropJeep.FireCannon" );
 	
 	// make cylinders of gun spin a bit
-	m_nSpinPos += JEEP_GUN_SPIN_RATE;
+	// m_nSpinPos += JEEP_GUN_SPIN_RATE;
 	//SetPoseParameter( JEEP_GUN_SPIN, m_nSpinPos );	//FIXME: Don't bother with this for E3, won't look right
 }
 

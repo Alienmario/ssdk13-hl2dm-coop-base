@@ -7,6 +7,7 @@
 //=============================================================================//
 #include "cbase.h"
 #include "player_pickup.h"
+#include "hl2_player.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -24,8 +25,14 @@ void Pickup_ForcePlayerToDropThisObject( CBaseEntity *pTarget )
 
 	if ( pPhysics->GetGameFlags() & FVPHYSICS_PLAYER_HELD )
 	{
-		CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
-		pPlayer->ForceDropOfCarriedPhysObjects( pTarget );
+		for ( int i = 1; i <= gpGlobals->maxClients; i++ )
+		{
+			CHL2_Player *pHL2Player = dynamic_cast<CHL2_Player*>( UTIL_PlayerByIndex( i ) );
+			if (pHL2Player && pHL2Player->IsHoldingEntity( pTarget ))
+			{
+				pHL2Player->ForceDropOfCarriedPhysObjects( pTarget );
+			}
+		}
 	}
 }
 

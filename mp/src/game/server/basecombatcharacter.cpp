@@ -1612,7 +1612,11 @@ void CBaseCombatCharacter::Event_Killed( const CTakeDamageInfo &info )
 	// if flagged to drop a health kit
 	if (HasSpawnFlags(SF_NPC_DROP_HEALTHKIT))
 	{
-		CBaseEntity::Create( "item_healthvial", GetAbsOrigin(), GetAbsAngles() );
+		CBaseEntity * pItem = CBaseEntity::Create( "item_healthvial", GetAbsOrigin(), GetAbsAngles() );
+		if ( pItem )
+		{
+			pItem->AddSpawnFlags( SF_NORESPAWN );
+		}
 	}
 	// clear the deceased's sound channels.(may have been firing or reloading when killed)
 	EmitSound( "BaseCombatCharacter.StopWeaponSounds" );
@@ -1906,6 +1910,7 @@ void CBaseCombatCharacter::Weapon_Drop( CBaseCombatWeapon *pWeapon, const Vector
 		return;
 
 	// If I'm an NPC, fill the weapon with ammo before I drop it.
+	/*
 	if ( GetFlags() & FL_NPC )
 	{
 		if ( pWeapon->UsesClipsForAmmo1() )
@@ -1930,6 +1935,7 @@ void CBaseCombatCharacter::Weapon_Drop( CBaseCombatWeapon *pWeapon, const Vector
 			pWeapon->AddEffects( EF_ITEM_BLINK );
 		}
 	}
+	*/
 
 	if ( IsPlayer() )
 	{
@@ -2745,6 +2751,8 @@ Relationship_t *CBaseCombatCharacter::FindEntityRelationship( CBaseEntity *pTarg
 Disposition_t CBaseCombatCharacter::IRelationType ( CBaseEntity *pTarget )
 {
 	if ( pTarget )
+		if( FClassnameIs( pTarget, "hornet" ) )
+			return D_NU;
 		return FindEntityRelationship( pTarget )->disposition;
 	return D_NU;
 }

@@ -257,9 +257,9 @@ void CNPC_FloorTurret::Precache( void )
 	PrecacheScriptSound( "NPC_FloorTurret.DryFire");
 	PrecacheScriptSound( "NPC_FloorTurret.Destruct" );
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	PrecacheParticleSystem( "explosion_turret_break" );
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 	
 	BaseClass::Precache();
 }
@@ -1199,12 +1199,18 @@ bool CNPC_FloorTurret::IsValidEnemy( CBaseEntity *pEnemy )
 	}
 #endif
 
+	if( !FVisible( pEnemy ) )
+		return false;
+
 	Vector los = ( vEnemyPos - EyePosition() );
 
 	QAngle angleToTarget;
 	VectorAngles( los, angleToTarget );
 	float flZDiff = fabs( AngleNormalize( angleToTarget.x - GetAbsAngles().x) );
 	if ( flZDiff > 28.0f && los.LengthSqr() > 4096.0f )
+		return false;
+
+	if( FClassnameIs(pEnemy, "hornet") || pEnemy->Classify() == CLASS_MISSILE )
 		return false;
 
 	return BaseClass::IsValidEnemy( pEnemy );
@@ -1385,7 +1391,8 @@ void CNPC_FloorTurret::ReturnToLife( void )
 	m_flThrashTime = 0;
 
 	// Enable the tip controller
-	m_pMotionController->Enable( true );
+	if ( m_pMotionController )
+		m_pMotionController->Enable( true );
 
 	// Return to life
 	SetState( NPC_STATE_IDLE );
@@ -1516,7 +1523,8 @@ bool CNPC_FloorTurret::PreThink( turretState_e state )
 			m_lifeState = LIFE_DEAD;
 
 			//Disable the tip controller
-			m_pMotionController->Enable( false );
+			if ( m_pMotionController )
+				m_pMotionController->Enable( false );
 
 			//Debug visualization
 			if ( g_debug_turret.GetBool() )
@@ -1890,7 +1898,10 @@ QAngle CNPC_FloorTurret::PreferredCarryAngles( void )
 	static QAngle g_prefAngles;
 
 	Vector vecUserForward;
-	CBasePlayer *pPlayer = AI_GetSinglePlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin()); 
+	if (!pPlayer)
+		return vec3_angle;
+	
 	pPlayer->EyeVectors( &vecUserForward );
 
 	// If we're looking up, then face directly forward
@@ -2031,9 +2042,9 @@ void CNPC_FloorTurret::BreakThink( void )
 	Vector vecOrigin = WorldSpaceCenter() + ( vecUp * 12.0f );
 
 	// Our effect
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	DispatchParticleEffect( "explosion_turret_break", vecOrigin, GetAbsAngles() );
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	// K-boom
 	RadiusDamage( CTakeDamageInfo( this, this, 15.0f, DMG_BLAST ), vecOrigin, (10*12), CLASS_NONE, this );
@@ -2225,7 +2236,8 @@ void CTurretTipController::Activate( void )
 	if ( !m_pController )
 	{
 		m_pController = physenv->CreateMotionController( (IMotionEvent *)this );
-		m_pController->AttachObject( pPhys, true );
+		if( m_pController )
+			m_pController->AttachObject( pPhys, true );
 	}
 	else
 	{

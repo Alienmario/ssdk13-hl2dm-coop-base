@@ -76,6 +76,8 @@ BEGIN_DATADESC( CSprite )
 	DEFINE_INPUT( m_flSpriteScale, FIELD_FLOAT, "SetScale" ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "HideSprite", InputHideSprite ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "ShowSprite", InputShowSprite ),
+	DEFINE_INPUTFUNC( FIELD_VOID, "Enable", InputShowSprite ),
+	DEFINE_INPUTFUNC( FIELD_VOID, "Disable", InputHideSprite ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "ToggleSprite", InputToggleSprite ),
 	DEFINE_INPUTFUNC( FIELD_FLOAT, "ColorRedValue", InputColorRedValue ),
 	DEFINE_INPUTFUNC( FIELD_FLOAT, "ColorGreenValue", InputColorGreenValue ),

@@ -1395,13 +1395,14 @@ int CProtoSniper::SelectSchedule ( void )
 		return SCHED_RELOAD;
 	}
 
+	/*
 	if( !AI_GetSinglePlayer()->IsAlive() && m_bKilledPlayer )
 	{
 		if( HasCondition(COND_IN_PVS) )
 		{
 			return SCHED_PSNIPER_PLAYER_DEAD;
 		}
-	}
+	} */
 	
 	if( HasCondition( COND_HEAR_DANGER ) )
 	{
@@ -1960,9 +1961,9 @@ void CProtoSniper::StartTask( const Task_t *pTask )
 	{
 	case TASK_SNIPER_PLAYER_DEAD:
 		{
-			m_hSweepTarget = AI_GetSinglePlayer();
-			SetWait( 4.0f );
-			LaserOn( m_hSweepTarget->GetAbsOrigin(), vec3_origin );
+			// m_hSweepTarget = AI_GetSinglePlayer();
+			// SetWait( 4.0f );
+			// LaserOn( m_hSweepTarget->GetAbsOrigin(), vec3_origin );
 		}
 		break;
 
@@ -2023,6 +2024,9 @@ void CProtoSniper::StartTask( const Task_t *pTask )
 		}
 		else
 		{
+			if( GetEnemy() == NULL )
+				break;
+			
 			if( GetEnemy()->IsPlayer() )
 			{
 				float delay = 0;
@@ -2161,7 +2165,7 @@ void CProtoSniper::RunTask( const Task_t *pTask )
 
 	case TASK_RANGE_ATTACK1:
 		// Fire at enemy.
-		if( FireBullet( LeadTarget( GetEnemy() ), true ) )
+		if( GetEnemy() && FireBullet( LeadTarget( GetEnemy() ), true ) )
 		{
 			// Msg("Firing at %s\n",GetEnemy()->GetEntityName().ToCStr());
 
@@ -2605,10 +2609,15 @@ Vector CProtoSniper::LeadTarget( CBaseEntity *pTarget )
 CBaseEntity *CProtoSniper::PickDeadPlayerTarget()
 {
 	const int iSearchSize = 32;
-	CBaseEntity *pTarget = AI_GetSinglePlayer();
+	CBaseEntity *pTarget = UTIL_GetNearestVisiblePlayer(this);
+	if (!pTarget)
+	{
+		return NULL;
+	}
+	
 	CBaseEntity *pEntities[ iSearchSize ];
 
-	int iNumEntities = UTIL_EntitiesInSphere( pEntities, iSearchSize, AI_GetSinglePlayer()->GetAbsOrigin(), 180.0f, 0 );
+	int iNumEntities = UTIL_EntitiesInSphere( pEntities, iSearchSize, pTarget->GetAbsOrigin(), 180.0f, 0 );
 
 	// Not very robust, but doesn't need to be. Randomly select a nearby object in the list that isn't an NPC.
 	if( iNumEntities > 0 )

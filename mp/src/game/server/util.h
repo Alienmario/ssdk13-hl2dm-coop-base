@@ -230,8 +230,11 @@ CBasePlayer *UTIL_PlayerBySteamID( const CSteamID &steamID );
 
 // NOTENOTE: Use this instead of UTIL_PlayerByIndex IF you're in single player
 // and you want the player.
-// not useable in multiplayer - see UTIL_GetListenServerHost()
+// Not intended for multiplayer
 CBasePlayer* UTIL_GetLocalPlayer( void );
+
+CBasePlayer *UTIL_GetNearestPlayer(const Vector& pos);
+CBasePlayer *UTIL_GetNearestVisiblePlayer(CBaseEntity *pEntity, int mask = MASK_BLOCKLOS);
 
 // get the local player on a listen server
 CBasePlayer *UTIL_GetListenServerHost( void );

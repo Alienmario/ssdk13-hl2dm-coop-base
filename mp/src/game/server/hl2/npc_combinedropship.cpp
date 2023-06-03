@@ -2426,6 +2426,7 @@ void CNPC_CombineDropship::SpawnTroop( void )
 	Vector vecSpawnOrigin;
 	QAngle vecSpawnAngles;
 	m_hContainer->GetAttachment( m_iAttachmentDeployStart, vecSpawnOrigin, vecSpawnAngles );
+	vecSpawnOrigin.z += 8.0;
 
 	// Spawn the templated NPC
 	CBaseEntity *pEntity = NULL;

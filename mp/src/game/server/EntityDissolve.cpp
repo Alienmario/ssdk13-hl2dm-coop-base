@@ -14,6 +14,7 @@
 #include "baseanimating.h"
 #include "physics_prop_ragdoll.h"
 #include "ai_basenpc.h"
+#include "world.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -232,8 +233,7 @@ CEntityDissolve *CEntityDissolve::Create( CBaseEntity *pTarget, const char *pMat
 			// Necessary to cause it to do the appropriate death cleanup
 			if ( pTarget->m_lifeState == LIFE_ALIVE )
 			{
-				CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
-				CTakeDamageInfo ragdollInfo( pPlayer, pPlayer, 10000.0, DMG_SHOCK | DMG_REMOVENORAGDOLL | DMG_PREVENT_PHYSICS_FORCE );
+				CTakeDamageInfo ragdollInfo( GetWorldEntity(), GetWorldEntity(), 10000.0, DMG_SHOCK | DMG_REMOVENORAGDOLL | DMG_PREVENT_PHYSICS_FORCE );
 				pTarget->TakeDamage( ragdollInfo );
 			}
 
@@ -347,12 +347,14 @@ void CEntityDissolve::DissolveThink( void )
 		// Necessary to cause it to do the appropriate death cleanup
 		// Yeah, the player may have nothing to do with it, but
 		// passing NULL to TakeDamage causes bad things to happen
-		CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
+		// CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
 		int iNoPhysicsDamage = g_pGameRules->Damage_GetNoPhysicsForce();
-		CTakeDamageInfo info( pPlayer, pPlayer, 10000.0, DMG_GENERIC | DMG_REMOVENORAGDOLL | iNoPhysicsDamage );
+		// CTakeDamageInfo info( pPlayer, pPlayer, 10000.0, DMG_GENERIC | DMG_REMOVENORAGDOLL | iNoPhysicsDamage );
+		CTakeDamageInfo info( GetWorldEntity(), GetWorldEntity(), 10000.0, DMG_GENERIC | DMG_REMOVENORAGDOLL | iNoPhysicsDamage );
 		pTarget->TakeDamage( info );
 
-		if ( pTarget != pPlayer )
+		// if ( pTarget != pPlayer )
+		if ( !pTarget->IsPlayer() )
 		{
 			UTIL_Remove( pTarget );
 		}

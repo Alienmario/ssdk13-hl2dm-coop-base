@@ -6,7 +6,9 @@
 
 #include "cbase.h"
 #include "weapon_hl2mpbasehlmpcombatweapon.h"
+#include "weapon_pistol.h"
 #include "hl2mp_player.h"
+#include "weapon_physcannon.h"
 #include "globalstate.h"
 #include "game.h"
 #include "gamerules.h"
@@ -335,7 +337,7 @@ void CHL2MP_Player::Spawn(void)
 
 void CHL2MP_Player::PickupObject( CBaseEntity *pObject, bool bLimitMassAndSize )
 {
-	
+	BaseClass::PickupObject(pObject, bLimitMassAndSize);
 }
 
 bool CHL2MP_Player::ValidatePlayerModel( const char *pModel )
@@ -554,6 +556,25 @@ void CHL2MP_Player::PreThink( void )
 	//Reset bullet force accumulator, only lasts one frame
 	m_vecTotalBulletForce = vec3_origin;
 	SetLocalAngles( vOldAngles );
+
+	// Fix clientside prediction errors when dropping objects
+	if ( GetPlayerHeldEntity(this) )
+	{
+		CBaseCombatWeapon *pWeapon = GetActiveWeapon();
+		if ( pWeapon )
+		{
+			float fDelayedFire = gpGlobals->curtime + 0.2;
+			pWeapon->m_flNextPrimaryAttack = fDelayedFire;
+			pWeapon->m_flNextSecondaryAttack = fDelayedFire;
+
+			CWeaponPistol *pPistol = dynamic_cast<CWeaponPistol *>( pWeapon );
+			if ( pPistol )
+			{
+				pPistol->m_flSoonestPrimaryAttack = fDelayedFire;
+			}
+		}
+	}
+
 }
 
 void CHL2MP_Player::PostThink( void )
@@ -963,9 +984,6 @@ bool CHL2MP_Player::HandleCommand_JoinTeam( int team )
 			m_fNextSuicideTime = gpGlobals->curtime;	// allow the suicide to work
 
 			CommitSuicide();
-
-			// add 1 to frags to balance out the 1 subtracted for killing yourself
-			IncrementFragCount( 1 );
 		}
 
 		ChangeTeam( TEAM_SPECTATOR );

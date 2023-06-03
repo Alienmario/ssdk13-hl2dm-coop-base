@@ -372,7 +372,8 @@ bool CBoneFollower::TestCollision( const Ray_t &ray, unsigned int mask, trace_t&
 void CBoneFollower::UpdateFollower( const Vector &position, const QAngle &orientation, float flInterval )
 {
 	// UNDONE: Shadow update needs timing info?
-	VPhysicsGetObject()->UpdateShadow( position, orientation, false, flInterval );
+	// VPhysicsGetObject()->UpdateShadow( position, orientation, false, flInterval );
+	VPhysicsGetObject()->SetPosition( position, orientation, false );
 }
 
 void CBoneFollower::SetTraceData( int physicsBone, int hitGroup )

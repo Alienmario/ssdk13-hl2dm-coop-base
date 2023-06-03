@@ -330,6 +330,9 @@ void CBaseHelicopter::HelicopterThink( void )
 		SetEnemy( NULL );
 	}
 
+	if( ClassMatches("npc_helicopter") )
+		RadiusDamage ( CTakeDamageInfo( this, this, 200.0, DMG_GENERIC ), GetAbsOrigin(), 400.0, CLASS_NONE, this );
+
 	HelicopterPostThink();
 }
 
@@ -831,7 +834,8 @@ void CBaseHelicopter::UpdatePlayerDopplerShift( )
 
 		// UNDONE: this needs to send different sounds to every player for multiplayer.	
 		// FIXME: this isn't the correct way to find a player!!!
-		pPlayer = gEntList.FindEntityByName( NULL, "!player" );
+		// pPlayer = gEntList.FindEntityByName( NULL, "!player" );
+		pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 		if (pPlayer)
 		{
 			Vector dir;
@@ -862,10 +866,12 @@ void CBaseHelicopter::UpdatePlayerDopplerShift( )
 			UpdateRotorSoundPitch( iPitch );
 			// Msg( "Pitch:%d\n", iPitch );
 		}
+		/*
 		else
 		{
 			Msg( "Chopper didn't find a player!\n" );
 		}
+		*/
 	}
 }
 

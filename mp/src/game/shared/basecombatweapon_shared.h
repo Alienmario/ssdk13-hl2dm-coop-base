@@ -440,7 +440,7 @@ public:
 	void					DestroyItem( void );
 	virtual void			Kill( void );
 
-	virtual int				CapabilitiesGet( void ) { return 0; }
+	virtual int				CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 	virtual	int				ObjectCaps( void );
 
 	bool					IsRemoveable() { return m_bRemoveable; }
@@ -586,6 +586,10 @@ public:
 	bool					SetIdealActivity( Activity ideal );
 	void					MaintainIdealActivity( void );
 
+	Vector m_vOriginalSpawnOrigin;
+	QAngle m_vOriginalSpawnAngles;
+	float  m_flNextResetCheckTime;
+	
 private:
 	Activity				m_Activity;
 	int						m_nIdealSequence;

@@ -873,7 +873,7 @@ float CBounceBomb::FindNearestNPC()
 	}
 
 	// finally, check the player.
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 
 	if( pPlayer && !(pPlayer->GetFlags() & FL_NOTARGET) )
 	{
@@ -953,6 +953,7 @@ bool CBounceBomb::IsFriend( CBaseEntity *pEntity )
 //---------------------------------------------------------
 void CBounceBomb::SearchThink()
 {
+	/*
 	if( !UTIL_FindClientInPVS(edict()) )
 	{
 		// Sleep!
@@ -970,6 +971,7 @@ void CBounceBomb::SearchThink()
 		SetNextThink( gpGlobals->curtime + 0.5 );
 		return;
 	}
+	*/
 
 	SetNextThink( gpGlobals->curtime + 0.1 );
 	StudioFrameAdvance();

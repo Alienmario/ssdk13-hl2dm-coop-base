@@ -3271,7 +3271,7 @@ void CBlackHeadcrab::TouchDamage( CBaseEntity *pOther )
 		if ( pOther->IsAlive() && pOther->m_iHealth > 1)
 		{
 			// Episodic change to avoid NPCs dying too quickly from poison bites
-			if ( hl2_episodic.GetBool() )
+			//if ( hl2_episodic.GetBool() )
 			{
 				if ( pOther->IsPlayer() )
 				{
@@ -3284,11 +3284,11 @@ void CBlackHeadcrab::TouchDamage( CBaseEntity *pOther )
 					pOther->TakeDamage( CTakeDamageInfo( this, this, sk_headcrab_poison_npc_damage.GetFloat(), DMG_SLASH ) );
 				}
 			}
-			else
+			/* else
 			{
 				// That didn't finish them. Take them down to one point with poison damage. It'll heal.
 				pOther->TakeDamage( CTakeDamageInfo( this, this, pOther->m_iHealth - 1, DMG_POISON ) );
-			}
+			} */
 		}
 	}
 }

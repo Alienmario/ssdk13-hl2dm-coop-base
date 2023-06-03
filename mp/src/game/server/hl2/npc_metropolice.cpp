@@ -497,7 +497,7 @@ void CNPC_MetroPolice::PrescheduleThink( void )
 	m_bPlayerIsNear = false;
 	if ( PlayerIsCriminal() == false )
 	{
-		CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
+		CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 		
 		if ( pPlayer && ( pPlayer->WorldSpaceCenter() - WorldSpaceCenter() ).LengthSqr() < (128*128) )
 		{
@@ -2883,7 +2883,7 @@ void CNPC_MetroPolice::OnAnimEventShove( void )
 //-----------------------------------------------------------------------------
 void CNPC_MetroPolice::OnAnimEventBatonOn( void )
 {
-#ifndef HL2MP
+//#ifndef HL2MP
 
 	CWeaponStunStick *pStick = dynamic_cast<CWeaponStunStick *>(GetActiveWeapon());
 
@@ -2891,7 +2891,7 @@ void CNPC_MetroPolice::OnAnimEventBatonOn( void )
 	{
 		pStick->SetStunState( true );
 	}
-#endif
+// #endif
 
 }
 
@@ -2900,7 +2900,7 @@ void CNPC_MetroPolice::OnAnimEventBatonOn( void )
 //-----------------------------------------------------------------------------
 void CNPC_MetroPolice::OnAnimEventBatonOff( void )
 {
-#ifndef HL2MP
+// #ifndef HL2MP
 
 	CWeaponStunStick *pStick = dynamic_cast<CWeaponStunStick *>(GetActiveWeapon());
 	
@@ -2908,7 +2908,7 @@ void CNPC_MetroPolice::OnAnimEventBatonOff( void )
 	{
 		pStick->SetStunState( false );
 	}
-#endif
+// #endif
 }
 
 //-----------------------------------------------------------------------------
@@ -3899,7 +3899,7 @@ void CNPC_MetroPolice::AnnounceHarrassment( void )
 //-----------------------------------------------------------------------------
 void CNPC_MetroPolice::IncrementPlayerCriminalStatus( void )
 {
-	CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
+	CBasePlayer *pPlayer = UTIL_GetNearestVisiblePlayer( this );
 
 	if ( pPlayer )
 	{
@@ -3951,7 +3951,8 @@ float CNPC_MetroPolice::GetIdealAccel( void ) const
 //-----------------------------------------------------------------------------
 void CNPC_MetroPolice::AdministerJustice( void )
 {
-	if ( !AI_IsSinglePlayer() )
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
+	if( !pPlayer )
 		return;
 
 	// If we're allowed to chase the player, do so. Otherwise, just threaten.
@@ -3989,7 +3990,7 @@ void CNPC_MetroPolice::AdministerJustice( void )
 				if ( pNPC->HasSpawnFlags( SF_METROPOLICE_ALLOWED_TO_RESPOND ) )
 				{
 					// Is he within site & range?
-					if ( FVisible(pNPC) && pNPC->FVisible( UTIL_PlayerByIndex(1) ) && 
+					if ( FVisible(pNPC) && pNPC->FVisible( pPlayer ) && 
 						UTIL_DistApprox( WorldSpaceCenter(), pNPC->WorldSpaceCenter() ) < 512 )
 					{
 						pNPC->AdministerJustice();
@@ -4006,7 +4007,8 @@ void CNPC_MetroPolice::AdministerJustice( void )
 //-----------------------------------------------------------------------------
 int CNPC_MetroPolice::SelectSchedule( void )
 {
-	if ( !GetEnemy() && HasCondition( COND_IN_PVS ) && AI_GetSinglePlayer() && !AI_GetSinglePlayer()->IsAlive() )
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
+	if ( !GetEnemy() && HasCondition( COND_IN_PVS ) && pPlayer && !pPlayer->IsAlive() )
 	{
 		return SCHED_PATROL_WALK;
 	}
@@ -4978,7 +4980,7 @@ void CNPC_MetroPolice::GatherConditions( void )
 		ClearCondition( COND_METROPOLICE_PLAYER_TOO_CLOSE );
 	}
 
-	CBasePlayer *pPlayer = UTIL_PlayerByIndex( 1 );
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	
 	// FIXME: Player can be NULL here during level transitions.
 	if ( !pPlayer )
@@ -5051,13 +5053,13 @@ bool CNPC_MetroPolice::HasBaton( void )
 //-----------------------------------------------------------------------------
 bool CNPC_MetroPolice::BatonActive( void )
 {
-#ifndef HL2MP
+// #ifndef HL2MP
 
 	CWeaponStunStick *pStick = dynamic_cast<CWeaponStunStick *>(GetActiveWeapon());
 
 	if ( pStick )
 		return pStick->GetStunState();
-#endif
+// #endif
 
 	return false;
 }
@@ -5111,17 +5113,22 @@ void CNPC_MetroPolice::VPhysicsCollision( int index, gamevcollisionevent_t *pEve
 
 	if ( pEvent->pObjects[otherIndex]->GetGameFlags() & FVPHYSICS_PLAYER_HELD )
 	{
-		CHL2_Player *pPlayer = dynamic_cast<CHL2_Player *>(UTIL_PlayerByIndex( 1 ));
-
-		// See if it's being held by the player
-		if ( pPlayer != NULL && pPlayer->IsHoldingEntity( pHitEntity ) )
+		for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 		{
-			//TODO: Play an angry sentence, "Get that outta here!"
+			CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
 
-			if ( IsCurSchedule( SCHED_METROPOLICE_SHOVE ) == false )
+			// See if it's being held by the player
+			if ( pPlayer != NULL && dynamic_cast<CHL2_Player *>( pPlayer ) -> IsHoldingEntity( pHitEntity ) )
 			{
-				SetCondition( COND_METROPOLICE_PLAYER_TOO_CLOSE );
-				m_bPlayerTooClose = true;
+				//TODO: Play an angry sentence, "Get that outta here!"
+
+				if ( IsCurSchedule( SCHED_METROPOLICE_SHOVE ) == false )
+				{
+					SetCondition( COND_METROPOLICE_PLAYER_TOO_CLOSE );
+					m_bPlayerTooClose = true;
+				}
+
+				break;
 			}
 		}
 	}

@@ -372,7 +372,10 @@ void CBaseDoor::MovingSoundThink( void )
 	if( ShouldLoopMoveSound() )
 	{
 		float duration = enginesound->GetSoundDuration( ep.m_pSoundName );
-		SetContextThink( &CBaseDoor::MovingSoundThink, gpGlobals->curtime + duration, "MovingSound" );
+		if( duration != 0.0 )
+		{
+			SetContextThink( &CBaseDoor::MovingSoundThink, gpGlobals->curtime + duration, "MovingSound" );
+		}
 	}
 }
 

@@ -603,6 +603,9 @@ void CNPC_RollerMine::Spawn( void )
 	//Set their yaw speed to 0 so the motor doesn't rotate them.
 	GetMotor()->SetYawSpeed( 0.0f );
 	SetRollerSkin();
+
+	if( HasSpawnFlags( SF_ROLLERMINE_FRIENDLY ) )
+		NotifyInteraction( NULL );
 }
 
 //-----------------------------------------------------------------------------

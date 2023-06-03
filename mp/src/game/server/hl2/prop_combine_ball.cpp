@@ -608,7 +608,7 @@ void CPropCombineBall::UpdateOnRemove()
 	}
 
 	//Sigh... this is the only place where I can get a message after the ball is done dissolving.
-	if ( hl2_episodic.GetBool()  )
+	// if ( hl2_episodic.GetBool()  )
 	{
 		if ( IsDissolving() )
 		{
@@ -650,7 +650,7 @@ void CPropCombineBall::DieThink()
 	if ( GetSpawner() )
 	{
 		//Let the spawner know we died so it does it's thing
-		if( hl2_episodic.GetBool() && IsInField() )
+		if( /* hl2_episodic.GetBool() && */ IsInField() )
 		{
 			GetSpawner()->BallGrabbed( this );
 		}
@@ -1114,7 +1114,7 @@ void CPropCombineBall::DoExplosion( )
 	m_bEmit = false;
 
 	
-	if( !m_bStruckEntity && hl2_episodic.GetBool() && GetOwnerEntity() != NULL )
+	if( !m_bStruckEntity /* && hl2_episodic.GetBool() */ && GetOwnerEntity() != NULL )
 	{
 		// Notify the player proxy that this combine ball missed so that it can fire an output.
 		CHL2_Player *pPlayer = dynamic_cast<CHL2_Player *>( GetOwnerEntity() );

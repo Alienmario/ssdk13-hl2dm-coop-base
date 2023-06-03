@@ -77,14 +77,14 @@ BEGIN_DATADESC( CFuncTank )
 	DEFINE_KEYFIELD( m_iBulletDamageVsPlayer, FIELD_INTEGER, "bullet_damage_vs_player" ),
 	DEFINE_KEYFIELD( m_iszMaster, FIELD_STRING, "master" ),
 	
-#ifdef HL2_EPISODIC	
+// #ifdef HL2_EPISODIC	
 	DEFINE_KEYFIELD( m_iszAmmoType, FIELD_STRING, "ammotype" ),
 	DEFINE_FIELD( m_iAmmoType, FIELD_INTEGER ),
-#else
+// #else
 	DEFINE_FIELD( m_iSmallAmmoType, FIELD_INTEGER ),
 	DEFINE_FIELD( m_iMediumAmmoType, FIELD_INTEGER ),
 	DEFINE_FIELD( m_iLargeAmmoType, FIELD_INTEGER ),
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	DEFINE_KEYFIELD( m_soundStartRotate, FIELD_SOUNDNAME, "rotatestartsound" ),
 	DEFINE_KEYFIELD( m_soundStopRotate, FIELD_SOUNDNAME, "rotatestopsound" ),
@@ -735,13 +735,13 @@ void CFuncTank::Spawn( void )
 {
 	Precache();
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	m_iAmmoType = GetAmmoDef()->Index( STRING( m_iszAmmoType ) );
-#else
+// #else
 	m_iSmallAmmoType	= GetAmmoDef()->Index("Pistol");
 	m_iMediumAmmoType	= GetAmmoDef()->Index("SMG1");
 	m_iLargeAmmoType	= GetAmmoDef()->Index("AR2");
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	SetMoveType( MOVETYPE_PUSH );  // so it doesn't get pushed by anything
 	SetSolid( SOLID_VPHYSICS );
@@ -2459,7 +2459,7 @@ void CFuncTankGun::Fire( int bulletCount, const Vector &barrelEnd, const Vector 
 	info.m_pAttacker = pAttacker;
 	info.m_pAdditionalIgnoreEnt = GetParent();
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 	if ( m_iAmmoType != -1 )
 	{
 		for ( i = 0; i < bulletCount; i++ )
@@ -2468,7 +2468,7 @@ void CFuncTankGun::Fire( int bulletCount, const Vector &barrelEnd, const Vector 
 			FireBullets( info );
 		}
 	}
-#else
+// #else
 	for ( i = 0; i < bulletCount; i++ )
 	{
 		switch( m_bulletType )
@@ -2493,7 +2493,7 @@ void CFuncTankGun::Fire( int bulletCount, const Vector &barrelEnd, const Vector 
 			break;
 		}
 	}
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	CFuncTank::Fire( bulletCount, barrelEnd, forward, pAttacker, bIgnoreSpread );
 }
@@ -2998,6 +2998,7 @@ void CFuncTankAirboatGun::Fire( int bulletCount, const Vector &barrelEnd, const 
 	info.m_vecDirShooting = forward;
 	info.m_flDistance = 4096;
 	info.m_iAmmoType = ammoType;
+	info.m_pAttacker = pAttacker;
 
 	if ( gpGlobals->curtime >= m_flNextHeavyShotTime )
 	{
@@ -4208,14 +4209,14 @@ void CFuncTankCombineCannon::FuncTankPostThink()
 {
 	AdjustRateOfFire();
 
-	if( m_hTarget.Get() == NULL )
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
+	if( m_hTarget.Get() == NULL && pPlayer )
 	{
 		if( gpGlobals->curtime > m_flTimeNextSweep )
 		{
 			AddSpawnFlags( SF_TANK_AIM_AT_POS );
 
 			Vector vecTargetPosition = GetTargetPosition();
-			CBasePlayer *pPlayer = AI_GetSinglePlayer();
 			Vector vecToPlayer = pPlayer->WorldSpaceCenter() - GetAbsOrigin();
 			vecToPlayer.NormalizeInPlace();
 

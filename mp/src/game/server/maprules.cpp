@@ -273,6 +273,7 @@ public:
 	inline	const char *MessageGet( void )	{ return STRING( m_iszMessage ); }
 
 	void InputDisplay( inputdata_t &inputdata );
+	void InputDisplayText( inputdata_t &inputdata );
 	void Display( CBaseEntity *pActivator );
 
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
@@ -287,6 +288,7 @@ private:
 };
 
 LINK_ENTITY_TO_CLASS( game_text, CGameText );
+LINK_ENTITY_TO_CLASS( game_text_quick, CGameText );
 
 // Save parms as a block.  Will break save/restore if the structure changes, but this entity didn't ship with Half-Life, so
 // it can't impact saved Half-Life games.
@@ -307,6 +309,7 @@ BEGIN_DATADESC( CGameText )
 
 	// Inputs
 	DEFINE_INPUTFUNC( FIELD_VOID, "Display", InputDisplay ),
+	DEFINE_INPUTFUNC( FIELD_STRING, "DisplayText", InputDisplayText ),
 
 END_DATADESC()
 
@@ -338,6 +341,11 @@ bool CGameText::KeyValue( const char *szKeyName, const char *szValue )
 	return true;
 }
 
+void CGameText::InputDisplayText( inputdata_t &inputdata )
+{
+	MessageSet( STRING(inputdata.value.StringID()) );
+	Display( inputdata.pActivator );
+}
 
 void CGameText::InputDisplay( inputdata_t &inputdata )
 {
@@ -590,6 +598,8 @@ public:
 private:
 
 	void		EquipPlayer( CBaseEntity *pPlayer );
+	void		EquipActivator( inputdata_t &inputData );
+	void		EquipAll( inputdata_t &inputData );
 
 	string_t	m_weaponNames[MAX_EQUIP];
 	int			m_weaponCount[MAX_EQUIP];
@@ -604,6 +614,8 @@ BEGIN_DATADESC( CGamePlayerEquip )
 
 	DEFINE_AUTO_ARRAY( m_weaponNames,		FIELD_STRING ),
 	DEFINE_AUTO_ARRAY( m_weaponCount,		FIELD_INTEGER ),
+	DEFINE_INPUTFUNC( FIELD_STRING, "EquipActivator", EquipActivator ),
+	DEFINE_INPUTFUNC( FIELD_STRING, "EquipAll", EquipAll ),
 
 END_DATADESC()
 
@@ -645,6 +657,49 @@ void CGamePlayerEquip::Touch( CBaseEntity *pOther )
 	EquipPlayer( pOther );
 }
 
+
+void CGamePlayerEquip::EquipActivator( inputdata_t &inputData )
+{
+	CBaseEntity *pActivator = inputData.pActivator;
+	if ( pActivator && pActivator->IsPlayer() )
+	{
+		if ((inputData.value.String() == NULL) || (inputData.value.StringID() == NULL_STRING) || (inputData.value.String()[0] == '\0')) {
+			EquipPlayer( pActivator );
+			return;
+		}
+
+		CBasePlayer *pPlayer = ToBasePlayer( pActivator );
+		if ( pPlayer )
+		{
+			CBaseEntity *equip = pPlayer->GiveNamedItem( inputData.value.String() );
+			if (equip && !equip->GetOwnerEntity())
+			{
+				equip->Remove();
+			}
+		}
+	}
+}
+
+void CGamePlayerEquip::EquipAll( inputdata_t &inputData )
+{
+	for ( int i=1; i<=gpGlobals->maxClients; i++ )
+	{
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
+		if ( pPlayer && pPlayer->IsConnected() && pPlayer->IsAlive() ) {
+			if ((inputData.value.String() == NULL) || (inputData.value.StringID() == NULL_STRING) || (inputData.value.String()[0] == '\0')) {
+				EquipPlayer( pPlayer );
+				continue;
+			}
+
+			CBaseEntity *equip = pPlayer->GiveNamedItem( inputData.value.String() );
+			if (equip && !equip->GetOwnerEntity())
+			{
+				equip->Remove();
+			}
+		}
+	}
+}
+
 void CGamePlayerEquip::EquipPlayer( CBaseEntity *pEntity )
 {
 	CBasePlayer *pPlayer = ToBasePlayer(pEntity);
@@ -658,7 +713,11 @@ void CGamePlayerEquip::EquipPlayer( CBaseEntity *pEntity )
 			break;
 		for ( int j = 0; j < m_weaponCount[i]; j++ )
 		{
- 			pPlayer->GiveNamedItem( STRING(m_weaponNames[i]) );
+ 			CBaseEntity *equip = pPlayer->GiveNamedItem( STRING(m_weaponNames[i]) );
+			if (equip && !equip->GetOwnerEntity())
+			{
+				equip->Remove();
+			}
 		}
 	}
 }

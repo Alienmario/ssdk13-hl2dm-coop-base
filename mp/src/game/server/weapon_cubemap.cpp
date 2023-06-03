@@ -5,24 +5,10 @@
 //=============================================================================//
 
 #include "cbase.h"
+#include "weapon_cubemap.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
-
-class CWeaponCubemap : public CBaseCombatWeapon
-{
-public:
-
-	DECLARE_CLASS( CWeaponCubemap, CBaseCombatWeapon );
-
-	void	Precache( void );
-
-	bool	HasAnyAmmo( void )	{ return true; }
-
-	void	Spawn( void );
-
-	DECLARE_SERVERCLASS();
-};
 
 LINK_ENTITY_TO_CLASS( weapon_cubemap, CWeaponCubemap );
 
