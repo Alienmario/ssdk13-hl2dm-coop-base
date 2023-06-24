@@ -21,8 +21,8 @@ echo:
 
 "%MSBUILD22%" game/server/server_sdk2013ce.vcxproj -p:Configuration=Release
 
-echo:
-echo Retry?
-echo:
-pause
-goto start
+@REM echo:
+@REM echo Retry?
+@REM echo:
+@REM pause
+@REM goto start

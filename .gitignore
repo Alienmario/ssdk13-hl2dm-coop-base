@@ -38,6 +38,7 @@ bld/
 
 # Visual Studio Code
 .vscode/
+*.code-workspace
 
 # OSX/Linux build products
 *.mak
