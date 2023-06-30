@@ -666,14 +666,15 @@ bool CAI_BaseNPC::PassesDamageFilter( const CTakeDamageInfo &info )
 	if ( ai_block_damage.GetBool() )
 		return false;
 
-	if( IsNPC() && info.GetAttacker() && info.GetAttacker()->IsPlayer() && IRelationType( info.GetAttacker() ) == D_LI ) {
+	if ( IsNPC() && info.GetAttacker() && info.GetAttacker()->IsPlayer() && IRelationType( info.GetAttacker() ) == D_LI )
+	{
 		if( !friendlyfire.GetInt() )
 			return false;
 		return true;
 	}
 	
 	// FIXME: hook a friendly damage filter to the npc instead?
-	if ( (CapabilitiesGet() & bits_CAP_FRIENDLY_DMG_IMMUNE) && info.GetAttacker() && info.GetAttacker() != this )
+	if ( (CapabilitiesGet() & bits_CAP_FRIENDLY_DMG_IMMUNE) && info.GetAttacker() && info.GetAttacker() != this && !info.GetAttacker()->IsPlayer())
 	{
 		// check attackers relationship with me
 		CBaseCombatCharacter *npcEnemy = info.GetAttacker()->MyCombatCharacterPointer();
@@ -690,12 +691,12 @@ bool CAI_BaseNPC::PassesDamageFilter( const CTakeDamageInfo &info )
 		{
 			m_fNoDamageDecal = true;
 
-			if ( npcEnemy && npcEnemy->IsPlayer() )
+			/* if ( npcEnemy && npcEnemy->IsPlayer() )
 			{
 				m_OnDamagedByPlayer.FireOutput( info.GetAttacker(), this );
 				// This also counts as being harmed by player's squad.
 				m_OnDamagedByPlayerSquad.FireOutput( info.GetAttacker(), this );
-			}
+			} */
 
 			return false;
 		}
@@ -705,7 +706,7 @@ bool CAI_BaseNPC::PassesDamageFilter( const CTakeDamageInfo &info )
 	{
 		m_fNoDamageDecal = true;
 		return false;
-	}
+	} 
 	return true;
 }
 
@@ -12547,7 +12548,7 @@ bool CAI_BaseNPC::IsPlayerAlly( CBasePlayer *pPlayer )
 		pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin());
 	}
 
-	return ( !pPlayer || IRelationType( pPlayer ) == D_LI ); 
+	return ( !pPlayer || IRelationType( pPlayer ) == D_LI );
 }
 
 //-----------------------------------------------------------------------------
