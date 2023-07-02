@@ -98,15 +98,15 @@ void ism::MovePlayers( inputdata_t &inputData )
 	m_OnFinish.FireOutput( inputData.pActivator, inputData.pCaller );
 }
 
-#define	FL_SAVERESTORE_CLIENT_NOTP (1<<0)
-#define	FL_SAVERESTORE_NPC_NOTP (1<<1)
-#define	FL_SAVERESTORE_NPC_NORESTORE (1<<2)
+// #define	FL_SAVERESTORE_CLIENT_NOTP (1<<0)
+// #define	FL_SAVERESTORE_NPC_NOTP (1<<1)
+// #define	FL_SAVERESTORE_NPC_NORESTORE (1<<2)
 
-extern void SaveClientState( CBasePlayer *pPlayer, int pFlags = NULL );
+// extern void SaveClientState( CBasePlayer *pPlayer, int pFlags = NULL );
 
 void ism::TpAllPlayer( const Vector newPosition, const QAngle newAngles  )
 {
-	SaveClientState( NULL, FL_SAVERESTORE_CLIENT_NOTP );
+	// SaveClientState( NULL, FL_SAVERESTORE_CLIENT_NOTP );
 	for( int i=1; i<=gpGlobals->maxClients; i++ )
 	{
 		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
@@ -119,5 +119,5 @@ void ism::TpAllPlayer( const Vector newPosition, const QAngle newAngles  )
 			pPlayer->Teleport( &newPosition, &newAngles, NULL );
 		}
 	}
-	engine->ServerCommand( "sm_savetp_clearpoint\n");
+	// engine->ServerCommand( "sm_savetp_clearpoint\n");
 }

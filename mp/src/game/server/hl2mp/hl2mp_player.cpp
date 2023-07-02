@@ -22,6 +22,7 @@
 #include "grenade_satchel.h"
 #include "eventqueue.h"
 #include "gamestats.h"
+#include "info_player_spawn.h"
 
 #include "engine/IEngineSound.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
@@ -41,8 +42,8 @@ void DropPrimedFragGrenade( CHL2MP_Player *pPlayer, CBaseCombatWeapon *pGrenade 
 
 LINK_ENTITY_TO_CLASS( player, CHL2MP_Player );
 
-LINK_ENTITY_TO_CLASS( info_player_combine, CPointEntity );
-LINK_ENTITY_TO_CLASS( info_player_rebel, CPointEntity );
+// LINK_ENTITY_TO_CLASS( info_player_combine, CPointEntity );
+// LINK_ENTITY_TO_CLASS( info_player_rebel, CPointEntity );
 
 IMPLEMENT_SERVERCLASS_ST(CHL2MP_Player, DT_HL2MP_Player)
 	SendPropAngle( SENDINFO_VECTORELEM(m_angEyeAngles, 0), 11, SPROP_CHANGES_OFTEN ),
@@ -827,14 +828,54 @@ void CHL2MP_Player::SetAnimation( PLAYER_ANIM playerAnim )
 
 		if (animDesired == -1)
 		{
-			animDesired = SelectWeightedSequence( idealActivity );
+			if ( idealActivity == ACT_HL2MP_IDLE )
+			{
+				animDesired = SelectWeightedSequence( ACT_IDLE );
+			}
+			else if ( idealActivity == ACT_HL2MP_WALK_CROUCH )
+			{
+				animDesired = SelectWeightedSequence( ACT_WALK );
+				if ( animDesired == -1 )
+				{
+					animDesired = SelectWeightedSequence( ACT_RUN );
+				}
+			}
+			else if ( idealActivity == ACT_HL2MP_RUN )
+			{
+				animDesired = SelectWeightedSequence( ACT_RUN );
+				if ( animDesired == -1 )
+				{
+					animDesired = SelectWeightedSequence( ACT_WALK );
+				}
+			}
+			else if ( idealActivity == ACT_HL2MP_JUMP )
+			{
+				animDesired = SelectWeightedSequence( ACT_JUMP );
+			}
 
 			if ( animDesired == -1 )
 			{
-				animDesired = 0;
+				animDesired = SelectWeightedSequence( idealActivity );
+			}
+
+			if ( animDesired == -1 )
+			{
+				// Use the physgun activities as absolutely last option
+				Activity defaultAct = ACT_INVALID;
+				if (idealActivity == ACT_HL2MP_GESTURE_RANGE_ATTACK) defaultAct = ACT_HL2MP_GESTURE_RANGE_ATTACK_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_GESTURE_RELOAD) defaultAct = ACT_HL2MP_GESTURE_RELOAD_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_IDLE) defaultAct = ACT_HL2MP_IDLE_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_IDLE_CROUCH) defaultAct = ACT_HL2MP_IDLE_CROUCH_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_JUMP) defaultAct = ACT_HL2MP_JUMP_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_RUN) defaultAct = ACT_HL2MP_RUN_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_WALK_CROUCH) defaultAct = ACT_HL2MP_WALK_CROUCH_PHYSGUN;
+				animDesired = SelectWeightedSequence( defaultAct );
 			}
 		}
-	
+
+		if (animDesired == -1)
+			animDesired = 0;
+		
 		// Already using the desired animation?
 		if ( GetSequence() == animDesired )
 			return;
@@ -849,7 +890,7 @@ void CHL2MP_Player::SetAnimation( PLAYER_ANIM playerAnim )
 	if ( GetSequence() == animDesired )
 		return;
 
-	//Msg( "Set animation to %d\n", animDesired );
+	// Msg( "Set animation to %d\n", animDesired );
 	// Reset to first frame of desired animation
 	ResetSequence( animDesired );
 	SetCycle( 0 );
@@ -1330,6 +1371,7 @@ void CHL2MP_Player::DeathSound( const CTakeDamageInfo &info )
 
 CBaseEntity* CHL2MP_Player::EntSelectSpawnPoint( void )
 {
+	/*
 	CBaseEntity *pSpot = NULL;
 	CBaseEntity *pLastSpawnPoint = g_pLastSpawn;
 	edict_t		*player = edict();
@@ -1405,6 +1447,94 @@ CBaseEntity* CHL2MP_Player::EntSelectSpawnPoint( void )
 		if ( pSpot )
 			goto ReturnSpot;
 	}
+
+ReturnSpot:
+
+	if ( HL2MPRules()->IsTeamplay() == true )
+	{
+		if ( GetTeamNumber() == TEAM_COMBINE )
+		{
+			g_pLastCombineSpawn = pSpot;
+		}
+		else if ( GetTeamNumber() == TEAM_REBELS ) 
+		{
+			g_pLastRebelSpawn = pSpot;
+		}
+	}
+
+	g_pLastSpawn = pSpot;
+
+	m_flSlamProtectTime = gpGlobals->curtime + 0.5;
+
+	return pSpot;
+	*/
+
+	CBaseEntity *pSpot = NULL;
+	const char *pSpawnpointName = NULL;
+
+	if( HL2MPRules()->IsTeamplay() == true )
+	{
+		if ( GetTeamNumber() == TEAM_COMBINE )
+			pSpawnpointName = "info_player_combine";
+		else if ( GetTeamNumber() == TEAM_REBELS )
+			pSpawnpointName = "info_player_rebel";
+	}
+
+	if (pSpawnpointName == NULL || gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+	{
+		pSpawnpointName = "info_player_deathmatch";
+		
+		if ( gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+		{
+			pSpawnpointName = "info_player_coop";
+
+			if ( gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+			{
+				pSpawnpointName = "info_player_start";
+				CBaseEntity *pEnt = NULL;
+				while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+				{
+					#define SF_PLAYER_START_MASTER	1
+					if ( pEnt->HasSpawnFlags( SF_PLAYER_START_MASTER ) )
+					{
+						pSpot = pEnt;
+						goto ReturnSpot;
+					}
+				}
+			}
+		}
+	}
+
+	int spawnCount = 0;
+	CBaseEntity *pEnt = NULL;
+	while( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+	{
+		CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
+		if ( pSpawn && pSpawn->m_iDisabled == FALSE )
+		{
+			spawnCount++;
+		}
+	}
+
+	int rndspawn = random->RandomInt( 1, spawnCount );
+	spawnCount = 0;
+	pEnt = NULL;
+	while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+	{
+		CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
+		if ( pSpawn && pSpawn->m_iDisabled == FALSE )
+		{
+			spawnCount++;
+			if ( spawnCount == rndspawn )
+			{
+				pSpot = pEnt;
+				goto ReturnSpot;
+			}
+		}
+	}
+
+	pSpot = CBaseEntity::Instance(INDEXENT(0));
+	goto ReturnSpot;
 
 ReturnSpot:
 

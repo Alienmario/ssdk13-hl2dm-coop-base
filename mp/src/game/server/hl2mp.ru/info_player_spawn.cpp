@@ -1,8 +1,6 @@
 #include "cbase.h"
 #include "info_player_spawn.h"
 
-LINK_ENTITY_TO_CLASS( info_player_transation, CBaseEntity );
-
 LINK_ENTITY_TO_CLASS( info_player_coop, CSpawnPoint );
 LINK_ENTITY_TO_CLASS( info_player_deathmatch, CSpawnPoint );
 LINK_ENTITY_TO_CLASS( info_player_start, CSpawnPoint );
@@ -16,15 +14,15 @@ BEGIN_DATADESC( CSpawnPoint )
 	DEFINE_INPUTFUNC( FIELD_VOID, "Disable", InputDisable ),
 END_DATADESC()
 
-#define	FL_SAVERESTORE_CLIENT_NOTP (1<<0)
-#define	FL_SAVERESTORE_NPC_NOTP (1<<1)
-#define	FL_SAVERESTORE_NPC_NORESTORE (1<<2)
+// #define	FL_SAVERESTORE_CLIENT_NOTP (1<<0)
+// #define	FL_SAVERESTORE_NPC_NOTP (1<<1)
+// #define	FL_SAVERESTORE_NPC_NORESTORE (1<<2)
 
-extern void SaveClientState( CBasePlayer *pPlayer, int pFlags = NULL );
+// extern void SaveClientState( CBasePlayer *pPlayer, int pFlags = NULL );
 
 void CSpawnPoint::InputEnable( inputdata_t &inputdata )
 {
-	SaveClientState( NULL, FL_SAVERESTORE_CLIENT_NOTP );
+	// SaveClientState( NULL, FL_SAVERESTORE_CLIENT_NOTP );
 
 	m_iDisabled = FALSE;
 
