@@ -876,9 +876,13 @@ void CHL2MP_Player::SetAnimation( PLAYER_ANIM playerAnim )
 
 		if (GetMoveType() == MOVETYPE_NOCLIP)
 		{
-			int noclipSeq = SelectWeightedSequence( Activity(ActivityList_IndexForName("ACT_GMOD_NOCLIP_LAYER")) );
-			if (noclipSeq != -1)
-				animDesired = noclipSeq;
+			Activity gmodNoclipActivity = Activity(ActivityList_IndexForName("ACT_GMOD_NOCLIP_LAYER"));
+			if (gmodNoclipActivity != ACT_INVALID)
+			{
+				int noclipSeq = SelectWeightedSequence(gmodNoclipActivity);
+				if (noclipSeq != -1)
+					animDesired = noclipSeq;
+			}
 		}
 
 		if (animDesired == -1)
