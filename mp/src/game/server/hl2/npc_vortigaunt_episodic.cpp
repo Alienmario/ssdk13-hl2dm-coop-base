@@ -631,7 +631,7 @@ int CNPC_Vortigaunt::RangeAttack1Conditions( float flDot, float flDist )
 		return( COND_NOT_FACING_ATTACK );
 	}
 
-#ifdef HL2_EPISODIC
+// #ifdef HL2_EPISODIC
 
 	// Do an extra check for workers near myself or the player
 	if ( IsAntlionWorker( GetEnemy() ) )
@@ -640,7 +640,7 @@ int CNPC_Vortigaunt::RangeAttack1Conditions( float flDot, float flDist )
 		if ( ( GetAbsOrigin() - GetEnemy()->GetAbsOrigin() ).LengthSqr() < Square( AntlionWorkerBurstRadius() ) )
 			return COND_TOO_CLOSE_TO_ATTACK;
 
-		CBasePlayer *pPlayer = AI_GetSinglePlayer();
+		CBasePlayer *pPlayer = UTIL_GetNearestPlayer(GetEnemy()->GetAbsOrigin());
 		if ( pPlayer && ( pPlayer->GetAbsOrigin() - GetEnemy()->GetAbsOrigin() ).LengthSqr() < Square( AntlionWorkerBurstRadius() ) )
 		{
 			// Warn the player to get away!
@@ -650,7 +650,7 @@ int CNPC_Vortigaunt::RangeAttack1Conditions( float flDot, float flDist )
 		}
 	}
 
-#endif // HL2_EPISODIC
+// #endif // HL2_EPISODIC
 
 	return COND_CAN_RANGE_ATTACK1;
 }
@@ -2106,7 +2106,7 @@ void CNPC_Vortigaunt::ZapBeam( int nHand )
 	}
 	else
 	{
-		AI_TraceLine( vecSrc, vecSrc + ( vecAim * InnateRange1MaxRange() ), MASK_SHOT, this, COLLISION_GROUP_NONE, &tr);
+		AI_TraceLine( vecSrc, vecSrc + ( vecAim * InnateRange1MaxRange() ), MASK_SHOT & ~CONTENTS_HITBOX, this, COLLISION_GROUP_PROJECTILE, &tr);
 	}
 
 	if ( g_debug_vortigaunt_aim.GetBool() )
@@ -2158,7 +2158,6 @@ void CNPC_Vortigaunt::ZapBeam( int nHand )
 		// Send the damage to the recipient
 		pEntity->DispatchTraceAttack( dmgInfo, vecAim, &tr );
 	}
-
 	// Create a cover for the end of the beam
 	CreateBeamBlast( tr.endpos );
 }
@@ -2346,7 +2345,7 @@ Disposition_t CNPC_Vortigaunt::IRelationType( CBaseEntity *pTarget )
 bool CNPC_Vortigaunt::HealGestureHasLOS( void )
 {
 	//For now the player is always our target
-	CBasePlayer *pTargetEnt = UTIL_GetNearestPlayer( GetAbsOrigin() );
+	CBasePlayer *pTargetEnt = UTIL_GetNearestVisiblePlayer( this );
 	if ( pTargetEnt == NULL )
 		return false;
 
