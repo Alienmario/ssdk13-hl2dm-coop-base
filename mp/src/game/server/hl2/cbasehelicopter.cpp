@@ -1139,12 +1139,12 @@ void CBaseHelicopter::StopRotorWash( void )
 //-----------------------------------------------------------------------------
 void CBaseHelicopter::DelayedKillThink( )
 {
-	// tell owner ( if any ) that we're dead.This is mostly for NPCMaker functionality.
-	CBaseEntity *pOwner = GetOwnerEntity();
-	if ( pOwner )
+	// tell the NPCMaker that we're dead.
+	CBaseEntity *pMaker = m_hMakerEntity.Get();
+	if ( pMaker )
 	{
-		pOwner->DeathNotice( this );
-		SetOwnerEntity( NULL );
+		pMaker->DeathNotice( this );
+		m_hMakerEntity = NULL;
 	}
 
 	UTIL_Remove( this );

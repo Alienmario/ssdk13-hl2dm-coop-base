@@ -451,7 +451,7 @@ void CNPCMaker::MakeNPC( void )
 	ChildPreSpawn( pent );
 
 	DispatchSpawn( pent );
-	pent->SetOwnerEntity( this );
+	pent->m_hMakerEntity = this;
 	DispatchActivate( pent );
 
 	if ( m_ChildTargetName != NULL_STRING )
@@ -847,7 +847,7 @@ void CTemplateNPCMaker::MakeNPC( void )
 	ChildPreSpawn( pent );
 
 	DispatchSpawn( pent );
-	pent->SetOwnerEntity( this );
+	pent->m_hMakerEntity = this;
 	DispatchActivate( pent );
 
 	ChildPostSpawn( pent );
@@ -900,7 +900,7 @@ void CTemplateNPCMaker::MakeNPCInLine( void )
 	ChildPreSpawn( pent );
 
 	DispatchSpawn( pent );
-	pent->SetOwnerEntity( this );
+	pent->m_hMakerEntity = this;
 	DispatchActivate( pent );
 
 	ChildPostSpawn( pent );
@@ -1005,7 +1005,7 @@ void CTemplateNPCMaker::MakeNPCInRadius( void )
 
 	DispatchSpawn( pent );
 
-	pent->SetOwnerEntity( this );
+	pent->m_hMakerEntity = this;
 	DispatchActivate( pent );
 
 	ChildPostSpawn( pent );

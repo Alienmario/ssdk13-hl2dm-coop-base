@@ -1674,12 +1674,12 @@ void CNPC_Antlion::StartTask( const Task_t *pTask )
 		// If the task parameter is non-zero, remove us when we vanish
 		if ( pTask->flTaskData )
 		{
-			CBaseEntity *pOwner = GetOwnerEntity();
-			
-			if( pOwner != NULL )
+			// tell the NPCMaker that we're dead.
+			CBaseEntity *pMaker = m_hMakerEntity.Get();
+			if ( pMaker )
 			{
-				pOwner->DeathNotice( this );
-				SetOwnerEntity( NULL );
+				pMaker->DeathNotice( this );
+				m_hMakerEntity = NULL;
 			}
 
 			// NOTE: We can't UTIL_Remove here, because we're in the middle of running our AI, and

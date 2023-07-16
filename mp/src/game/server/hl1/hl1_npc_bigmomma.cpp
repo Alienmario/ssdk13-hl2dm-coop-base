@@ -976,11 +976,10 @@ void CNPC_BigMomma::HandleAnimEvent( animevent_t *pEvent )
 
 void CNPC_BigMomma::LayHeadcrab( void )
 {
-	CBaseEntity *pChild = CBaseEntity::Create( BIG_CHILDCLASS, GetAbsOrigin(), GetAbsAngles(), this );
+	CBaseCombatCharacter *pChild = ToBaseCombatCharacter( CBaseEntity::Create( BIG_CHILDCLASS, GetAbsOrigin(), GetAbsAngles(), this ) );
 
 	pChild->AddSpawnFlags( SF_NPC_FALL_TO_GROUND );
-
-	pChild->SetOwnerEntity( this );
+	pChild->m_hMakerEntity = this;
 
 	// Is this the second crab in a pair?
 	if ( HasMemory( bits_MEMORY_CHILDPAIR ) )

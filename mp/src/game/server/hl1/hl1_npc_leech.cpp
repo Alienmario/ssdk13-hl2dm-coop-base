@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -681,10 +681,13 @@ void CNPC_Leech::Event_Killed( const CTakeDamageInfo &info )
 	trace_t			tr;
 
 	//ALERT(at_aiconsole, "Leech: killed\n");
-	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
-	CBaseEntity *pOwner = GetOwnerEntity();
-	if (pOwner)
-		pOwner->DeathNotice( this );
+	// tell the NPCMaker that we're dead.
+	CBaseEntity *pMaker = m_hMakerEntity.Get();
+	if ( pMaker )
+	{
+		pMaker->DeathNotice( this );
+		m_hMakerEntity = NULL;
+	}
 
 	// When we hit the ground, play the "death_end" activity
 	if ( GetWaterLevel() )

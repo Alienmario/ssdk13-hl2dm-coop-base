@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: An entity that creates NPCs in the game. 
 //
@@ -254,7 +254,7 @@ void CNPCMaker::MakeNPC( void )
 
 
 	DispatchSpawn( pent );
-	pent->SetOwnerEntity( this );
+	pent->m_hMakerEntity = this;
 
 	m_cLiveChildren++;// count this NPC
 
