@@ -291,7 +291,7 @@ void CHL2MPRules::PlayerKilled( CBasePlayer *pVictim, const CTakeDamageInfo &inf
 }
 
 
-ConVar sv_edict_overflow_mapchange("sv_edict_overflow_mapchange", "1", 0, "", true, 0.0, true, 1.0);
+ConVar sv_edict_overflow_mapchange("sv_edict_overflow_mapchange", "1", 0, "Change map when near edict limit", true, 0.0, true, 1.0);
 
 void CHL2MPRules::Think( void )
 {
@@ -792,11 +792,12 @@ void CHL2MPRules::ClientSettingsChanged( CBasePlayer *pPlayer )
 {
 #ifndef CLIENT_DLL
 	
+	
 	CHL2MP_Player *pHL2Player = ToHL2MPPlayer( pPlayer );
 
 	if ( pHL2Player == NULL )
 		return;
-
+	/*
 	const char *pCurrentModel = modelinfo->GetModelName( pPlayer->GetModel() );
 	const char *szModelName = engine->GetClientConVarValue( engine->IndexOfEdict( pPlayer->edict() ), "cl_playermodel" );
 
@@ -840,7 +841,7 @@ void CHL2MPRules::ClientSettingsChanged( CBasePlayer *pPlayer )
 				pHL2Player->ChangeTeam( TEAM_COMBINE );
 			}
 		}
-	}
+	} */
 	if ( sv_report_client_settings.GetInt() == 1 )
 	{
 		UTIL_LogPrintf( "\"%s\" cl_cmdrate = \"%s\"\n", pHL2Player->GetPlayerName(), engine->GetClientConVarValue( pHL2Player->entindex(), "cl_cmdrate" ));
@@ -1089,7 +1090,7 @@ CAmmoDef *GetAmmoDef()
 		//		def.AddAmmoType("Hopwire",			DMG_BLAST,					TRACER_NONE,			"sk_plr_dmg_grenade",		"sk_npc_dmg_grenade",		"sk_max_hopwire",		0, 0);
 		def.AddAmmoType("CombineHeavyCannon", DMG_BULLET, TRACER_LINE, 40, 40, NULL, 10 * 750 * 12, AMMO_FORCE_DROP_IF_CARRIED); // hit like a 10 kg weight at 750 ft/s
 		def.AddAmmoType("ammo_proto1", DMG_BULLET, TRACER_LINE, 0, 0, 10, 0, 0);
-		def.AddAmmoType("FlareRound", DMG_BURN, TRACER_LINE, "sk_plr_dmg_flare_round", "sk_npc_dmg_flare_round", "sk_max_flare_round", BULLET_IMPULSE(1500, 600), 0);
+		//def.AddAmmoType("FlareRound", DMG_BURN, TRACER_LINE, "sk_plr_dmg_flare_round", "sk_npc_dmg_flare_round", "sk_max_flare_round", BULLET_IMPULSE(1500, 600), 0);
 		def.AddAmmoType("Manhack", DMG_CLUB, TRACER_NONE, 0, 0, 5, BULLET_IMPULSE(1500, 600), 0);
 		def.AddAmmoType("FlechetteRound", DMG_CLUB, TRACER_NONE, 0, 0, "sk_max_flechette_round", BULLET_IMPULSE(1500, 600), 0);
 		def.AddAmmoType("Hornet", DMG_BULLET, TRACER_NONE, 25, 25, 8, BULLET_IMPULSE(100, 1200), 0);
@@ -1436,8 +1437,13 @@ const char *CHL2MPRules::GetChatFormat( bool bTeamOnly, CBasePlayer *pPlayer )
 	return pszFormat;
 }
 
+ConVar sv_init_default_relationships("sv_init_default_relationships", "1", 0, "Init default AI relationships?", true, 0.0, true, 1.0);
+
 void CHL2MPRules::InitDefaultAIRelationships(void)
 {
+	if ( !sv_init_default_relationships.GetBool() )
+		return;
+
 	int i, j;
 
 	//  Allocate memory for default relationships
