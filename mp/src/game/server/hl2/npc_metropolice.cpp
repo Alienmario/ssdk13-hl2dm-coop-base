@@ -392,7 +392,7 @@ public:
 CBaseEntity *CNPC_MetroPolice::CheckTraceHullAttack( const Vector &vStart, const Vector &vEnd, const Vector &mins, const Vector &maxs, int iDamage, int iDmgType, float flForceScale, bool bDamageAnyNPC )
 {
 
-	CTakeDamageInfo	dmgInfo( this, this, iDamage, DMG_SLASH );
+	CTakeDamageInfo	dmgInfo( GetActiveWeapon(), this, iDamage, DMG_SLASH );
 	
 	CTraceFilterMetroPolice traceFilter( this, COLLISION_GROUP_NONE, &dmgInfo, flForceScale, bDamageAnyNPC );
 

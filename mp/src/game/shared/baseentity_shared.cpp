@@ -1899,7 +1899,13 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 			if ( !bHitWater || ((info.m_nFlags & FIRE_BULLETS_DONT_HIT_UNDERWATER) == 0) )
 			{
 				// Damage specified by function parameter
-				CTakeDamageInfo dmgInfo( this, pAttacker, flActualDamage, nActualDamageType );
+				CBaseEntity *pInflictor = pAttacker;
+				CBaseCombatCharacter *pCombatCharacter = pAttacker->MyCombatCharacterPointer();
+				if ( pCombatCharacter && pCombatCharacter->GetActiveWeapon() )
+				{
+					pInflictor = pCombatCharacter->GetActiveWeapon();
+				}
+				CTakeDamageInfo dmgInfo( pInflictor, pAttacker, flActualDamage, nActualDamageType );
 				ModifyFireBulletsDamage( &dmgInfo );
 				CalculateBulletDamageForce( &dmgInfo, info.m_iAmmoType, vecDir, tr.endpos );
 				dmgInfo.ScaleDamageForce( info.m_flDamageForceScale );
