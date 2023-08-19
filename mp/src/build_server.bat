@@ -1,6 +1,6 @@
 @echo off
 title REL SOURCESDK SERVER COMPILE
-
+SETLOCAL
 :start
 cls
 
@@ -13,16 +13,23 @@ IF "%MSBUILD22%"=="" (
 	pause && exit
 )
 
+set config=%1
+IF "%config%"=="" (
+	set config=Release
+)
+
 devtools\bin\vpc.exe /2013 /sdk2013ce +dedicated
 
 echo:
-echo ----------------- BUILD START -----------------
+echo ----------------- BUILD START (%config%) -----------------
 echo:
 
-"%MSBUILD22%" game/server/server_sdk2013ce.vcxproj -p:Configuration=Release
+"%MSBUILD22%" game/server/server_sdk2013ce.vcxproj -p:Configuration=%config%
 
-@REM echo:
-@REM echo Retry?
-@REM echo:
-@REM pause
-@REM goto start
+IF NOT "%2%"=="noretry" (
+	echo:
+	echo Retry?
+	echo:
+	pause
+	goto start
+)
