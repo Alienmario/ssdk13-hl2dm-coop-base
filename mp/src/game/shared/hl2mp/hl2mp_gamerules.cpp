@@ -1441,9 +1441,6 @@ ConVar sv_init_default_relationships("sv_init_default_relationships", "1", 0, "I
 
 void CHL2MPRules::InitDefaultAIRelationships(void)
 {
-	if ( !sv_init_default_relationships.GetBool() )
-		return;
-
 	int i, j;
 
 	//  Allocate memory for default relationships
@@ -1461,6 +1458,9 @@ void CHL2MPRules::InitDefaultAIRelationships(void)
 		}
 	}
 
+	if ( !sv_init_default_relationships.GetBool() )
+		return;
+	
 	// ------------------------------------------------------------
 	//	> CLASS_ANTLION
 	// ------------------------------------------------------------
