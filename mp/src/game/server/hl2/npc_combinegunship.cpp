@@ -73,6 +73,8 @@ ConVar sk_gunship_burst_dist("sk_gunship_burst_dist", "768" );
 // Number of times the gunship must be struck by explosive damage
 ConVar	sk_gunship_health_increments( "sk_gunship_health_increments", "0" );
 
+ConVar	sk_gunship_episodic( "sk_gunship_episodic", "0" );
+
 /*
 
 Wedge's notes:
@@ -223,7 +225,7 @@ public:
 	DECLARE_SERVERCLASS();
 	DEFINE_CUSTOM_AI;
 
-	bool	ShouldUseFixedPatrolLogic() { return true; }
+	bool	ShouldUseFixedPatrolLogic() { return sk_gunship_episodic.GetBool(); }
 	void	PlayPatrolLoop( void );
 	void	PlayAngryLoop( void );
 
