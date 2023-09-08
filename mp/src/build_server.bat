@@ -1,5 +1,5 @@
 @echo off
-title REL SOURCESDK SERVER COMPILE
+title SOURCESDK SERVER COMPILE
 SETLOCAL
 :start
 cls
