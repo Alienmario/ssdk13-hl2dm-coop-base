@@ -1475,6 +1475,8 @@ ReturnSpot:
 
 	CBaseEntity *pSpot = NULL;
 	const char *pSpawnpointName = NULL;
+	int spawnCount = 0;
+	CBaseEntity *pEnt = NULL;
 
 	if( HL2MPRules()->IsTeamplay() == true )
 	{
@@ -1495,7 +1497,6 @@ ReturnSpot:
 			if ( gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
 			{
 				pSpawnpointName = "info_player_start";
-				CBaseEntity *pEnt = NULL;
 				while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
 				{
 					#define SF_PLAYER_START_MASTER	1
@@ -1509,9 +1510,8 @@ ReturnSpot:
 		}
 	}
 
-	int spawnCount = 0;
-	CBaseEntity *pEnt = NULL;
-	while( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+	pEnt = NULL;
+	while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
 	{
 		CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
 		if ( pSpawn && pSpawn->m_iDisabled == FALSE )
@@ -1520,19 +1520,21 @@ ReturnSpot:
 		}
 	}
 
-	int rndspawn = random->RandomInt( 1, spawnCount );
-	spawnCount = 0;
-	pEnt = NULL;
-	while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
 	{
-		CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
-		if ( pSpawn && pSpawn->m_iDisabled == FALSE )
+		int rndspawn = random->RandomInt( 1, spawnCount );
+		spawnCount = 0;
+		pEnt = NULL;
+		while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
 		{
-			spawnCount++;
-			if ( spawnCount == rndspawn )
+			CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
+			if ( pSpawn && pSpawn->m_iDisabled == FALSE )
 			{
-				pSpot = pEnt;
-				goto ReturnSpot;
+				spawnCount++;
+				if ( spawnCount == rndspawn )
+				{
+					pSpot = pEnt;
+					goto ReturnSpot;
+				}
 			}
 		}
 	}
@@ -1542,7 +1544,7 @@ ReturnSpot:
 
 ReturnSpot:
 
-	if ( HL2MPRules()->IsTeamplay() == true )
+	if ( HL2MPRules()->IsTeamplay() )
 	{
 		if ( GetTeamNumber() == TEAM_COMBINE )
 		{
@@ -1555,9 +1557,7 @@ ReturnSpot:
 	}
 
 	g_pLastSpawn = pSpot;
-
 	m_flSlamProtectTime = gpGlobals->curtime + 0.5;
-
 	return pSpot;
 } 
 

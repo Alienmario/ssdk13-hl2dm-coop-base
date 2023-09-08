@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo -e "\n----------------- VPC START -----------------\n"
+
+pushd `dirname $0`
+devtools/bin/vpc /2013 /sdk2013ce +dedicated
+popd
+
+echo -e "\n----------------- BUILD START -----------------\n"
+
+cd game/server
+make -f server_linux32_sdk2013ce.mak
