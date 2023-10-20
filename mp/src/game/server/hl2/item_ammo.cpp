@@ -775,18 +775,18 @@ END_DATADESC()
 // Models names
 const char *CItem_AmmoCrate::m_lpzModelNames[NUM_AMMO_CRATE_TYPES] =
 {
-	"models/items/ammocrate_pistol.mdl",	// Small rounds
+	"models/items/ammocrate_smg1.mdl",      // Small rounds // (Missing model) "models/items/ammocrate_pistol.mdl"
 	"models/items/ammocrate_smg1.mdl",		// Medium rounds
 	"models/items/ammocrate_ar2.mdl",		// Large rounds
 	"models/items/ammocrate_rockets.mdl",	// RPG rounds
-	"models/items/ammocrate_buckshot.mdl",	// Buckshot
+	"models/items/ammocrate_smg1.mdl",	    // Buckshot // (Missing model) "models/items/ammocrate_buckshot.mdl"
 	"models/items/ammocrate_grenade.mdl",	// Grenades
 	"models/items/ammocrate_smg1.mdl",		// 357
 	"models/items/ammocrate_smg1.mdl",	// Crossbow
 	
 	//FIXME: This model is incorrect!
 	"models/items/ammocrate_ar2.mdl",		// Combine Ball 
-	"models/items/ammocrate_smg2.mdl",	    // smg grenade
+	"models/items/ammocrate_smg1.mdl",	    // smg grenade // (Missing model) "models/items/ammocrate_smg2.mdl"
 };
 
 // Ammo type names
