@@ -574,7 +574,7 @@ void CMissile::SeekThink( void )
 		}
 	}
 
-	if( hl2_episodic.GetBool() )
+	/// if( hl2_episodic.GetBool() )
 	{
 		if( flBestDist <= ( GetAbsVelocity().Length() * 2.5f ) && FVisible( pBestDot->GetAbsOrigin() ) )
 		{
@@ -640,7 +640,7 @@ void CMissile::SeekThink( void )
 	VectorSubtract( targetPos, GetAbsOrigin(), vTargetDir );
 	float flDist = VectorNormalize( vTargetDir );
 
-	if( pLaserDot->GetTargetEntity() != NULL && flDist <= 240.0f && hl2_episodic.GetBool() )
+	if( pLaserDot->GetTargetEntity() != NULL && flDist <= 240.0f /* && hl2_episodic.GetBool() */ )
 	{
 		// Prevent the missile circling the Strider like a Halo in ep1_c17_06. If the missile gets within 20
 		// feet of a Strider, tighten up the turn speed of the missile so it can break the halo and strike. (sjb 4/27/2006)
