@@ -652,7 +652,7 @@ void CNPC_Strider::PostNPCInit()
 		RemoveFlag( FL_FLY );
 	}
 
-	m_PlayerFreePass.SetPassTarget( UTIL_GetNearestPlayer(GetAbsOrigin()) );
+	// m_PlayerFreePass.SetPassTarget( UTIL_GetNearestPlayer(GetAbsOrigin()) );
 	
 	AI_FreePassParams_t freePassParams = 
 	{
@@ -4095,7 +4095,7 @@ void CNPC_Strider::CannonHitThink()
 
 		// If the target was alive, check to make sure it is now dead. If not,
 		// Kill it and warn the designer.
-		if( fAlive && pCannonTarget->IsAlive() )
+		if( fAlive && pCannonTarget->IsAlive() && !pCannonTarget->IsPlayer() )
 		{
 			DevWarning("* * * * * * * * * * * * * * *\n");
 			DevWarning("NASTYGRAM: STRIDER failed to kill its cannon target. Killing directly...\n");
@@ -4111,8 +4111,11 @@ void CNPC_Strider::CannonHitThink()
 			pCannonTarget->TakeDamage( info );
 		}
 		
-		// Clear this guy now that we've shot him
-		m_hCannonTarget = NULL;
+		if ( !pCannonTarget->IsAlive() )
+		{
+			// Clear this guy now that we've shot him
+			m_hCannonTarget = NULL;
+		}
 	}
 
 	// Allow the cannon back on.
