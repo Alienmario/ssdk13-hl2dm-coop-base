@@ -1921,6 +1921,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				{
 					if ( bDoServerEffects == true )
 					{
+						IPredictionSystem::SuppressHostEvents(NULL);
 						DoImpactEffect( tr, nDamageType );
 					}
 					else
@@ -1983,6 +1984,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				}
 #endif //#ifdef PORTAL
 
+				IPredictionSystem::SuppressHostEvents(NULL);
 				MakeTracer( vecTracerSrc, Tracer, pAmmoDef->TracerType(info.m_iAmmoType) );
 
 #ifdef PORTAL
