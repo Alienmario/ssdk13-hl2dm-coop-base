@@ -19,9 +19,6 @@
 // For vec_t, put this somewhere else?
 #include "basetypes.h"
 
-// For rand(). We really need a library!
-#include <stdlib.h>
-
 #include "tier0/dbg.h"
 #include "mathlib/vector.h"
 

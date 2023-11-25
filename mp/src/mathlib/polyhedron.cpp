@@ -10,6 +10,7 @@
 #include "mathlib/vmatrix.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "vstdlib/random.h"
 #include "tier1/utlvector.h"
 
 
@@ -2219,7 +2220,7 @@ void DumpPolyhedronToGLView( const CPolyhedron *pPolyhedron, const char *pFilena
 	int counter;
 	for( counter = 0; counter != pPolyhedron->iVertexCount; ++counter )
 	{
-		pColors[counter].Init( rand()/32768.0f, rand()/32768.0f, rand()/32768.0f );
+		pColors[counter].Init( RandomInt(0, VALVE_RAND_MAX)/32768.0f, RandomInt(0, VALVE_RAND_MAX)/32768.0f, RandomInt(0, VALVE_RAND_MAX)/32768.0f );
 	}
 
 	Vector *pTransformedPoints = (Vector *)stackalloc( pPolyhedron->iVertexCount * sizeof( Vector ) );
