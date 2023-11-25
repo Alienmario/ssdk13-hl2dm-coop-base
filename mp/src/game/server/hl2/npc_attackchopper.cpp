@@ -545,7 +545,7 @@ private:
 	float GetMaxFiringDistance();
 
 	// Make sure we don't hit too many times
-	void FireBullets( const FireBulletsInfo_t &info );
+	void FireBullets( FireBulletsInfo_t &info );
 
 	// Is it "fair" to drop this bomb?
 	bool IsBombDropFair( const Vector &vecBombStartPos, const Vector &vecVelocity );
@@ -1954,8 +1954,10 @@ void CNPC_AttackHelicopter::AimCloseToTargetButMiss( CBaseEntity *pTarget, float
 //-----------------------------------------------------------------------------
 // Make sure we don't hit too many times
 //-----------------------------------------------------------------------------
-void CNPC_AttackHelicopter::FireBullets( const FireBulletsInfo_t &info )
+void CNPC_AttackHelicopter::FireBullets( FireBulletsInfo_t &info )
 {
+	info.m_vecDirShooting = GetShootEnemyDir(info.m_vecSrc, true);
+
 	// Use this to count the number of hits in a burst
 	bool bIsPlayer = GetEnemy() && GetEnemy()->IsPlayer();
 	if ( !bIsPlayer )
@@ -1969,7 +1971,8 @@ void CNPC_AttackHelicopter::FireBullets( const FireBulletsInfo_t &info )
 		if ( m_nBurstHits >= m_nMaxBurstHits )
 		{
 			FireBulletsInfo_t actualInfo = info;
-			actualInfo.m_pAdditionalIgnoreEnt = GetEnemy();
+			// actualInfo.m_pAdditionalIgnoreEnt = GetEnemy();
+			actualInfo.m_iPlayerDamage = 0;
 			BaseClass::FireBullets( actualInfo );
 			return;
 		}
@@ -3908,7 +3911,7 @@ void CNPC_AttackHelicopter::ComputeVelocity( const Vector &vecTargetPosition,
 	pVecAccel->z = 2.0f * (deltaPos.z - GetAbsVelocity().z * dt) / (dt * dt) + HELICOPTER_GRAVITY;
 
 	float flDistFromPath = 0.0f;
-	Vector vecPoint, vecDelta;
+	Vector vecPoint, vecDelta = vec3_origin;
 	if ( flMaxDistFromSegment != 0.0f )
 	{
 		// Also, add in a little force to get us closer to our current line segment if we can
