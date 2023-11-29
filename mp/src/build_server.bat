@@ -24,6 +24,9 @@ echo:
 echo ----------------- BUILD START (%config%) -----------------
 echo:
 
+: "%MSBUILD22%" raytrace/raytrace.vcxproj -p:Configuration=%config%
+: "%MSBUILD22%" tier1/tier1.vcxproj -p:Configuration=%config%
+: "%MSBUILD22%" mathlib/mathlib.vcxproj -p:Configuration=%config%
 "%MSBUILD22%" game/server/server_sdk2013ce.vcxproj -p:Configuration=%config%
 
 IF NOT "%2%"=="noretry" (
