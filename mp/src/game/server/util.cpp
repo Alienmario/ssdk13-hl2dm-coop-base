@@ -1356,10 +1356,12 @@ void UTIL_SetSize( CBaseEntity *pEnt, const Vector &vecMin, const Vector &vecMax
 //-----------------------------------------------------------------------------
 // Sets the model to be associated with an entity
 //-----------------------------------------------------------------------------
+ConVar sv_use_hl2_models( "sv_use_hl2_models", "1", 0, "Replaces all character models with the ones in hl2 subfolder." );
+
 void UTIL_SetModel( CBaseEntity *pEntity, const char *pModelName )
 {
 	// ToDo Move to specific classes
-	if ( !pEntity->IsPlayer() )
+	if ( !pEntity->IsPlayer() && sv_use_hl2_models.GetBool() )
 	{
 		const char *newModel = NULL;
 		if (FClassnameIs(pEntity, "npc_combine_s")) {
