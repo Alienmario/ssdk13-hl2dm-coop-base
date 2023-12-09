@@ -713,7 +713,6 @@ void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, flo
 		}
 	}
 
-	IPredictionSystem::SuppressHostEvents( NULL );
 	CRecipientFilter filter;
 	filter.AddRecipientsByPAS( vecOrigin );
 
