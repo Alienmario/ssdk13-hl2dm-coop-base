@@ -1610,9 +1610,8 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 	
 	bool bDoServerEffects = true;
 
-#if defined( HL2MP ) && defined( GAME_DLL )
-	bDoServerEffects = false;
-#endif
+	if( IsPlayer() )
+		bDoServerEffects = false;
 
 #if defined( GAME_DLL )
 	if( IsPlayer() )
@@ -1921,6 +1920,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				{
 					if ( bDoServerEffects == true )
 					{
+						IPredictionSystem::SuppressHostEvents(NULL);
 						DoImpactEffect( tr, nDamageType );
 					}
 					else
@@ -1983,6 +1983,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				}
 #endif //#ifdef PORTAL
 
+				IPredictionSystem::SuppressHostEvents(NULL);
 				MakeTracer( vecTracerSrc, Tracer, pAmmoDef->TracerType(info.m_iAmmoType) );
 
 #ifdef PORTAL
