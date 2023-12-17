@@ -1009,6 +1009,14 @@ void CHL2MP_Player::ChangeTeam( int iTeam )
 
 bool CHL2MP_Player::HandleCommand_JoinTeam( int team )
 {
+	if ( team == TEAM_SPECTATOR && IsHLTV() )
+	{
+		ChangeTeam( TEAM_SPECTATOR );
+		ResetDeathCount();
+		ResetFragCount();
+		return true;
+	}
+	
 	if ( !GetGlobalTeam( team ) || team == 0 )
 	{
 		Warning( "HandleCommand_JoinTeam( %d ) - invalid team index.\n", team );
