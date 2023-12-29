@@ -856,7 +856,7 @@ void CPlayerPickupController::Use( CBaseEntity *pActivator, CBaseEntity *pCaller
 		
 		//Adrian: Oops, our object became motion disabled, let go!
 		IPhysicsObject *pPhys = pAttached->VPhysicsGetObject();
-		if ( pPhys && pPhys->IsMoveable() == false )
+		if ( !pPhys || !pPhys->IsMoveable() )
 		{
 			Shutdown();
 			return;
@@ -874,11 +874,7 @@ void CPlayerPickupController::Use( CBaseEntity *pActivator, CBaseEntity *pCaller
 		// +ATTACK will throw phys objects
 		if ( m_pPlayer->m_nButtons & IN_ATTACK )
 		{
-			if ( pPhys == NULL )
-			{
-				Shutdown();
-				return;
-			}
+			IPredictionSystem::SuppressHostEvents( NULL );
 
 			Shutdown( true );
 			Vector vecLaunch;
@@ -1954,6 +1950,7 @@ void CWeaponPhysCannon::SecondaryAttack( void )
 		switch ( result )
 		{
 		case OBJECT_FOUND:
+			IPredictionSystem::SuppressHostEvents( NULL ); 
 			WeaponSound( SPECIAL1 );
 			SendWeaponAnim( ACT_VM_PRIMARYATTACK );
 			m_flNextSecondaryAttack = gpGlobals->curtime + 0.5f;
@@ -2425,6 +2422,7 @@ void CWeaponPhysCannon::DetachObject( bool playSound, bool wasLaunched )
 	if ( playSound )
 	{
 		//Play the detach sound
+		IPredictionSystem::SuppressHostEvents( NULL );
 		WeaponSound( MELEE_MISS );
 	}
 	
@@ -2833,6 +2831,7 @@ void CWeaponPhysCannon::OpenElements( void )
 	if ( m_bOpen )
 		return;
 
+	IPredictionSystem::SuppressHostEvents( NULL );
 	WeaponSound( SPECIAL2 );
 
 	CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
