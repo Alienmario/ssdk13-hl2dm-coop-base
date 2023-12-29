@@ -255,6 +255,7 @@ bool CBaseHL2MPBludgeonWeapon::ImpactWater( const Vector &start, const Vector &e
 			data.m_fFlags |= FX_WATER_IN_SLIME;
 		}
 
+		IPredictionSystem::SuppressHostEvents( NULL );
 		DispatchEffect( "watersplash", data );			
 #endif
 	}
