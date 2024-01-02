@@ -545,7 +545,7 @@ private:
 	float GetMaxFiringDistance();
 
 	// Make sure we don't hit too many times
-	void FireBullets( FireBulletsInfo_t &info );
+	void FireBullets( const FireBulletsInfo_t &info );
 
 	// Is it "fair" to drop this bomb?
 	bool IsBombDropFair( const Vector &vecBombStartPos, const Vector &vecVelocity );
@@ -1954,10 +1954,8 @@ void CNPC_AttackHelicopter::AimCloseToTargetButMiss( CBaseEntity *pTarget, float
 //-----------------------------------------------------------------------------
 // Make sure we don't hit too many times
 //-----------------------------------------------------------------------------
-void CNPC_AttackHelicopter::FireBullets( FireBulletsInfo_t &info )
+void CNPC_AttackHelicopter::FireBullets( const FireBulletsInfo_t &info )
 {
-	info.m_vecDirShooting = GetShootEnemyDir(info.m_vecSrc, true);
-
 	// Use this to count the number of hits in a burst
 	bool bIsPlayer = GetEnemy() && GetEnemy()->IsPlayer();
 	if ( !bIsPlayer )
