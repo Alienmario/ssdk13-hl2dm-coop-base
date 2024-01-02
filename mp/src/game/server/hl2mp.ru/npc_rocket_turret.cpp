@@ -1,4 +1,4 @@
-//===== Copyright © 1996-2005, Valve Corporation, All rights reserved. ======//
+//===== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. ======//
 //
 // Purpose: 
 //
@@ -997,7 +997,7 @@ bool CNPC_RocketTurret::TestPortalsForLOS( Vector* pOutVec, bool bConsiderNonPor
 #define ROCKET_TURRET_END_POINT_PULSE_SCALE 5.0f
 void CNPC_RocketTurret::LaserOn( void )
 {
-	/*Msg("Call\n");
+	/*
 	Vector vecMuzzle;
 	QAngle angMuzzleDir;
 	GetAttachment( ROCKET_TURRET_LASER_ATTACHMENT, vecMuzzle, angMuzzleDir );
@@ -1062,7 +1062,6 @@ void CNPC_RocketTurret::LaserOn( void )
 
 void CNPC_RocketTurret::LaserOff( void )
 {
-	Msg("Call2\n");
 	if( m_pBeam )
 		m_pBeam->AddEffects( EF_NODRAW );
 	// Set Locked sprite;
