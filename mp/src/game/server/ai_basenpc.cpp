@@ -670,7 +670,6 @@ bool CAI_BaseNPC::PassesDamageFilter( const CTakeDamageInfo &info )
 	{
 		if( !friendlyfire.GetInt() )
 			return false;
-		return true;
 	}
 	
 	// FIXME: hook a friendly damage filter to the npc instead?
