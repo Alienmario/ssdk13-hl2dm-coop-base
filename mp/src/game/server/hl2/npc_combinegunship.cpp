@@ -1677,7 +1677,7 @@ void CNPC_CombineGunship::FireCannonRound( void )
 
 	if ( DotProduct( vecDotCheck, vecAimDir ) < 0.8f )
 	{
-		// StopCannonBurst();
+		StopCannonBurst();
 		return;
 	}
 
