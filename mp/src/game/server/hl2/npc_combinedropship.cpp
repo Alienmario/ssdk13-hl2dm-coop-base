@@ -2466,7 +2466,7 @@ void CNPC_CombineDropship::SpawnTroop( void )
 	pSequence->KeyValue( "OnEndSequence", UTIL_VarArgs("%s,NPCFinishDustoff,%s,0,-1", STRING(GetEntityName()), STRING(pNPC->GetEntityName())) );
 	pSequence->SetAbsOrigin( vecSpawnOrigin );
 	pSequence->SetAbsAngles( vecSpawnAngles );
-	pSequence->AddSpawnFlags( SF_SCRIPT_NOINTERRUPT | SF_SCRIPT_HIGH_PRIORITY | SF_SCRIPT_OVERRIDESTATE );
+	pSequence->AddSpawnFlags( SF_SCRIPT_NOINTERRUPT | SF_SCRIPT_HIGH_PRIORITY | SF_SCRIPT_OVERRIDESTATE | SF_SCRIPT_DONT_TELEPORT_AT_END );
 	pSequence->Spawn();
 	pSequence->Activate();
 	variant_t emptyVariant;
