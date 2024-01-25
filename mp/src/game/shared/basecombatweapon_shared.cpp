@@ -1315,18 +1315,18 @@ void CBaseCombatWeapon::SetWeaponVisible( bool visible )
 
 	if ( visible )
 	{
-		RemoveEffects( EF_NODRAW );
+		RemoveEffects( EF_NODRAW | EF_NOSHADOW );
 		if ( vm )
 		{
-			vm->RemoveEffects( EF_NODRAW );
+			vm->RemoveEffects( EF_NODRAW | EF_NOSHADOW );
 		}
 	}
 	else
 	{
-		AddEffects( EF_NODRAW );
+		AddEffects( EF_NODRAW | EF_NOSHADOW );
 		if ( vm )
 		{
-			vm->AddEffects( EF_NODRAW );
+			vm->AddEffects( EF_NODRAW | EF_NOSHADOW );
 		}
 	}
 }
