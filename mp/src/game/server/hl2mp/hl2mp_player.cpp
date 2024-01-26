@@ -956,15 +956,16 @@ bool CHL2MP_Player::BumpWeapon( CBaseCombatWeapon *pWeapon )
 
 void CHL2MP_Player::ChangeTeam( int iTeam )
 {
-/*	if ( GetNextTeamChangeTime() >= gpGlobals->curtime )
+	/* if ( GetNextTeamChangeTime() >= gpGlobals->curtime )
 	{
 		char szReturnString[128];
 		Q_snprintf( szReturnString, sizeof( szReturnString ), "Please wait %d more seconds before trying to switch teams again.\n", (int)(GetNextTeamChangeTime() - gpGlobals->curtime) );
 
 		ClientPrint( this, HUD_PRINTTALK, szReturnString );
 		return;
-	}*/
+	} */
 
+	int iPrevTeam = GetTeamNumber();
 	bool bKill = false;
 
 	if ( HL2MPRules()->IsTeamplay() != true && iTeam != TEAM_SPECTATOR )
@@ -973,30 +974,52 @@ void CHL2MP_Player::ChangeTeam( int iTeam )
 		iTeam = TEAM_UNASSIGNED;
 	}
 
-	if ( HL2MPRules()->IsTeamplay() == true )
-	{
-		if ( iTeam != GetTeamNumber() && GetTeamNumber() != TEAM_UNASSIGNED )
-		{
-			bKill = true;
-		}
-	}
-
 	BaseClass::ChangeTeam( iTeam );
+	
+	iTeam = GetTeamNumber();
+	if ( iPrevTeam == iTeam )
+	{
+		// no change
+		return;
+	}
 
 	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
 
 	if ( HL2MPRules()->IsTeamplay() == true )
 	{
 		SetPlayerTeamModel();
+		if ( iPrevTeam != TEAM_UNASSIGNED )
+		{
+			bKill = true;
+		}
 	}
 	else
 	{
 		SetPlayerModel();
 	}
 
+	if ( iPrevTeam == TEAM_SPECTATOR && !IsAlive() && !IsHLTV() )
+	{
+		Spawn();
+		return;
+	}
+
+	DetonateTripmines();
+	ClearUseEntity();
+
 	if ( iTeam == TEAM_SPECTATOR )
 	{
 		RemoveAllItems( true );
+		
+		if ( FlashlightIsOn() )
+		{
+			FlashlightTurnOff();
+		}
+		
+		if ( IsInAVehicle() )
+		{
+			LeaveVehicle();
+		}
 
 		State_Transition( STATE_OBSERVER_MODE );
 	}
