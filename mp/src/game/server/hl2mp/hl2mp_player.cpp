@@ -968,24 +968,16 @@ void CHL2MP_Player::ChangeTeam( int iTeam )
 	int iPrevTeam = GetTeamNumber();
 	bool bKill = false;
 
-	if ( HL2MPRules()->IsTeamplay() != true && iTeam != TEAM_SPECTATOR )
+	if ( !HL2MPRules()->IsTeamplay() && iTeam != TEAM_SPECTATOR )
 	{
 		//don't let them try to join combine or rebels during deathmatch.
 		iTeam = TEAM_UNASSIGNED;
 	}
 
 	BaseClass::ChangeTeam( iTeam );
-	
 	iTeam = GetTeamNumber();
-	if ( iPrevTeam == iTeam )
-	{
-		// no change
-		return;
-	}
 
-	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
-
-	if ( HL2MPRules()->IsTeamplay() == true )
+	if ( HL2MPRules()->IsTeamplay() )
 	{
 		SetPlayerTeamModel();
 		if ( iPrevTeam != TEAM_UNASSIGNED )
@@ -998,14 +990,18 @@ void CHL2MP_Player::ChangeTeam( int iTeam )
 		SetPlayerModel();
 	}
 
-	if ( iPrevTeam == TEAM_SPECTATOR && !IsAlive() && !IsHLTV() )
+	if ( iPrevTeam == iTeam )
 	{
-		Spawn();
+		// no change
 		return;
 	}
 
-	DetonateTripmines();
-	ClearUseEntity();
+	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
+
+	if ( bKill )
+	{
+		CommitSuicide( false, true );
+	}
 
 	if ( iTeam == TEAM_SPECTATOR )
 	{
@@ -1023,10 +1019,15 @@ void CHL2MP_Player::ChangeTeam( int iTeam )
 
 		State_Transition( STATE_OBSERVER_MODE );
 	}
-
-	if ( bKill == true )
+	else
 	{
-		CommitSuicide();
+		StopObserverMode();
+		State_Transition(STATE_ACTIVE);
+	}
+	
+	if (iPrevTeam == TEAM_SPECTATOR && !IsAlive() && !IsDisconnecting() && !IsHLTV() )
+	{
+		Spawn();
 	}
 }
 
@@ -1054,27 +1055,9 @@ bool CHL2MP_Player::HandleCommand_JoinTeam( int team )
 			ClientPrint( this, HUD_PRINTCENTER, "#Cannot_Be_Spectator" );
 			return false;
 		}
-
-		if ( GetTeamNumber() != TEAM_UNASSIGNED && !IsDead() )
-		{
-			m_fNextSuicideTime = gpGlobals->curtime;	// allow the suicide to work
-
-			CommitSuicide();
-		}
-
-		ChangeTeam( TEAM_SPECTATOR );
-
-		return true;
-	}
-	else
-	{
-		StopObserverMode();
-		State_Transition(STATE_ACTIVE);
 	}
 
-	// Switch their actual team...
 	ChangeTeam( team );
-
 	return true;
 }
 
