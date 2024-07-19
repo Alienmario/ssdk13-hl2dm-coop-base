@@ -25,6 +25,8 @@ $Project "Server"
 	$Folder	"Source Files"
 	{
 		$File	"ai_relationship.cpp"
+		$File	"ai_eventresponse.cpp"
+		$File	"ai_eventresponse.h"
 		$File	"basegrenade_concussion.cpp"
 		$File	"basegrenade_contact.cpp"
 		$File	"basegrenade_timed.cpp"
