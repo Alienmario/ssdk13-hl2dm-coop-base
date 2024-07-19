@@ -191,6 +191,7 @@ void CBaseProp::Spawn( void )
 
 	// Load this prop's data from the propdata file
 	int iResult = ParsePropData();
+	/*
 	if ( !OverridePropdata() )
 	{
 		if ( iResult == PARSE_FAILED_BAD_DATA )
@@ -220,6 +221,7 @@ void CBaseProp::Spawn( void )
 			}
 		}
 	}
+	*/
 
 	SetMoveType( MOVETYPE_PUSH );
 	m_takedamage = DAMAGE_NO;
