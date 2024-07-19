@@ -1106,7 +1106,17 @@ void CFuncTank::StopControl()
 		m_spawnflags &= ~SF_TANK_NPC;
 	}
 
+	CAI_BaseNPC *pNPC = m_hController->MyNPCPointer();
 	m_hController = NULL;
+	
+	if ( pNPC )
+	{
+		CAI_FuncTankBehavior *pBehavior;
+		if ( pNPC->GetBehavior( &pBehavior ) )
+		{
+			pBehavior->Dismount();
+		}
+	}
 
 	// Set think, if the func_tank can think on its own.
 	if ( IsActive() || (IsControllable() && !HasController()) )
