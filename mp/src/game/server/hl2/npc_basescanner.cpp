@@ -73,6 +73,7 @@ CNPC_BaseScanner::CNPC_BaseScanner()
 	m_vCurrentBanking.Init();
 #endif
 	m_pEngineSound = NULL;
+	m_pSmokeTrail = NULL;
 	m_bHasSpoken = false;
 
 	m_flAttackNearDist = SCANNER_ATTACK_NEAR_DIST;
@@ -117,7 +118,6 @@ void CNPC_BaseScanner::Spawn(void)
 	m_nFlyMode = SCANNER_FLY_PATROL;
 	AngleVectors( GetLocalAngles(), &m_vCurrentBanking );
 	m_fHeadYaw = 0;
-	m_pSmokeTrail = NULL;
 
 	SetCurrentVelocity( vec3_origin );
 
