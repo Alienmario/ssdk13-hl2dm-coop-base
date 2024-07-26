@@ -86,7 +86,7 @@ bool CheckEmitReasonablePhysicsSpew()
 
 	// Reported recently?
 	double now = Plat_FloatTime();
-	if ( now >= s_LastEntityReasonableEmitTime && now < s_LastEntityReasonableEmitTime + 5.0 )
+	if ( now >= s_LastEntityReasonableEmitTime && now < s_LastEntityReasonableEmitTime + 30.0 )
 	{
 		// Already reported recently
 		return false;
