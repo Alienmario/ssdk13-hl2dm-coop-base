@@ -29,6 +29,7 @@
 #include "utldict.h"
 #include "collisionutils.h"
 #include "movevars_shared.h"
+#include "inetchannel.h"
 #include "inetchannelinfo.h"
 #include "tier0/vprof.h"
 #include "ndebugoverlay.h"
@@ -1295,6 +1296,27 @@ void UTIL_ShowMessage( const char *pString, CBasePlayer *pPlayer )
 void UTIL_ShowMessageAll( const char *pString )
 {
 	UTIL_ShowMessage( pString, NULL );
+}
+
+#define NET_SETCONVAR 5
+#define NETMSG_BITS 6
+
+void UTIL_SendConVarValue(edict_t *pEdict, const char *pConVarName, const char *pConVarValue)
+{
+	char data[256];
+	bf_write buffer( data, sizeof( data ) );
+
+	buffer.WriteUBitLong( NET_SETCONVAR, NETMSG_BITS );
+	buffer.WriteByte( 1 );
+	buffer.WriteString( pConVarName );
+	buffer.WriteString( pConVarValue );
+
+	INetChannel *pChannel = (INetChannel*) engine->GetPlayerNetInfo( pEdict->m_EdictIndex );
+
+	if ( pChannel )
+	{
+		pChannel->SendData( buffer );
+	}
 }
 
 // So we always return a valid surface
