@@ -5764,6 +5764,8 @@ void CPhysicsPropRespawnable::Event_Killed( const CTakeDamageInfo &info )
 	{
 		UTIL_Remove( GetEffectEntity() );
 	}
+	
+	RemoveAllDecals();
 
 	Teleport( &m_vOriginalSpawnOrigin, &m_vOriginalSpawnAngles, NULL );
 
