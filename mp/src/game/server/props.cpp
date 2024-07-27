@@ -190,8 +190,10 @@ void CBaseProp::Spawn( void )
 	SetModel( szModel );
 
 	// Load this prop's data from the propdata file
-	int iResult = ParsePropData();
+	ParsePropData();
+	
 	/*
+	int iResult = ParsePropData();
 	if ( !OverridePropdata() )
 	{
 		if ( iResult == PARSE_FAILED_BAD_DATA )
