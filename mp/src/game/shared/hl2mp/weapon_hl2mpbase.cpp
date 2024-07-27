@@ -192,7 +192,8 @@ void CWeaponHL2MPBase::Materialize( void )
 
 	SetPickupTouch();
 
-	SetThink (NULL);
+	SetOwnerEntity(NULL);
+	SetThink(NULL);
 }
 
 int CWeaponHL2MPBase::ObjectCaps()
