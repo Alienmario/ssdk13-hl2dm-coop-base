@@ -5470,7 +5470,9 @@ bool CBasePlayer::GetInVehicle( IServerVehicle *pVehicle, int nRole )
 	SetAbsAngles( qSeatAngles );
 	
 	// Parent to the vehicle
+	QAngle qEyeAngles = EyeAngles();
 	SetParent( pEnt );
+	SnapEyeAngles( qEyeAngles - pEnt->GetAbsAngles() );
 
 	SetCollisionGroup( COLLISION_GROUP_IN_VEHICLE );
 	
@@ -5496,6 +5498,8 @@ bool CBasePlayer::GetInVehicle( IServerVehicle *pVehicle, int nRole )
 	g_pNotify->ReportNamedEvent( this, "PlayerEnteredVehicle" );
 
 	m_iVehicleAnalogBias = VEHICLE_ANALOG_BIAS_NONE;
+
+	UTIL_SendConVarValue( edict(), "sv_client_predict", "0" );
 
 	OnVehicleStart();
 
@@ -5580,6 +5584,13 @@ void CBasePlayer::LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExi
 
 	// Just cut all of the rumble effects. 
 	RumbleEffect( RUMBLE_STOP_ALL, 0, RUMBLE_FLAGS_NONE );
+	
+	static const ConVar *pSvClientPredict;
+	if ( !pSvClientPredict )
+	{
+		pSvClientPredict = cvar->FindVar( "sv_client_predict" );
+	}
+	UTIL_SendConVarValue( edict(), "sv_client_predict", pSvClientPredict ? pSvClientPredict->GetString() : "-1" );
 }
 
 

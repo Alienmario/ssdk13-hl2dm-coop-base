@@ -320,7 +320,7 @@ IMPLEMENT_SERVERCLASS_ST(CPropVehicleDriveable, DT_PropVehicleDriveable)
 	SendPropInt(SENDINFO(m_nHasBoost), 1, SPROP_UNSIGNED),
 	SendPropInt(SENDINFO(m_nScannerDisabledWeapons), 1, SPROP_UNSIGNED),
 	SendPropInt(SENDINFO(m_nScannerDisabledVehicle), 1, SPROP_UNSIGNED),
-	SendPropInt(SENDINFO(m_bEnterAnimOn), 1, SPROP_UNSIGNED ),
+	SendPropInt(SENDINFO(m_bEnterAnimOn), 1, SPROP_UNSIGNED, SendProxy_SuppressVehicleAnim ),
 	SendPropInt(SENDINFO(m_bExitAnimOn), 1, SPROP_UNSIGNED ),
 	SendPropInt(SENDINFO(m_bUnableToFire), 1, SPROP_UNSIGNED ),
 	SendPropVector(SENDINFO(m_vecEyeExitEndpoint), -1, SPROP_COORD),
@@ -587,8 +587,6 @@ void CPropVehicleDriveable::EnterVehicle( CBaseCombatCharacter *pPassenger )
 		{
 			ExitVehicle( VEHICLE_ROLE_DRIVER );
 		}
-
-		UTIL_SendConVarValue( pPlayer->edict(), "sv_client_predict", "0" );
 		
 		m_hPlayer = pPlayer;
 		m_playerOn.FireOutput( pPlayer, this, 0 );
@@ -625,13 +623,6 @@ void CPropVehicleDriveable::ExitVehicle( int nRole )
 	CBasePlayer *pPlayer = m_hPlayer;
 	if ( !pPlayer )
 		return;
-
-	static const ConVar *pSvClientPredict;
-	if ( !pSvClientPredict )
-	{
-		pSvClientPredict = cvar->FindVar( "sv_client_predict" );
-	}
-	UTIL_SendConVarValue( pPlayer->edict(), "sv_client_predict", pSvClientPredict ? pSvClientPredict->GetString() : "-1" );
 
 	m_hPlayer = NULL;
 	ResetUseKey( pPlayer );

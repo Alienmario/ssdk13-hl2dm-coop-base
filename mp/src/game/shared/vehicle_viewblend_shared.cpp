@@ -242,13 +242,14 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 		pData->vecOriginSaved = PrevMainViewOrigin();
 		pData->vecAnglesSaved = PrevMainViewAngles();
 #endif
-
+/*
 		// Save our initial angular error, which we will blend out over the length of the animation.
 		pData->vecAngleDiffSaved.x = AngleDiff( vehicleEyeAngles.x, pData->vecAnglesSaved.x );
 		pData->vecAngleDiffSaved.y = AngleDiff( vehicleEyeAngles.y, pData->vecAnglesSaved.y );
 		pData->vecAngleDiffSaved.z = AngleDiff( vehicleEyeAngles.z, pData->vecAnglesSaved.z );
 
 		pData->vecAngleDiffMin = pData->vecAngleDiffSaved;
+*/
 	}
 
 	pData->bWasRunningAnim = bRunningAnim;
@@ -259,7 +260,7 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 	// If we're in an enter/exit animation, blend the player's eye angles to the attachment's
 	if ( bRunningAnim || pData->bRunningEnterExit )
 	{
-		*pAbsAngles = vehicleEyeAngles;
+		// *pAbsAngles = vehicleEyeAngles;
 
 		// Forward integrate to determine the elapsed time in this entry/exit anim.
 		frac = ( gpGlobals->curtime - pData->flEnterExitStartTime ) / pData->flEnterExitDuration;
@@ -270,29 +271,9 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 
 		//Msg("Frac: %f\n", frac );
 
-		if ( frac < 1.0 )
-		{
-			// Blend to the desired vehicle eye origin
-			//Vector vecToView = (vehicleEyeOrigin - PrevMainViewOrigin());
-			//vehicleEyeOrigin = PrevMainViewOrigin() + (vecToView * SimpleSpline(frac));
-			//debugoverlay->AddBoxOverlay( vehicleEyeOrigin, -Vector(1,1,1), Vector(1,1,1), vec3_angle, 0,255,255, 64, 10 );
-		}
-		else 
+		if ( frac >= 1.0 )
 		{
 			pData->bRunningEnterExit = false;
-
-			// Enter animation has finished, align view with the eye attachment point
-			// so they can start mouselooking around.
-			if ( !bExitAnimOn )
-			{
-				Vector localEyeOrigin;
-				QAngle localEyeAngles;
-
-				pData->pVehicle->GetAttachmentLocal( eyeAttachmentIndex, localEyeOrigin, localEyeAngles );
-#ifdef CLIENT_DLL
-				engine->SetViewAngles( localEyeAngles );
-#endif
-			}
 		}
 	}
 
@@ -332,7 +313,7 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 #endif
 
 	// If we're playing an entry or exit animation...
-	if ( bRunningAnim || pData->bRunningEnterExit )
+	/* if ( bRunningAnim || pData->bRunningEnterExit )
 	{
 		float flSplineFrac = clamp( SimpleSpline( frac ), 0.f, 1.f );
 
@@ -406,6 +387,7 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 		}
 	}
 	else if ( pFOV != NULL )
+	*/
 	{
 		if ( pData->flFOV > flDefaultFOV )
 		{

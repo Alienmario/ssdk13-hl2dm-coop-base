@@ -311,5 +311,10 @@ inline bool CPropVehicleDriveable::HasGun()
 	return m_bHasGun;
 }
 
+// Fixes view snapping of all players caused by vehicle enter anims in SharedVehicleViewSmoothing, from the server side
+inline void SendProxy_SuppressVehicleAnim(const SendProp *pProp, const void *pStructBase, const void *pData, DVariant *pOut, int iElement, int objectID)
+{
+	pOut->m_Int = 0;
+}
 
 #endif // VEHICLE_BASE_H
