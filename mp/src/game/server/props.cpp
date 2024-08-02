@@ -190,9 +190,6 @@ void CBaseProp::Spawn( void )
 	SetModel( szModel );
 
 	// Load this prop's data from the propdata file
-	ParsePropData();
-	
-	/*
 	int iResult = ParsePropData();
 	if ( !OverridePropdata() )
 	{
@@ -223,7 +220,6 @@ void CBaseProp::Spawn( void )
 			}
 		}
 	}
-	*/
 
 	SetMoveType( MOVETYPE_PUSH );
 	m_takedamage = DAMAGE_NO;
