@@ -1354,6 +1354,7 @@ void CProtoSniper::Event_Killed( const CTakeDamageInfo &info )
 		info.GetAttacker()->Event_KilledOther(this, info);
 		g_EventQueue.AddEvent( info.GetAttacker(), "KilledNPC", 0.3, this, this );
 	}
+	SendOnKilledGameEvent( info );
 
 	LaserOff();
 
