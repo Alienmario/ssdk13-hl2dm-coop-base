@@ -25,6 +25,7 @@
 #include "engine/IEngineSound.h"
 #include "team.h"
 #include "viewport_panel_names.h"
+#include "util.h"
 
 #include "tier0/vprof.h"
 
@@ -89,6 +90,8 @@ void ClientPutInServer( edict_t *pEdict, const char *playername )
 	// Allocate a CBaseTFPlayer for pev, and call spawn
 	CHL2MP_Player *pPlayer = CHL2MP_Player::CreatePlayer( "player", pEdict );
 	pPlayer->SetPlayerName( playername );
+
+	UTIL_SendConVarValue(pEdict, "sv_footsteps", "0");
 }
 
 
