@@ -526,11 +526,13 @@ void CPropCannon::Think( void )
 		// If the enter or exit animation has finished, tell the server vehicle
 		if ( IsSequenceFinished() && (m_bExitAnimOn || m_bEnterAnimOn) )
 		{
+			/*
 			if ( m_bEnterAnimOn )
 			{
 				// Finished entering, display the hint for using the crane
-				//UTIL_HudHintText( m_hPlayer, "#Valve_Hint_CraneKeys" );
+				UTIL_HudHintText( m_hPlayer, "#Valve_Hint_CraneKeys" );
 			}
+			*/
 			
 			GetServerVehicle()->HandleEntryExitFinish( m_bExitAnimOn, true );
 		}

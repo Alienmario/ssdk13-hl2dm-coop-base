@@ -787,10 +787,12 @@ void CPropJeep::Think( void )
 			}
 
 			// The first few time we get into the jeep, print the jeep help
+			/*
 			if ( m_iNumberOfEntries < hud_jeephint_numentries.GetInt() )
 			{
 				g_EventQueue.AddEvent( this, "ShowHudHint", 1.5f, this, this );
 			}
+			*/
 		}
 		
 		if ( hl2_episodic.GetBool() )
