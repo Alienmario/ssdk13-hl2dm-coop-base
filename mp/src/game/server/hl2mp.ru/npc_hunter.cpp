@@ -5284,6 +5284,7 @@ void CNPC_Hunter::PhysicsDamageEffect( const Vector &vecPos, const Vector &vecDi
 void CNPC_Hunter::TeslaThink()
 {
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nEntIndex = entindex();
 	data.m_flMagnitude = 3;
 	data.m_flScale = 0.5f;
@@ -5817,6 +5818,7 @@ void CNPC_Hunter::DoMuzzleFlash( int nAttachment )
 
 	// Dispatch the elight	
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nAttachmentIndex = nAttachment;
 	data.m_nEntIndex = entindex();
 	DispatchEffect( "HunterMuzzleFlash", data );

@@ -3790,6 +3790,7 @@ void CNPC_Strider::DoMuzzleFlash( void )
 	
 	CEffectData data;
 
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nAttachmentIndex = LookupAttachment( "MiniGun" );
 	data.m_nEntIndex = entindex();
 	DispatchEffect( "StriderMuzzleFlash", data );

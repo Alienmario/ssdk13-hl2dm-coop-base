@@ -798,6 +798,7 @@ void CWeaponCrossbow::DoLoadEffect( void )
 		return;
 
 	CEffectData	data;
+	data.m_vOrigin = pViewModel->GetAbsOrigin();
 
 #ifdef CLIENT_DLL
 	data.m_hEntity = pViewModel->GetRefEHandle();
@@ -806,7 +807,7 @@ void CWeaponCrossbow::DoLoadEffect( void )
 #endif
 	data.m_nAttachmentIndex = 1;
 
-	DispatchEffect( "CrossbowLoad", data );
+	DispatchEffectNoPred( "CrossbowLoad", data );
 
 #ifndef CLIENT_DLL
 
@@ -843,7 +844,7 @@ void CWeaponCrossbow::SetChargerState( ChargerState_t state )
 	{
 	case CHARGER_STATE_START_LOAD:
 	
-		WeaponSound( SPECIAL1 );
+		WeaponSoundNoPred( SPECIAL1 );
 		
 		// Shoot some sparks and draw a beam between the two outer points
 		DoLoadEffect();

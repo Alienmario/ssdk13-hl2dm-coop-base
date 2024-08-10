@@ -807,6 +807,7 @@ void CPropAPC::DoImpactEffect( trace_t &tr, int nDamageType )
 void CPropAPC::DoMuzzleFlash( void )
 {
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nEntIndex = entindex();
 	data.m_nAttachmentIndex = m_nMachineGunMuzzleAttachment;
 	data.m_flScale = 1.0f;

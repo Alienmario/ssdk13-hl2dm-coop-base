@@ -85,7 +85,15 @@ void DispatchEffect( const char *pName, const CEffectData &data )
 	DispatchEffect( pName, data, filter );
 }
 
-void DispatchEffect( const char *pName, const CEffectData &data, CRecipientFilter &filter )
+void DispatchEffect( const char *pName, const CEffectData &data, CRecipientFilter &filter)
 {
 	te->DispatchEffect( filter, 0.0, data.m_vOrigin, pName, data );
+}
+
+void DispatchEffectNoPred( const char *pName, const CEffectData &data)
+{
+	const CBaseEntity *host = te->GetSuppressHost();
+	te->SetSuppressHost( NULL );
+	DispatchEffect( pName, data );
+	te->SetSuppressHost( (CBaseEntity*)host );
 }

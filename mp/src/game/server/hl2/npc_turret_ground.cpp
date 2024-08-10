@@ -547,6 +547,7 @@ void CNPC_GroundTurret::Shoot()
 
 	// Do the AR2 muzzle flash
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nEntIndex = entindex();
 	data.m_nAttachmentIndex = LookupAttachment( "eyes" );
 	data.m_flScale = 1.0f;

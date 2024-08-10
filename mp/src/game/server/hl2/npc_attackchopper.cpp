@@ -2034,6 +2034,7 @@ void CNPC_AttackHelicopter::DoMuzzleFlash( void )
 	
 	CEffectData data;
 
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nAttachmentIndex = LookupAttachment( "muzzle" );
 	data.m_nEntIndex = entindex();
 	DispatchEffect( "ChopperMuzzleFlash", data );
@@ -2541,6 +2542,7 @@ void CNPC_AttackHelicopter::CreateZapBeam( const Vector &vecTargetPos )
 void CNPC_AttackHelicopter::CreateEntityZapEffect( CBaseEntity *pEnt )
 {
 	CEffectData	data;
+	data.m_vOrigin = pEnt->GetAbsOrigin();
 	data.m_nEntIndex = pEnt->entindex();
 	data.m_flMagnitude = 10;
 	data.m_flScale = 1.0f;

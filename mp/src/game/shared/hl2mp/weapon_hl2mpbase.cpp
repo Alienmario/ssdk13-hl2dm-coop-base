@@ -125,6 +125,15 @@ void CWeaponHL2MPBase::WeaponSound( WeaponSound_t sound_type, float soundtime /*
 #endif
 }
 
+void CWeaponHL2MPBase::WeaponSoundNoPred( WeaponSound_t sound_type, float soundtime /* = 0.0f */ )
+{
+#ifndef CLIENT_DLL
+	CBasePlayer *pPredictor = CBaseEntity::GetPredictionPlayer();
+	CBaseEntity::SetPredictionPlayer( NULL );
+	BaseClass::WeaponSound( sound_type, soundtime );
+	CBaseEntity::SetPredictionPlayer( pPredictor );
+#endif
+}
 
 CBasePlayer* CWeaponHL2MPBase::GetPlayerOwner() const
 {
