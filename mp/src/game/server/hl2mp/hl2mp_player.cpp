@@ -198,6 +198,8 @@ void CHL2MP_Player::GiveAllItems( void )
 	
 }
 
+#pragma optimize( "", off ) /* Hooked by sourcecoop */
+
 void CHL2MP_Player::GiveDefaultItems( void )
 {
 	EquipSuit();
@@ -235,6 +237,8 @@ void CHL2MP_Player::GiveDefaultItems( void )
 		Weapon_Switch( Weapon_OwnsThisType( "weapon_physcannon" ) );
 	}
 }
+
+#pragma optimize( "", on )
 
 void CHL2MP_Player::PickDefaultSpawnTeam( void )
 {
