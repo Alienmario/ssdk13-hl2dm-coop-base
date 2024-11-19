@@ -26,7 +26,7 @@ jobs:
 
       - name: Create project
         working-directory: mp/src
-        run: devtools/bin/vpc /sdk2013ce +game /mksln Game
+        run: devtools/bin/vpc /sdk2013ce +dedicated /mksln Game
 
       - name: Build project
         working-directory: mp/src

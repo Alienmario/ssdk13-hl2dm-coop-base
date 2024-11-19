@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -e "\n----------------- VPC START -----------------\n"
+
+pushd `dirname $0`
+devtools/bin/vpc /2013 /sdk2013ce +everything
+popd
+
+echo -e "\n----------------- BUILD START -----------------\n"
+
+make -f Everything.mak client
