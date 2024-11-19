@@ -37,7 +37,7 @@ jobs:
         run: tar cJfv Linux.tar.xz --exclude="*.dbg" mp/game/mod_sdk2013ce/bin
 
       - name: Upload product
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: mp_sdk2013ce
           path: Linux.tar.xz
