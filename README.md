@@ -30,7 +30,7 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
 |--------|-------------|---------|
 | mp_noblock | Disables collisions of players | 1 |
 | mp_noblock_entities | Disables entity (projectile) collisions of players on the same team | 1 |
-| mp_noblock_use | Prevents other players from blocking <use> interactions | 1 |
+| mp_noblock_use | Prevents other players from blocking \<use\> interactions | 1 |
 | sv_use_hl2_models | Replaces all character models with the ones in hl2 subfolder. | 1 |
 | sv_edict_overflow_mapchange | Change map when near edict limit | 1 |
 | sv_init_default_relationships | Init default AI relationships? | 1 |
