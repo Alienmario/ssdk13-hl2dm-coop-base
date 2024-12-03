@@ -5,7 +5,7 @@ SETLOCAL
 cls
 
 IF "%MSBUILD22%"=="" (
-	echo Install build Tools for Visual Studio 2022 ^(select Desktop programming package^) and define MSBUILD22 env variable first
+	echo Install build Tools for Visual Studio 2022 ^(select Desktop programming package^) and define MSBUILD22 env variable first.
 	echo For example: "D:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
 	pause && exit
 )
@@ -36,17 +36,19 @@ IF %ERRORLEVEL% GTR 0 goto retry
 "%MSBUILD22%" game/client/client_sdk2013ce.vcxproj -p:Configuration=%config%
 IF %ERRORLEVEL% GTR 0 goto retry
 
+echo.
 IF NOT "%sourcesdk_client_dest%"=="" (
-	echo.
 	echo Copying client binary to "%sourcesdk_client_dest%\bin\"
 	copy /b "..\game\mod_sdk2013ce\bin\client.dll" "%sourcesdk_client_dest%\bin\"
+) ELSE (
+	echo If you want to auto-install the client binary, define "sourcesdk_client_dest" env variable.
 )
 
 :retry
 IF NOT "%2%"=="noretry" (
-	echo:
+	echo.
 	echo Retry?
-	echo:
+	echo.
 	pause
 	goto start
 )
