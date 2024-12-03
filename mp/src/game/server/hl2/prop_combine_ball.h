@@ -115,6 +115,8 @@ public:
 	void SetOriginalOwner( CBaseEntity *pEntity ) { m_hOriginalOwner = pEntity; }
 	CBaseEntity *GetOriginalOwner() { return m_hOriginalOwner; }
 
+	virtual bool ForceVPhysicsCollide( CBaseEntity *pEntity );
+
 private:
 
 	void SetPlayerLaunched( CBasePlayer *pOwner );

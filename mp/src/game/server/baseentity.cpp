@@ -257,6 +257,23 @@ void SendProxy_Angles( const SendProp *pProp, const void *pStruct, const void *p
 	pOut->m_Vector[ 2 ] = anglemod( a->z );
 }
 
+extern ConVar mp_noblock;
+
+void SendProxy_CollisionGroup( const SendProp *pProp, const void *pStruct, const void *pData, DVariant *pOut, int iElement, int objectID )
+{
+	CBaseEntity *pEntity = (CBaseEntity*)pStruct;
+	Assert( pEntity );
+
+	if ( pEntity->IsPlayer() && mp_noblock.GetBool() )
+	{
+		pOut->m_Int = COLLISION_GROUP_DEBRIS_TRIGGER;
+	}
+	else
+	{
+		pOut->m_Int = *(int*)pData;
+	}
+}
+
 // This table encodes the CBaseEntity data.
 IMPLEMENT_SERVERCLASS_ST_NOBASE( CBaseEntity, DT_BaseEntity )
 	SendPropDataTable( "AnimTimeMustBeFirst", 0, &REFERENCE_SEND_TABLE(DT_AnimTimeMustBeFirst), SendProxy_ClientSideAnimation ),
@@ -276,7 +293,7 @@ IMPLEMENT_SERVERCLASS_ST_NOBASE( CBaseEntity, DT_BaseEntity )
 	SendPropInt		(SENDINFO(m_fEffects),		EF_MAX_BITS, SPROP_UNSIGNED),
 	SendPropInt		(SENDINFO(m_clrRender),	32, SPROP_UNSIGNED),
 	SendPropInt		(SENDINFO(m_iTeamNum),		TEAMNUM_NUM_BITS, 0),
-	SendPropInt		(SENDINFO(m_CollisionGroup), 5, SPROP_UNSIGNED),
+	SendPropInt		(SENDINFO(m_CollisionGroup), 5, SPROP_UNSIGNED, SendProxy_CollisionGroup),
 	SendPropFloat	(SENDINFO(m_flElasticity), 0, SPROP_COORD),
 	SendPropFloat	(SENDINFO(m_flShadowCastDistance), 12, SPROP_UNSIGNED ),
 	SendPropEHandle (SENDINFO(m_hOwnerEntity)),

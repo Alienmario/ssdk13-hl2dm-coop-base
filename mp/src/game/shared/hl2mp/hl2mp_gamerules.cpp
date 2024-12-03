@@ -909,7 +909,7 @@ void CHL2MPRules::Precache( void )
 	CBaseEntity::PrecacheScriptSound( "AlyxEmp.Charge" );
 }
 
-// ConVar mp_noblock("mp_noblock", "1");
+extern ConVar mp_noblock;
 
 bool CHL2MPRules::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 {
@@ -927,17 +927,16 @@ bool CHL2MPRules::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 	if ( collisionGroup0 > collisionGroup1 )
 	{
 		// swap so that lowest is always first
-		V_swap(collisionGroup0,collisionGroup1);
+		V_swap(collisionGroup0, collisionGroup1);
 	}
 
 	// Prevent the player movement from colliding with spit globs (caused the player to jump on top of globs while in water)
 	if (collisionGroup0 == COLLISION_GROUP_PLAYER_MOVEMENT && collisionGroup1 == HL2COLLISION_GROUP_SPIT)
 		return false;
 
-	// if (collisionGroup0 == COLLISION_GROUP_PLAYER && collisionGroup1 == COLLISION_GROUP_PLAYER) {
-	// 	if (mp_noblock.GetBool())
-	// 		return false;
-	// }
+	if (collisionGroup0 == COLLISION_GROUP_PLAYER && collisionGroup1 == COLLISION_GROUP_PLAYER) {
+		return !mp_noblock.GetBool();
+	}
 
 	if (collisionGroup0 == COLLISION_GROUP_VEHICLE && collisionGroup1 == COLLISION_GROUP_VEHICLE) {
 		return false;
@@ -960,22 +959,17 @@ bool CHL2MPRules::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 	return false;
 	}*/
 
-	if (collisionGroup0 == HL2COLLISION_GROUP_COMBINE_BALL)
-	{
-		if (collisionGroup1 == HL2COLLISION_GROUP_COMBINE_BALL)
-			return false;
-	}
+	if (collisionGroup0 == HL2COLLISION_GROUP_COMBINE_BALL && collisionGroup1 == HL2COLLISION_GROUP_COMBINE_BALL)
+		return false;
 
 	if (collisionGroup0 == HL2COLLISION_GROUP_COMBINE_BALL && collisionGroup1 == HL2COLLISION_GROUP_COMBINE_BALL_NPC)
 		return false;
 
-	/*if ((collisionGroup0 == COLLISION_GROUP_WEAPON) ||
-		(collisionGroup0 == COLLISION_GROUP_PLAYER) ||
-		(collisionGroup0 == COLLISION_GROUP_PROJECTILE))
+	if ( collisionGroup0 == COLLISION_GROUP_PLAYER)
 	{
 		if (collisionGroup1 == HL2COLLISION_GROUP_COMBINE_BALL)
 			return false;
-	}*/
+	}
 
 	if (collisionGroup0 == COLLISION_GROUP_DEBRIS)
 	{

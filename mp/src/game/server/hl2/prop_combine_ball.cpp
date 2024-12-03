@@ -1531,6 +1531,22 @@ void CPropCombineBall::BounceInSpawner( float flSpeed, int index, gamevcollision
 	PhysCallbackSetVelocity( pEvent->pObjects[index], vecVelocity ); 
 }
 
+extern ConVar mp_noblock_entities;
+
+bool CPropCombineBall::ForceVPhysicsCollide( CBaseEntity *pEntity )
+{
+	if ( !pEntity->IsPlayer() )
+		return BaseClass::ForceVPhysicsCollide( pEntity );
+	
+	if ( mp_noblock_entities.GetBool() )
+	{
+		const CBaseEntity *pOwner = GetOwnerEntity();
+		if ( pOwner && pOwner->IsPlayer() && pOwner->GetTeamNumber() == pEntity->GetTeamNumber() )
+			return false;
+	}
+
+	return true;
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: 

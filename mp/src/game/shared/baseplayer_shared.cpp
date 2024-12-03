@@ -1065,6 +1065,8 @@ float IntervalDistance( float x, float x0, float x1 )
 	return 0;
 }
 
+ConVar mp_noblock_use( "mp_noblock_use", "1", 0, "Prevents other players from blocking <use> interactions", true, 0.0, true, 1.0 );
+
 CBaseEntity *CBasePlayer::FindUseEntity()
 {
 	Vector forward, up;
@@ -1097,6 +1099,9 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 	CBaseEntity *pNearest = NULL;
 
 	const int NUM_TANGENTS = 8;
+	
+	CTraceFilterNoPlayers filter( this, COLLISION_GROUP_NONE );
+
 	// trace a box at successive angles down
 	//							forward, 45 deg, 30 deg, 20 deg, 15 deg, 10 deg, -10, -15
 	const float tangents[NUM_TANGENTS] = { 0, 1, 0.57735026919f, 0.3639702342f, 0.267949192431f, 0.1763269807f, -0.1763269807f, -0.267949192431f };
@@ -1104,13 +1109,20 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 	{
 		if ( i == 0 )
 		{
-			UTIL_TraceLine( searchCenter, searchCenter + forward * 1024, useableContents, this, COLLISION_GROUP_NONE, &tr );
+			if ( mp_noblock_use.GetBool() )
+				UTIL_TraceLine( searchCenter, searchCenter + forward * 1024, useableContents, &filter, &tr );
+			else
+				UTIL_TraceLine( searchCenter, searchCenter + forward * 1024, useableContents, this, COLLISION_GROUP_NONE, &tr );
 		}
 		else
 		{
 			Vector down = forward - tangents[i]*up;
 			VectorNormalize(down);
-			UTIL_TraceHull( searchCenter, searchCenter + down * 72, -Vector(16,16,16), Vector(16,16,16), useableContents, this, COLLISION_GROUP_NONE, &tr );
+
+			if ( mp_noblock_use.GetBool() )
+				UTIL_TraceHull( searchCenter, searchCenter + down * 72, -Vector(16,16,16), Vector(16,16,16), useableContents, &filter, &tr );
+			else
+				UTIL_TraceHull( searchCenter, searchCenter + down * 72, -Vector(16,16,16), Vector(16,16,16), useableContents, this, COLLISION_GROUP_NONE, &tr );
 		}
 		pObject = tr.m_pEnt;
 

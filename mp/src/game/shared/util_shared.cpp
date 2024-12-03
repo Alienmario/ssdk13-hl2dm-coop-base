@@ -206,6 +206,9 @@ QAngle SharedRandomAngle( const char *sharedname, float minVal, float maxVal, in
 // Shared client/server trace filter code
 //
 //-----------------------------------------------------------------------------
+
+extern ConVar mp_noblock_entities;
+
 bool PassServerEntityFilter( const IHandleEntity *pTouch, const IHandleEntity *pPass ) 
 {
 	if ( !pPass )
@@ -225,8 +228,23 @@ bool PassServerEntityFilter( const IHandleEntity *pTouch, const IHandleEntity *p
 	
 	// don't clip against owner
 	if ( pEntPass->GetOwnerEntity() == pEntTouch )
-		return false;	
+		return false;
 
+	if ( mp_noblock_entities.GetBool() )
+	{
+		if ( pEntTouch->IsPlayer() )
+		{
+			const CBaseEntity *pOwner = pEntPass->GetOwnerEntity();
+			if ( pOwner && pOwner->IsPlayer() && pOwner->GetTeamNumber() == pEntTouch->GetTeamNumber() )
+				return false;
+		}
+		if ( pEntPass->IsPlayer() )
+		{
+			const CBaseEntity *pOwner = pEntTouch->GetOwnerEntity();
+			if ( pOwner && pOwner->IsPlayer() && pOwner->GetTeamNumber() == pEntPass->GetTeamNumber() )
+				return false;
+		}
+	}
 
 	return true;
 }
@@ -347,6 +365,22 @@ bool CTraceFilterNoNPCsOrPlayer::ShouldHitEntity( IHandleEntity *pHandleEntity, 
 			return false; // CS hostages are CLASS_PLAYER_ALLY but not IsNPC()
 #endif
 		return (!pEntity->IsNPC() && !pEntity->IsPlayer());
+	}
+	return false;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Trace filter that hits anything but players
+//-----------------------------------------------------------------------------
+bool CTraceFilterNoPlayers::ShouldHitEntity( IHandleEntity *pHandleEntity, int contentsMask )
+{
+	if ( CTraceFilterSimple::ShouldHitEntity( pHandleEntity, contentsMask ) )
+	{
+		CBaseEntity *pEntity = EntityFromEntityHandle( pHandleEntity );
+		if ( !pEntity )
+			return NULL;
+		
+		return (!pEntity->IsPlayer());
 	}
 	return false;
 }

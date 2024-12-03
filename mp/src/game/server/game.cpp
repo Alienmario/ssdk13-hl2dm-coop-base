@@ -47,6 +47,9 @@ ConVar	teamoverride( "mp_teamoverride","1" );
 ConVar	defaultteam( "mp_defaultteam","0" );
 ConVar	allowNPCs( "mp_allowNPCs","1", FCVAR_NOTIFY );
 
+ConVar mp_noblock( "mp_noblock", "1", 0, "Disables collisions of players", true, 0.0, true, 1.0 );
+ConVar mp_noblock_entities( "mp_noblock_entities", "1", 0, "Disables entity (projectile) collisions of players on the same team", true, 0.0, true, 1.0 );
+
 // Engine Cvars
 const ConVar	*g_pDeveloper = NULL;
 
