@@ -312,7 +312,7 @@ void CHL2MPRules::Think( void )
 			{
 				GoToIntermission();
 				engine->ServerCommand("changelevel_next\n");
-				Msg( "Skipping map due to edict overflow (via sv_edict_overflow_mapchange)" );
+				Msg( "Skipping map due to edict overflow (via sv_edict_overflow_mapchange)\n" );
 			}
 		}
 	}
