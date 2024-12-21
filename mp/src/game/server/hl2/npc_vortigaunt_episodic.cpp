@@ -78,6 +78,8 @@ ConVar sk_vortigaunt_dmg_claw( "sk_vortigaunt_dmg_claw","0");
 ConVar sk_vortigaunt_dmg_rake( "sk_vortigaunt_dmg_rake","0");
 ConVar sk_vortigaunt_dmg_zap( "sk_vortigaunt_dmg_zap","0");
 ConVar sk_vortigaunt_zap_range( "sk_vortigaunt_zap_range", "100", FCVAR_NONE, "Range of vortigaunt's ranged attack (feet)" );
+ConVar sk_vortigaunt_zap_spread( "sk_vortigaunt_zap_spread", "0.05", FCVAR_NONE, "Spread of vortigaunt's ranged attack" );
+ConVar sk_vortigaunt_zap_lead_time( "sk_vortigaunt_zap_lead_time", "0.1", FCVAR_NONE, "Lead aim this much into the future. Vortigaunt specific variation of ai_lead_time");
 ConVar sk_vortigaunt_vital_antlion_worker_dmg("sk_vortigaunt_vital_antlion_worker_dmg", "0.2", FCVAR_NONE, "Vital-ally vortigaunts scale damage taken from antlion workers by this amount." );
 
 ConVar g_debug_vortigaunt_aim( "g_debug_vortigaunt_aim", "0" );
@@ -834,7 +836,6 @@ void CNPC_Vortigaunt::HandleAnimEvent( animevent_t *pEvent )
 	if ( pEvent->event == AE_VORTIGAUNT_ZAP_SHOOT )
 	{
 		ClearBeams();
-
 		ClearMultiDamage();
 
 		int nHand = 0;
@@ -843,14 +844,17 @@ void CNPC_Vortigaunt::HandleAnimEvent( animevent_t *pEvent )
 			nHand = atoi( pEvent->options );
 		}
 
+		Vector vecSrc, vecAim;
+		ComputeZapVectors( &vecSrc, &vecAim );
+
 		if ( ( nHand == HAND_LEFT ) || (nHand == HAND_BOTH ) )
 		{
-			ZapBeam( HAND_LEFT );
+			ZapBeam( HAND_LEFT, vecSrc, vecAim );
 		}
 		
 		if ( ( nHand == HAND_RIGHT ) || (nHand == HAND_BOTH ) )
 		{
-			ZapBeam( HAND_RIGHT );
+			ZapBeam( HAND_RIGHT, vecSrc, vecAim );
 		}
 
 		EndHandGlow();
@@ -2046,43 +2050,52 @@ void CNPC_Vortigaunt::CreateBeamBlast( const Vector &vecOrigin )
 	te->GaussExplosion( filter, 0.0f, vecOrigin, Vector( 0, 0, 1 ), 0 );
 }
 
-#define COS_30	0.866025404f // sqrt(3) / 2
+//-----------------------------------------------------------------------------
+// Purpose: Return the actual position the NPC wants to fire at when it's trying
+//			to hit its current enemy.
+//-----------------------------------------------------------------------------
+Vector CNPC_Vortigaunt::GetActualShootPosition( const Vector &shootOrigin )
+{
+	// Project the target's location into the future.
+	Vector vecEnemyLKP = GetEnemyLKP();
+	Vector vecEnemyOffset = GetEnemy()->BodyTarget( shootOrigin ) - GetEnemy()->GetAbsOrigin();
+	Vector vecTargetPosition = vecEnemyOffset + vecEnemyLKP;
+
+	// lead for some fraction of a second.
+	return (vecTargetPosition + ( GetEnemy()->GetSmoothedVelocity() * sk_vortigaunt_zap_lead_time.GetFloat() ));
+}
+
+Vector CNPC_Vortigaunt::GetAttackSpread( CBaseCombatWeapon *pWeapon, CBaseEntity *pTarget )
+{
+	return Vector( sk_vortigaunt_zap_spread.GetFloat() );
+}
+
 #define COS_60	0.5 // sqrt(1) / 2
+
+void CNPC_Vortigaunt::ComputeZapVectors( Vector* vecSrc, Vector* vecAim )
+{
+	Vector forward;
+	GetVectors( &forward, NULL, NULL );
+
+	bool bDirect = m_bExtractingBugbait;
+	*vecSrc = GetAbsOrigin() + GetViewOffset();
+	*vecAim = bDirect ? GetShootEnemyDir( *vecSrc, false ) : GetActualShootTrajectory( *vecSrc );
+
+	// If we're too far off our center, the shot must miss!
+	if ( DotProduct( *vecAim, forward ) < COS_60 )
+	{
+		// Missed, so just shoot forward
+		*vecAim = forward;
+	}
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: Heavy damage directly forward
 // Input  : nHand - Handedness of the beam
 //-----------------------------------------------------------------------------
-void CNPC_Vortigaunt::ZapBeam( int nHand )
+
+void CNPC_Vortigaunt::ZapBeam( int nHand, const Vector &vecSrc, const Vector &vecAim )
 {
-	Vector forward;
-	GetVectors( &forward, NULL, NULL );
-
-	Vector vecSrc = GetAbsOrigin() + GetViewOffset();
-	Vector vecAim = GetShootEnemyDir( vecSrc, false );	// We want a clear shot to their core
-
-	if ( GetEnemy() )
-	{
-		Vector vecTarget = GetEnemy()->BodyTarget( vecSrc, false );
-				
-		if ( g_debug_vortigaunt_aim.GetBool() )
-		{
-			NDebugOverlay::Cross3D( vecTarget, 4.0f, 255, 0, 0, true, 10.0f );
-			CBaseAnimating *pAnim = GetEnemy()->GetBaseAnimating();
-			if ( pAnim )
-			{
-				pAnim->DrawServerHitboxes( 10.0f );
-			}
-		}
-	}
-
-	// If we're too far off our center, the shot must miss!
-	if ( DotProduct( vecAim, forward ) < COS_60 )
-	{
-		// Missed, so just shoot forward
-		vecAim = forward;
-	}
-
 	trace_t tr;
 
 	if ( m_bExtractingBugbait == true )
@@ -2111,6 +2124,11 @@ void CNPC_Vortigaunt::ZapBeam( int nHand )
 
 	if ( g_debug_vortigaunt_aim.GetBool() )
 	{
+		NDebugOverlay::Cross3D( tr.endpos, 4.0f, 255, 0, 0, true, 10.0f );
+		if ( GetEnemy() && GetEnemy()->GetBaseAnimating() )
+		{
+			GetEnemy()->GetBaseAnimating()->DrawServerHitboxes( 10.0f );
+		}
 		NDebugOverlay::Line( tr.startpos, tr.endpos, 255, 0, 0, true, 10.0f );
 	}
 
@@ -2132,7 +2150,6 @@ void CNPC_Vortigaunt::ZapBeam( int nHand )
 
 		CTakeDamageInfo dmgInfo( this, this, sk_vortigaunt_dmg_zap.GetFloat(), DMG_SHOCK );
 		dmgInfo.SetDamagePosition( tr.endpos );
-		VectorNormalize( vecAim );// not a unit vec yet
 		// hit like a 5kg object flying 100 ft/s
 		dmgInfo.SetDamageForce( 5 * 100 * 12 * vecAim );
 		

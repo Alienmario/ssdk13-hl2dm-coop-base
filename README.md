@@ -35,6 +35,8 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
 | sv_edict_overflow_mapchange | Change map when near edict limit | 1 |
 | sv_init_default_relationships | Init default AI relationships? | 1 |
 | sv_gunship_episodic | Whether gunship uses "fixed patrol logic" | 0 |
+| sk_vortigaunt_zap_spread | Spread of vortigaunt's ranged attack | 0.05 |
+| sk_vortigaunt_zap_lead_time | Lead aim this much into the future. Vortigaunt specific variation of ai_lead_time | 0.1 |
 
 ### Changes
 
