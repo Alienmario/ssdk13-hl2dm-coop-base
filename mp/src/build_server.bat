@@ -15,6 +15,9 @@ IF "%config%"=="" (
 	set config=Release
 )
 
+:: Set current directory to the script directory
+cd %~dp0
+
 echo ----------------- VPC START -----------------
 echo.
 
