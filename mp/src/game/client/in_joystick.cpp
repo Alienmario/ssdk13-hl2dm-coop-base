@@ -26,9 +26,9 @@
 #include "inputsystem/iinputsystem.h"
 #include "inputsystem/ButtonCode.h"
 
-#ifndef SDK2013CE_BUILD
+#ifndef SDK2013CE
 #include "math.h"
-#endif // !SDK2013CE_BUILD
+#endif // !SDK2013CE
 
 #include "tier1/convar_serverbounded.h"
 #include "cam_thirdperson.h"

@@ -119,7 +119,7 @@ entities. Each one is useful under different conditions.
 #include "tier0/fasttimer.h"
 #include "utllinkedlist.h"
 #include "utldict.h"
-#ifdef SDK2013CE_BUILD
+#ifdef SDK2013CE
 #include <typeinfo>
 #else
 #ifdef WIN32
@@ -127,7 +127,7 @@ entities. Each one is useful under different conditions.
 #else
 #include <typeinfo>
 #endif
-#endif // SDK2013CE_BUILD
+#endif // SDK2013CE
 
 #include "tier1/utlintrusivelist.h"
 #include "tier1/utlstring.h"
