@@ -1,0 +1,85 @@
+"Ichthyosaur.Bite"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_bite1.wav"
+		"wave"		"npc/ichy/ichy_bite2.wav"
+
+	}
+}
+
+"Ichthyosaur.Alert"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_alert1.wav"
+		"wave"		"npc/ichy/ichy_alert2.wav"
+		"wave"		"npc/ichy/ichy_alert3.wav"
+	}
+}
+
+"Ichthyosaur.Pain"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_pain1.wav"
+		"wave"		"npc/ichy/ichy_pain2.wav"
+		"wave"		"npc/ichy/ichy_pain3.wav"
+		"wave"		"npc/ichy/ichy_pain5.wav"
+	}
+}
+
+"Ichthyosaur.Idle"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_70dB"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_idle1.wav"
+		"wave"		"npc/ichy/ichy_idle2.wav"
+		"wave"		"npc/ichy/ichy_idle3.wav"
+		"wave"		"npc/ichy/ichy_idle4.wav"
+	}
+}
+
+"Ichthyosaur.Die"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_90dB"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_die1.wav"
+		"wave"		"npc/ichy/ichy_die2.wav"
+		"wave"		"npc/ichy/ichy_die3.wav"
+		"wave"		"npc/ichy/ichy_die4.wav"
+	}
+}
+
+"Ichthyosaur.Attack"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_75dB"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/ichy/ichy_attack1.wav"
+		"wave"		"npc/ichy/ichy_attack2.wav"
+	}
+}

@@ -1,0 +1,287 @@
+// Choreo version 1
+actor "Mike"
+{
+  channel "audio"
+  {
+    event speak "broken_escape2\vo\mike\securitylockdown_01.wav"
+    {
+      time 3.900793 10.250793
+      param "broken_escape2\vo\mike\securitylockdown_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\entrance_01.wav"
+    {
+      time 12.194444 17.494444
+      param "broken_escape2\vo\mike\entrance_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\lostcontrol_01.wav"
+    {
+      time 20.583334 24.943335
+      param "broken_escape2\vo\mike\lostcontrol_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\unsealenterance_01.wav"
+    {
+      time 25.111111 28.361111
+      param "broken_escape2\vo\mike\unsealenterance_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "look at"
+  {
+    event lookat "mark_mike_look_armorymonitor"
+    {
+      time 0.046032 2.611039
+      param "mark_mike_look_armorymonitor"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8341
+        1.7531 0.8296
+        2.0723 0.7489
+      }
+    }
+    event lookat "!PVSPlayer"
+    {
+      time 3.423377 10.949369
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8206
+        1.7800 0.8341
+        5.1623 0.8341
+        6.7141 0.8206
+        7.0333 0.7489
+      }
+    }
+    event lookat "mark_mike_look_armoryconsole"
+    {
+      time 11.551717 15.095454
+      param "mark_mike_look_armoryconsole"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8341
+        2.7318 0.8296
+        3.0510 0.7489
+      }
+    }
+    event lookat "!PVSPlayer"
+    {
+      time 20.105387 28.388046
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8206
+        1.7800 0.8341
+        6.3546 0.8341
+        7.4707 0.8206
+        7.7899 0.7489
+      }
+    }
+    event lookat "mark_mike_look_armorymonitor"
+    {
+      time 15.162827 15.956565
+      param "mark_mike_look_armorymonitor"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.5737 0.8450
+        0.6064 0.8495
+        0.6602 0.7489
+      }
+    }
+    event lookat "mark_mike_look_armoryconsole"
+    {
+      time 16.079494 19.623232
+      param "mark_mike_look_armoryconsole"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8341
+        2.7318 0.8296
+        3.0510 0.7489
+      }
+    }
+  }
+  channel "move to "
+  {
+    event moveto "mark_mike_armoryconsole"
+    {
+      time 0.585714 3.299999
+      param "mark_mike_armoryconsole"
+      param2 "Run"
+      resumecondition
+    }
+  }
+  channel "face to"
+  {
+    event face "mark_mike_look_armoryconsole"
+    {
+      time 0.126984 2.248412
+      param "mark_mike_look_armoryconsole"
+      event_ramp
+      {
+        0.6500 0.7937
+        1.3867 0.9372
+        1.5466 1.0000
+        1.7228 1.0000
+        1.8467 1.0000
+        2.1214 1.0000
+      }
+    }
+    event face "!PVSPlayer"
+    {
+      time 3.627776 10.650372
+      param "!PVSPlayer"
+      event_ramp
+      {
+        1.0763 0.8027
+        1.3963 0.9462
+        1.8563 1.0000
+        5.4604 1.0000
+        5.9393 1.0000
+        6.8425 1.0000
+        7.0226 1.0000
+      }
+    }
+    event face "mark_mike_look_armoryconsole"
+    {
+      time 11.844443 15.127780
+      param "mark_mike_look_armoryconsole"
+      event_ramp
+      {
+        0.6500 0.7937
+        0.9700 0.9372
+        1.4300 1.0000
+        1.7211 1.0000
+        2.2000 1.0000
+        3.2833 1.0000
+      }
+    }
+    event face "!PVSPlayer"
+    {
+      time 20.385185 28.494444
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.5921 0.8161
+        0.8700 0.9731
+        1.3300 1.0000
+        6.5470 1.0000
+        7.0259 1.0000
+        7.9291 1.0000
+        8.1092 1.0000
+      }
+    }
+  }
+  channel "sequence"
+  {
+  }
+  channel "postures"
+  {
+    event gesture "NULL"
+    {
+      time 0.000000 1.411111
+      param "null1"
+    }
+    event gesture "p_ConsoleType_Rifle"
+    {
+      time 15.581745 19.859526
+      param "p_ConsoleType_Rifle"
+      absolutetags playback_time
+      {
+        "apex" 0.078828
+        "loop" 0.370492
+        "end" 0.770209
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.116279
+        "loop" 0.546512
+        "end" 0.697674
+      }
+      sequenceduration 2.900000
+    }
+    event gesture "NULL"
+    {
+      time 18.461428 19.872540
+      param "null1"
+    }
+  }
+  channel "gestures"
+  {
+    event gesture "NULL"
+    {
+      time 0.000000 1.344444
+      param "NULL"
+    }
+    event gesture "g_consoleType_rifle"
+    {
+      time 16.665873 19.010319
+      param "g_consoleType_rifle"
+      absolutetags playback_time
+      {
+        "in" 0.231410
+        "loop" 0.289263
+        "end" 0.754123
+        "out" 0.771185
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.275862
+        "loop" 0.344828
+        "end" 0.758621
+        "out" 0.775862
+      }
+      sequenceduration 1.966667
+    }
+    event gesture "NULL"
+    {
+      time 18.822540 20.166985
+      param "NULL"
+    }
+  }
+  channel "trigger"
+  {
+    event firetrigger "first pause"
+    {
+      time 2.809524 -1.000000
+      param "1"
+    }
+    event firetrigger "open door"
+    {
+      time 19.083330 -1.000000
+      param "2"
+    }
+    event firetrigger "next scene"
+    {
+      time 28.638891 -1.000000
+      param "3"
+    }
+  }
+}
+
+mapname "maps\klab_actormarks.bsp"
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "50"
+  "RampTool" "38"
+  "ExpressionTool" "40"
+  "CChoreoView" "24"
+}
+fps 60
+snap off
+ignorePhonemes off

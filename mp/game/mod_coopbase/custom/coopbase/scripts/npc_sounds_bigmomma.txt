@@ -1,0 +1,201 @@
+// BigMomma
+"NPC_BigMomma.SpitTouch1"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80dB"
+	"pitch"		"PITCH_NORM"
+	"wave"		"npc/bullchicken/bc_acid1.wav"
+}
+
+"NPC_BigMomma.SpitHit1"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80dB"
+	"pitch"		"PITCH_NORM"
+	"wave"		"npc/bullchicken/bc_spithit1.wav"
+}
+
+"NPC_BigMomma.SpitHit2"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80dB"
+	"pitch"		"PITCH_NORM"
+	"wave"		"npc/bullchicken/bc_spithit2.wav"
+}
+
+"BigMomma.AttackMiss"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"95,105"
+	"rndwave"
+	{
+		"wave"		"npc/zombie/claw_miss1.wav"
+		"wave"		"npc/zombie/claw_miss2.wav"
+	}
+}
+
+"BigMomma.AttackHit"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"95,105"
+	"rndwave"
+	{
+		"wave"		"npc/zombie/claw_strike1.wav"
+		"wave"		"npc/zombie/claw_strike2.wav"
+		"wave"		"npc/zombie/claw_strike3.wav"
+	}
+}
+
+"BigMomma.Attack"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_attack1.wav"
+		"wave"		"npc/gonarch/gon_attack2.wav"
+		"wave"		"npc/gonarch/gon_attack3.wav"
+	}
+}
+
+"BigMomma.Die"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_90db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_die1.wav"
+	}
+}
+
+"BigMomma.Pain"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_90db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_pain2.wav"
+		"wave"		"npc/gonarch/gon_pain4.wav"
+		"wave"		"npc/gonarch/gon_pain5.wav"
+	}
+}
+
+"BigMomma.Alert"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_alert1.wav"
+		"wave"		"npc/gonarch/gon_alert2.wav"
+		"wave"		"npc/gonarch/gon_alert3.wav"
+	}
+}
+
+"BigMomma.Birth"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_birth1.wav"
+		"wave"		"npc/gonarch/gon_birth2.wav"
+		"wave"		"npc/gonarch/gon_birth3.wav"
+	}
+}
+
+"BigMomma.LayHeadcrab"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"95,105"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_birth1.wav"
+		"wave"		"npc/gonarch/gon_birth2.wav"
+		"wave"		"npc/gonarch/gon_birth3.wav"
+	}
+}
+
+"BigMomma.Sack"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_sack1.wav"
+		"wave"		"npc/gonarch/gon_sack2.wav"
+		"wave"		"npc/gonarch/gon_sack3.wav"
+	}
+}
+
+
+"BigMomma.LaunchMortar"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_90db"
+	"pitch"		"95,105"
+
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_sack1.wav"
+		"wave"		"npc/gonarch/gon_sack2.wav"
+		"wave"		"npc/gonarch/gon_sack3.wav"
+	}
+}
+
+
+"BigMomma.FootstepLeft"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_step1.wav"
+		"wave"		"npc/gonarch/gon_step2.wav"
+		"wave"		"npc/gonarch/gon_step3.wav"
+	}
+}
+
+"BigMomma.FootstepRight"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_80db"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_step1.wav"
+		"wave"		"npc/gonarch/gon_step2.wav"
+		"wave"		"npc/gonarch/gon_step3.wav"
+	}
+}
+
+"BigMomma.ChildDie"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"1.0"
+	"soundlevel"	"SNDLVL_85db"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/gonarch/gon_childdie1.wav"
+		"wave"		"npc/gonarch/gon_childdie2.wav"
+		"wave"		"npc/gonarch/gon_childdie3.wav"
+	}
+}

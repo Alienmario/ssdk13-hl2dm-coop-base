@@ -1,0 +1,7 @@
+"VertexLitGeneric_DX6"
+{
+	"$envmap" "models\v_9mmhandgun/chrome_black"
+	"$envmapsphere"			1
+	"$envmapmode" 1
+	"$multipass" 1
+}

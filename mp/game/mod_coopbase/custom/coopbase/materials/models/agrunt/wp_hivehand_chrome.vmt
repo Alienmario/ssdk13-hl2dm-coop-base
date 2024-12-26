@@ -1,0 +1,13 @@
+"VertexLitGeneric_DX6"
+{
+
+        "$envmap" "models/agrunt/wp_hivehand_chrome"
+
+	"$envmapsphere"	"1"
+
+	"$envmapmode" "1"
+
+	"$multipass" "1"
+
+	"$surfaceprop" "alienflesh"
+}

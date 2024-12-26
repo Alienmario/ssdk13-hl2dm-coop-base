@@ -1,0 +1,27 @@
+"Hornet.Die"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"VOL_NORM"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/hornet/ag_hornethit1.wav"
+		"wave"		"npc/hornet/ag_hornethit2.wav"
+		"wave"		"npc/hornet/ag_hornethit3.wav"
+	}
+}
+
+"Hornet.Buzz"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"0.8"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"npc/hornet/ag_buzz1.wav"
+		"wave"		"npc/hornet/ag_buzz2.wav"
+		"wave"		"npc/hornet/ag_buzz3.wav"
+	}
+}

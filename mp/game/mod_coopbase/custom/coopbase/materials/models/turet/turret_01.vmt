@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\turet/Turret_01"
+
+	"$bumpmap" "models\turet\turret_01_normal"
+	"$phong" "1"
+	"$phongexponenttexture" "models\turet\turret_01_exponent"
+//	"$phongexponent" "25"
+	
+	"$phongboost" "10"	
+	//"$lightwarptexture" "models\turet\turret_01_lightwarp"
+	"$phongfresnelranges"	"[5 1 2]"
+//	"$halflambert" "1"
+
+//	"$envmap" "env_cubemap"
+//    "$normalmapalphaenvmapmask" 1
+
+    "$selfillum" 1
+}

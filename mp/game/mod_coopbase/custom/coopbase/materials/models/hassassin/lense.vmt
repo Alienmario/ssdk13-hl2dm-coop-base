@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitMaskedEnvMappedTexture
+	"$basetexture" "models/jin-roh/jin-rohhead"
+	"$nodecal" "1"
+	"$envmapmask" "Models/jin-roh/jin-rohhead-mask"
+	"$surfaceprop" "flesh"
+	"$envmap" "models/soria/soria-env"
+	"$envmapcontrast" 1.1
+	"$envmapsaturation" 0
+	"$selfillum" 1
+
+}
