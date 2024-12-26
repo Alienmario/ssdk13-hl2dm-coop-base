@@ -39,7 +39,7 @@ IF %ERRORLEVEL% GTR 0 goto retry
 echo.
 IF NOT "%sourcesdk_client_dest%"=="" (
 	echo Copying client binary to "%sourcesdk_client_dest%\bin\"
-	copy /b "..\game\mod_sdk2013ce\bin\client.dll" "%sourcesdk_client_dest%\bin\"
+	copy /b "..\game\mod_coopbase\bin\client.dll" "%sourcesdk_client_dest%\bin\"
 ) ELSE (
 	echo If you want to auto-install the client binary, define "sourcesdk_client_dest" env variable.
 )

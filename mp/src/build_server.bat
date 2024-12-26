@@ -40,7 +40,7 @@ IF %ERRORLEVEL% GTR 0 goto retry
 echo.
 IF NOT "%sourcesdk_server_dest%"=="" (
 	echo Copying server binary to "%sourcesdk_server_dest%\bin\"
-	copy /b "..\game\mod_sdk2013ce\bin\server.dll" "%sourcesdk_server_dest%\bin\"
+	copy /b "..\game\mod_coopbase\bin\server.dll" "%sourcesdk_server_dest%\bin\"
 ) ELSE (
 	echo If you want to auto-install the server binary, define "sourcesdk_server_dest" env variable.
 )
