@@ -24,7 +24,15 @@ It does so using modern build tools and working CI (thanks to SDK13-CE) and easy
 This is up to each server to implement! The goal of this project is to provide base fixed up binary to build on, not to seal in every player facing feature!  
 Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking for that - it even works on games without open source code.
 
-### ConVars
+## Building
+#### Don't want to:
+Just grab the latest build for your OS from the Actions tab.
+#### Windows:
+`./mp/src/build_server.bat`
+#### Linux:
+`./mp/src/build_server`
+
+## ConVars
 
 | ConVar | Description | Default |
 |--------|-------------|---------|
@@ -38,7 +46,7 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
 | sk_vortigaunt_zap_spread | Spread of vortigaunt's ranged attack | 0.05 |
 | sk_vortigaunt_zap_lead_time | Lead aim this much into the future. Vortigaunt specific variation of ai_lead_time | 0.1 |
 
-### Changes
+## Changes
 
 - Footsteps are per surfaceprop and forced serverside (You should not touch sv_footsteps)
 - Vehicles are smooth, including entry/exit animations without view snaps

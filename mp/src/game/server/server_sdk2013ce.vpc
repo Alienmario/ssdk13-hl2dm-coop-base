@@ -5,8 +5,8 @@
 //-----------------------------------------------------------------------------
 
 $Macro SRCDIR		"..\.."
-$Macro GAMENAME 	"sdk2013ce" [!$SOURCESDK]
-$Macro GAMENAME 	"mod_sdk2013ce" [$SOURCESDK]
+$Macro GAMENAME 	"coopbase" [!$SOURCESDK]
+$Macro GAMENAME 	"mod_coopbase" [$SOURCESDK]
 
 $Include "$SRCDIR\game\server\server_base.vpc"
 $Include "$SRCDIR\game\server\nav_mesh.vpc" [$SOURCESDK]

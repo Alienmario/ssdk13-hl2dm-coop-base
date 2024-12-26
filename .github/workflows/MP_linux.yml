@@ -32,12 +32,10 @@ jobs:
         working-directory: mp/src
         run: make -f Game.mak
 
-      - name: Pack
-        shell: bash
-        run: tar cJfv Linux.tar.xz --exclude="*.dbg" mp/game/mod_sdk2013ce/bin
-
-      - name: Upload product
+      - name: Upload package
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: mp_sdk2013ce
-          path: Linux.tar.xz
+          name: hl2dm-coopbase-lin
+          path: |
+            mp/game/mod_coopbase/bin/
+            !**/*.dbg
