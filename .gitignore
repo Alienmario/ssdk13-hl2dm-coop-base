@@ -80,9 +80,6 @@ config.cfg
 # shader files
 *.tmp
 
-# Microsoft Speech API
-sp/src/utils/sapi51/
-
 # Ignore various Linux vpc products
 compile_commands.json
 *.project
