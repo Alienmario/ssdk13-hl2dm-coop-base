@@ -93,7 +93,6 @@ public:
 		// so we aren't deleted
 		SetIsInUse( true );
 	}
-
 	virtual void Accept()
 	{
 		ConfirmShowVoteSetup( true, this );

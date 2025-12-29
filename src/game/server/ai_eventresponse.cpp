@@ -72,7 +72,7 @@ void CNPCEventResponseSystem::TriggerEvent( const char *pResponse, bool bForce, 
 //-----------------------------------------------------------------------------
 void CNPCEventResponseSystem::FrameUpdatePreEntityThink()
 {
- 	if ( !m_ActiveEvents.Count() || !AI_IsSinglePlayer() || !UTIL_GetLocalPlayer() )
+ 	if ( !m_ActiveEvents.Count() || !UTIL_GetLocalPlayer() )
 		return;
 
 	if ( m_flNextEventPoll > gpGlobals->curtime )
@@ -114,19 +114,25 @@ void CNPCEventResponseSystem::FrameUpdatePreEntityThink()
 			{
 				float flNearestDist = NPCEVENTRESPONSE_DISTANCE_SQR;
 				CAI_BaseNPC *pNearestNPC = NULL;
-				Vector vecPlayerCenter = UTIL_GetLocalPlayer()->WorldSpaceCenter();
 
-				// Try and find the nearest NPC to the player
+				// Try and find the nearest NPC to a player
 				CAI_BaseNPC **ppAIs = g_AI_Manager.AccessAIs();
 				for ( int j = 0; j < g_AI_Manager.NumAIs(); j++ )
 				{
 					if ( ppAIs[j]->CanRespondToEvent( pResponse ))
 					{
-						float flDistToPlayer = ( vecPlayerCenter - ppAIs[j]->WorldSpaceCenter()).LengthSqr();
-						if ( flDistToPlayer < flNearestDist )
+						for (int iClient = 1; iClient <= gpGlobals->maxClients; iClient++)
 						{
-							flNearestDist = flDistToPlayer;
-							pNearestNPC = ppAIs[j];
+							CBasePlayer *pPlayer = UTIL_PlayerByIndex(iClient);
+							if (!pPlayer || pPlayer->IsDisconnecting() || pPlayer->IsFakeClient() || !pPlayer->IsAlive() )
+								continue;
+
+							float flDistToPlayer = ( pPlayer->WorldSpaceCenter() - ppAIs[j]->WorldSpaceCenter()).LengthSqr();
+							if ( flDistToPlayer < flNearestDist )
+							{
+								flNearestDist = flDistToPlayer;
+								pNearestNPC = ppAIs[j];
+							}
 						}
 					}
 				}

@@ -140,6 +140,7 @@ private:
 	int m_nHeadcrabType;
 	int m_nHeadcrabCount;
 	Vector m_vecImpactPosition;
+	QAngle m_vecStartAngles;
 	float m_flDamageRadius;
 	float m_flDamage;
 	bool m_bIncomingSoundStarted;
@@ -258,6 +259,7 @@ void CEnvHeadcrabCanister::Spawn( void )
 	Precache();
 	BaseClass::Spawn();
 
+	m_vecStartAngles = GetAbsAngles();
 	// Do we have a position to launch from?
 	if ( m_iszLaunchPositionName != NULL_STRING )
 	{
@@ -966,6 +968,18 @@ void CEnvHeadcrabCanister::HeadcrabCanisterWorldThink( void )
 	Vector vecEndPosition;
 	QAngle vecEndAngles;
 	m_Shared.GetPositionAtTime( flTime, vecEndPosition, vecEndAngles );
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (IS_NAN(vecEndAngles[i]))
+		{
+			vecEndAngles[i] = m_vecStartAngles[i];
+		}
+		if (IS_NAN(vecEndPosition[i]))
+		{	
+			vecEndPosition[i] = m_vecImpactPosition[i];
+		}
+	}
 
 	if ( !m_bIncomingSoundStarted && !HasSpawnFlags( SF_NO_IMPACT_SOUND ) )
 	{

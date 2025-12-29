@@ -1,0 +1,226 @@
+// TALKING TURRET
+
+"NPC_FloorTurretDefective.TalkActive"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return01.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return02.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return03.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return04.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return05.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return06.mp3"
+		"wave"			"npc/turret_defective_rus/finale02_turret_defect_return07.mp3"
+	}
+
+	
+}
+
+"NPC_FloorTurretDefective.TalkAutosearch"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_test07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkCollide"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_80dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/turret_collide_1.mp3"
+		"wave"			"npc/turret_defective_rus/turret_collide_2.mp3"
+		"wave"			"npc/turret_defective_rus/turret_collide_3.mp3"
+		"wave"			"npc/turret_defective_rus/turret_collide_4.mp3"
+		"wave"			"npc/turret_defective_rus/turret_collide_5.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkDeploy"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_75dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_prerange07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkDisabled"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive01.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive02.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive03.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive04.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive05.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive06.mp3"
+		"wave"			"npc/turret_defective_rus/glados_battle_defect_arrive07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkPickup"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/turret_pickup_1.mp3"
+		//"wave"			"npc/turret_defective_rus/turret_pickup_2.mp3"
+		"wave"			"npc/turret_defective_rus/turret_pickup_3.mp3"
+		//"wave"			"npc/turret_defective_rus/turret_pickup_4.mp3"
+		//"wave"			"npc/turret_defective_rus/turret_pickup_5.mp3"
+		"wave"			"npc/turret_defective_rus/turret_pickup_6.mp3"
+		"wave"			"npc/turret_defective_rus/turret_pickup_7.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkRetire"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_pass07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkSearch"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_70dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_postrange07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkShotAt"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_80dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_laugh07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkTipped"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_75dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail01.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail02.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail03.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail04.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail05.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail06.mp3"
+		"wave"			"npc/turret_defective_rus/sp_sabotage_factory_defect_fail07.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.TalkDissolved"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_75dB"
+
+	"rndwave"
+	{
+		"wave"			"npc/turret_defective_rus/turret_fizzler_1.mp3"
+	}
+}
+
+"NPC_FloorTurretDefective.DeployingKlaxon"
+{
+	"channel"		"CHAN_VOICE"
+	"volume"		"VOL_NORM"
+	"pitch"			"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_80dB"
+
+	"wave"			"ambient/alarms/klaxon1.mp3"
+}

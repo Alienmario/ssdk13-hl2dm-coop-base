@@ -72,7 +72,6 @@ BEGIN_SIMPLE_DATADESC( CRagdoll )
 
 END_DATADESC()
 
-
 IPhysicsObject *CRagdoll::GetElement( int elementNum )
 { 
 	return m_ragdoll.list[elementNum].pObject;

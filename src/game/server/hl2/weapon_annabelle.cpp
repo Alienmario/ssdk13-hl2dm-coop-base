@@ -102,6 +102,7 @@ IMPLEMENT_ACTTABLE(CWeaponAnnabelle);
 
 void CWeaponAnnabelle::Precache( void )
 {
+	AddSpawnFlags( SF_NPC_NO_WEAPON_DROP );
 	CBaseCombatWeapon::Precache();
 }
 

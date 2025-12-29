@@ -259,6 +259,23 @@ void SendProxy_Angles( const SendProp *pProp, const void *pStruct, const void *p
 	pOut->m_Vector[ 2 ] = anglemod( a->z );
 }
 
+extern ConVar mp_noblock;
+
+void SendProxy_CollisionGroup( const SendProp *pProp, const void *pStruct, const void *pData, DVariant *pOut, int iElement, int objectID )
+{
+	CBaseEntity *pEntity = (CBaseEntity*)pStruct;
+	Assert( pEntity );
+
+	if ( pEntity->IsPlayer() && mp_noblock.GetBool() )
+	{
+		pOut->m_Int = COLLISION_GROUP_DEBRIS_TRIGGER;
+	}
+	else
+	{
+		pOut->m_Int = *(int*)pData;
+	}
+}
+
 // This table encodes the CBaseEntity data.
 IMPLEMENT_SERVERCLASS_ST_NOBASE( CBaseEntity, DT_BaseEntity )
 	SendPropDataTable( "AnimTimeMustBeFirst", 0, &REFERENCE_SEND_TABLE(DT_AnimTimeMustBeFirst), SendProxy_ClientSideAnimation ),
@@ -278,7 +295,7 @@ IMPLEMENT_SERVERCLASS_ST_NOBASE( CBaseEntity, DT_BaseEntity )
 	SendPropInt		(SENDINFO(m_fEffects),		EF_MAX_BITS, SPROP_UNSIGNED),
 	SendPropInt		(SENDINFO(m_clrRender),	32, SPROP_UNSIGNED),
 	SendPropInt		(SENDINFO(m_iTeamNum),		TEAMNUM_NUM_BITS, 0),
-	SendPropInt		(SENDINFO(m_CollisionGroup), 5, SPROP_UNSIGNED),
+	SendPropInt		(SENDINFO(m_CollisionGroup), 5, SPROP_UNSIGNED, SendProxy_CollisionGroup),
 	SendPropFloat	(SENDINFO(m_flElasticity), 0, SPROP_COORD),
 	SendPropFloat	(SENDINFO(m_flShadowCastDistance), 12, SPROP_UNSIGNED ),
 	SendPropEHandle (SENDINFO(m_hOwnerEntity)),
@@ -4622,12 +4639,12 @@ void CBaseEntity::GetInputDispatchEffectPosition( const char *sInputString, Vect
 //-----------------------------------------------------------------------------
 void CBaseEntity::InputKill( inputdata_t &inputdata )
 {
-	// tell owner ( if any ) that we're dead.This is mostly for NPCMaker functionality.
-	CBaseEntity *pOwner = GetOwnerEntity();
-	if ( pOwner )
+	// tell the NPCMaker that we're dead.
+	CBaseEntity *pMaker = m_hMakerEntity.Get();
+	if ( pMaker )
 	{
-		pOwner->DeathNotice( this );
-		SetOwnerEntity( NULL );
+		pMaker->DeathNotice( this );
+		m_hMakerEntity = NULL;
 	}
 
 	UTIL_Remove( this );
@@ -4642,12 +4659,12 @@ void CBaseEntity::InputKillHierarchy( inputdata_t &inputdata )
 		pChild->InputKillHierarchy( inputdata );
 	}
 
-	// tell owner ( if any ) that we're dead. This is mostly for NPCMaker functionality.
-	CBaseEntity *pOwner = GetOwnerEntity();
-	if ( pOwner )
+	// tell the NPCMaker that we're dead.
+	CBaseEntity *pMaker = m_hMakerEntity.Get();
+	if ( pMaker )
 	{
-		pOwner->DeathNotice( this );
-		SetOwnerEntity( NULL );
+		pMaker->DeathNotice( this );
+		m_hMakerEntity = NULL;
 	}
 
 	UTIL_Remove( this );

@@ -385,7 +385,6 @@ void MapEntity_ParseAllEntities(const char *pMapData, IMapEntityFilter *pFilter,
 			DispatchSpawn(pEntity);
 			continue;
 		}
-
 		CNodeEnt *pNode = dynamic_cast<CNodeEnt*>(pEntity);
 		if ( pNode )
 		{

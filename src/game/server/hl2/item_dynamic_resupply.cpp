@@ -291,7 +291,7 @@ void CItem_DynamicResupply::InputKill( inputdata_t &data )
 //-----------------------------------------------------------------------------
 void CItem_DynamicResupply::InputCalculateType( inputdata_t &data )
 {
-	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	SpawnDynamicItem( pPlayer );
 }
 
@@ -572,7 +572,8 @@ bool CItem_DynamicResupply::SpawnItemFromRatio( int nCount, DynamicResupplyItems
 //-----------------------------------------------------------------------------
 void CItem_DynamicResupply::SpawnDynamicItem( CBasePlayer *pPlayer )
 {
-	Assert( pPlayer );
+	if( !pPlayer )
+		return;
 
 	// If we're the master, we never want to spawn
 	if ( g_MasterResupply == this )

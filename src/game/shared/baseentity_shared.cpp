@@ -86,7 +86,7 @@ bool CheckEmitReasonablePhysicsSpew()
 
 	// Reported recently?
 	double now = Plat_FloatTime();
-	if ( now >= s_LastEntityReasonableEmitTime && now < s_LastEntityReasonableEmitTime + 5.0 )
+	if ( now >= s_LastEntityReasonableEmitTime && now < s_LastEntityReasonableEmitTime + 30.0 )
 	{
 		// Already reported recently
 		return false;
@@ -1605,7 +1605,8 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 	bool bDoServerEffects = true;
 
 #if defined( HL2MP ) && defined( GAME_DLL )
-	bDoServerEffects = false;
+	if ( IsPlayer() )
+		bDoServerEffects = false;
 #endif
 
 #if defined( GAME_DLL )
@@ -1893,7 +1894,16 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 			if ( !bHitWater || ((info.m_nFlags & FIRE_BULLETS_DONT_HIT_UNDERWATER) == 0) )
 			{
 				// Damage specified by function parameter
-				CTakeDamageInfo dmgInfo( this, pAttacker, flActualDamage, nActualDamageType );
+				// CTakeDamageInfo dmgInfo( this, pAttacker, flActualDamage, nActualDamageType );
+				// COOPBASE: set inflictor to attacker's weapon
+				CBaseEntity *pInflictor = pAttacker;
+				CBaseCombatCharacter *pCombatCharacter = pAttacker->MyCombatCharacterPointer();
+				if ( pCombatCharacter && pCombatCharacter->GetActiveWeapon() )
+				{
+					pInflictor = pCombatCharacter->GetActiveWeapon();
+				}
+				CTakeDamageInfo dmgInfo( pInflictor, pAttacker, flActualDamage, nActualDamageType );
+				// COOPBASE end
 				ModifyFireBulletsDamage( &dmgInfo );
 				CalculateBulletDamageForce( &dmgInfo, info.m_iAmmoType, vecDir, tr.endpos );
 				dmgInfo.ScaleDamageForce( info.m_flDamageForceScale );
@@ -1909,6 +1919,7 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 				{
 					if ( bDoServerEffects == true )
 					{
+						CDisablePredictionFiltering disablePred;
 						DoImpactEffect( tr, nDamageType );
 					}
 					else
@@ -1957,6 +1968,8 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 		{
 			if ( bDoServerEffects == true )
 			{
+				CDisablePredictionFiltering disablePred;
+				
 				Vector vecTracerSrc = vec3_origin;
 				ComputeTracerStartPosition( info.m_vecSrc, &vecTracerSrc );
 

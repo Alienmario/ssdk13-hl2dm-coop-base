@@ -486,11 +486,25 @@ MicrophoneResult_t CEnvMicrophone::SoundPlayed( int entindex, const char *soundn
 	ep.m_SoundLevel = soundlevel;
 	ep.m_nFlags = iFlags;
 	ep.m_nPitch = iPitch;
-	ep.m_pOrigin = &m_hSpeaker->GetAbsOrigin();
+	if( !m_hSpeaker->IsPlayer() )
+		ep.m_pOrigin = &m_hSpeaker->GetAbsOrigin();
 	ep.m_flSoundTime = soundtime;
 	ep.m_nSpeakerEntity = entindex;
 
-	CBaseEntity::EmitSound( filter, m_hSpeaker->entindex(), ep );
+	if ( !m_hSpeaker->IsPlayer() )
+		CBaseEntity::EmitSound( filter, m_hSpeaker->entindex(), ep );
+	else
+	{
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			CBasePlayer *pPlayer = UTIL_PlayerByIndex(i);
+			if ( pPlayer && pPlayer->IsConnected() ) {
+				filter.RemoveAllRecipients();
+				filter.AddRecipient(pPlayer);
+				pPlayer->EmitSound( filter, i, ep );
+			}
+		}
+	}
 
 	Q_strncpy( m_szLastSound, soundname, sizeof(m_szLastSound) );
 	m_OnRoutedSound.FireOutput( this, this, 0 );

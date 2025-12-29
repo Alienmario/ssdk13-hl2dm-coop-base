@@ -1339,7 +1339,6 @@ void CTeamplayRoundBasedRules::State_Transition( gamerules_roundstate_t newState
 
 	State_Leave();
 	State_Enter( newState );
-
 }	
 
 //-----------------------------------------------------------------------------

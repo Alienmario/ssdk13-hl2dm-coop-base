@@ -1188,7 +1188,6 @@ bool CNavMesh::Save( void ) const
 			ladder->Save( fileBuffer, NavCurrentVersion );
 		}
 	}
-
 	//
 	// Store derived class mesh info
 	//
@@ -1469,7 +1468,6 @@ NavErrorType CNavMesh::Load( void )
 		Msg( "Unknown navigation file version.\n" );
 		return NAV_BAD_FILE_VERSION;
 	}
-
 	unsigned int subVersion = 0;
 	if ( version >= 10 )
 	{

@@ -35,6 +35,106 @@ int ITEM_GiveAmmo( CBasePlayer *pPlayer, float flCount, const char *pszAmmoName,
 	return pPlayer->GiveAmmo( flCount, iAmmoType, bSuppressSound );
 }
 
+// COOPBASE START
+class CItem_HealthVial : public CItem
+{
+public:
+	DECLARE_CLASS( CItem_HealthVial, CItem );
+	
+	void Spawn( void )
+	{ 
+		Precache( );
+		SetModel( "models/healthvial.mdl");
+		BaseClass::Spawn( );
+	}
+
+	void Precache( void )
+	{
+		PrecacheModel ("models/healthvial.mdl");
+	}
+
+	bool MyTouch( CBasePlayer *pPlayer )
+	{
+		if (ITEM_GiveAmmo( pPlayer, 1, "HealthAmmo"))
+		{
+			if ( g_pGameRules->ItemShouldRespawn( this ) == GR_ITEM_RESPAWN_NO )
+			{
+				UTIL_Remove(this);	
+			}
+			return true;
+		}
+		return false;
+	}
+};
+LINK_ENTITY_TO_CLASS(item_ammo_healthvial, CItem_HealthVial);
+
+class CItem_FlechetteRound : public CItem
+{
+public:
+	DECLARE_CLASS(CItem_FlechetteRound, CItem);
+	
+	void Precache(void)
+	{
+		PrecacheModel("models/weapons/hunter_flechette.mdl");
+	}
+
+	void Spawn(void)
+	{
+		Precache();
+		SetModel("models/weapons/hunter_flechette.mdl");
+		BaseClass::Spawn();
+	}
+
+	bool MyTouch(CBasePlayer *pPlayer)
+	{
+		if (ITEM_GiveAmmo(pPlayer, 120, "FlechetteRound"))
+		{
+			if (g_pGameRules->ItemShouldRespawn(this) == GR_ITEM_RESPAWN_NO)
+			{
+				UTIL_Remove(this);
+			}
+			return true;
+		}
+		return false;
+	}
+};
+LINK_ENTITY_TO_CLASS(item_ammo_flechette, CItem_FlechetteRound);
+
+class CItem_ManHack : public CItem
+{
+public:
+	DECLARE_CLASS(CItem_ManHack, CItem);
+	void Precache(void)
+	{
+		PrecacheModel("models/manhack.mdl");
+	}
+	void Spawn(void)
+	{
+		Precache();
+		SetModel("models/manhack.mdl");
+		BaseClass::Spawn();
+	}
+
+	bool MyTouch(CBasePlayer *pPlayer)
+	{
+		if (ITEM_GiveAmmo(pPlayer, 5, "Manhack"))
+		{
+			if (g_pGameRules->ItemShouldRespawn(this) == GR_ITEM_RESPAWN_NO)
+			{
+				UTIL_Remove(this);
+			}
+			return true;
+		}
+		return false;
+	}
+
+#if defined( HL2MP )
+	virtual const char *GetWeaponClassForAmmo() const { return "weapon_manhack"; }
+#endif
+};
+LINK_ENTITY_TO_CLASS(item_ammo_manhack, CItem_ManHack);
+// COOPBASE END
+
 // ========================================================================
 //	>> BoxSRounds
 // ========================================================================
@@ -736,18 +836,18 @@ END_DATADESC()
 // Models names
 const char *CItem_AmmoCrate::m_lpzModelNames[NUM_AMMO_CRATE_TYPES] =
 {
-	"models/items/ammocrate_pistol.mdl",	// Small rounds
+	"models/items/ammocrate_smg1.mdl",      // Small rounds // COOPBASE: Missing model "models/items/ammocrate_pistol.mdl"
 	"models/items/ammocrate_smg1.mdl",		// Medium rounds
 	"models/items/ammocrate_ar2.mdl",		// Large rounds
 	"models/items/ammocrate_rockets.mdl",	// RPG rounds
-	"models/items/ammocrate_buckshot.mdl",	// Buckshot
+	"models/items/ammocrate_smg1.mdl",	    // Buckshot // COOPBASE: Missing model "models/items/ammocrate_buckshot.mdl"
 	"models/items/ammocrate_grenade.mdl",	// Grenades
 	"models/items/ammocrate_smg1.mdl",		// 357
 	"models/items/ammocrate_smg1.mdl",	// Crossbow
 	
 	//FIXME: This model is incorrect!
 	"models/items/ammocrate_ar2.mdl",		// Combine Ball 
-	"models/items/ammocrate_smg2.mdl",	    // smg grenade
+	"models/items/ammocrate_smg1.mdl",	    // smg grenade // COOPBASE: Missing model "models/items/ammocrate_smg2.mdl"
 };
 
 // Ammo type names
@@ -914,7 +1014,7 @@ void CItem_AmmoCrate::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 		SetNextThink( gpGlobals->curtime + 0.1f );
 	}
 
-	// Don't close again for two seconds
+	// Don't close again for x seconds
 	m_flCloseTime = gpGlobals->curtime + AMMO_CRATE_CLOSE_DELAY;
 }
 
@@ -981,6 +1081,10 @@ void CItem_AmmoCrate::HandleAnimEvent( animevent_t *pEvent )
 			}
 			m_hActivator = NULL;
 		}
+		// COOPBASE START
+		m_flCloseTime = gpGlobals->curtime;
+		SetNextThink(m_flCloseTime);
+		// COOPBASE END
 		return;
 	}
 
@@ -993,7 +1097,8 @@ void CItem_AmmoCrate::HandleAnimEvent( animevent_t *pEvent )
 //-----------------------------------------------------------------------------
 void CItem_AmmoCrate::CrateThink( void )
 {
-	StudioFrameAdvance();
+	// StudioFrameAdvance();
+	StudioFrameAdvanceManual( 0.2 ); // COOPBASE
 	DispatchAnimEvents( this );
 
 	SetNextThink( gpGlobals->curtime + 0.1f );

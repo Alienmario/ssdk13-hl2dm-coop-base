@@ -6,7 +6,9 @@
 
 #include "cbase.h"
 #include "weapon_hl2mpbasehlmpcombatweapon.h"
+#include "weapon_pistol.h"
 #include "hl2mp_player.h"
+#include "weapon_physcannon.h"
 #include "globalstate.h"
 #include "game.h"
 #include "gamerules.h"
@@ -22,6 +24,8 @@
 #include "gamestats.h"
 #include "ammodef.h"
 #include "NextBot.h"
+#include "info_player_spawn.h"
+#include "activitylist.h"
 
 #include "engine/IEngineSound.h"
 #include "SoundEmitterSystem/isoundemittersystembase.h"
@@ -43,8 +47,9 @@ void DropPrimedFragGrenade( CHL2MP_Player *pPlayer, CBaseCombatWeapon *pGrenade 
 
 LINK_ENTITY_TO_CLASS( player, CHL2MP_Player );
 
-LINK_ENTITY_TO_CLASS( info_player_combine, CPointEntity );
-LINK_ENTITY_TO_CLASS( info_player_rebel, CPointEntity );
+// COOPBASE: Moved out
+// LINK_ENTITY_TO_CLASS( info_player_combine, CPointEntity );
+// LINK_ENTITY_TO_CLASS( info_player_rebel, CPointEntity );
 
 // specific to the local player
 BEGIN_SEND_TABLE_NOBASE( CHL2MP_Player, DT_HL2MPLocalPlayerExclusive )
@@ -209,14 +214,14 @@ void CHL2MP_Player::GiveAllItems( void )
 	CBasePlayer::GiveAmmo( 255,	"AR2" );
 	CBasePlayer::GiveAmmo( 5,	"AR2AltFire" );
 	CBasePlayer::GiveAmmo( 255,	"SMG1");
-	CBasePlayer::GiveAmmo( 1,	"smg1_grenade");
+	CBasePlayer::GiveAmmo( 5,	"smg1_grenade");
 	CBasePlayer::GiveAmmo( 255,	"Buckshot");
 	CBasePlayer::GiveAmmo( 32,	"357" );
-	CBasePlayer::GiveAmmo( 3,	"rpg_round");
+	CBasePlayer::GiveAmmo( 5,	"rpg_round");
 	CBasePlayer::GiveAmmo( 16,	"XBowBolt");
 
-	CBasePlayer::GiveAmmo( 1,	"grenade" );
-	CBasePlayer::GiveAmmo( 2,	"slam" );
+	CBasePlayer::GiveAmmo( 7,	"grenade" );
+	CBasePlayer::GiveAmmo( 5,	"slam" );
 
 	GiveNamedItem( "weapon_crowbar" );
 	GiveNamedItem( "weapon_stunstick" );
@@ -404,7 +409,7 @@ bool CHL2MP_Player::ValidatePlayerModel( const char *pModel )
 	return false;
 }
 
-ConVar hl2mp_allow_pickup( "hl2mp_allow_pickup", "0", FCVAR_GAMEDLL );
+ConVar hl2mp_allow_pickup( "hl2mp_allow_pickup", "1", FCVAR_GAMEDLL );
 
 void CHL2MP_Player::PickupObject( CBaseEntity* pObject, bool bLimitMassAndSize )
 {
@@ -608,6 +613,25 @@ void CHL2MP_Player::PreThink( void )
 	//Reset bullet force accumulator, only lasts one frame
 	m_vecTotalBulletForce = vec3_origin;
 	SetLocalAngles( vOldAngles );
+
+	// Fix clientside prediction errors when dropping objects
+	if ( GetPlayerHeldEntity(this) )
+	{
+		CBaseCombatWeapon *pWeapon = GetActiveWeapon();
+		if ( pWeapon )
+		{
+			float fDelayedFire = gpGlobals->curtime + 0.2;
+			pWeapon->m_flNextPrimaryAttack = fDelayedFire;
+			pWeapon->m_flNextSecondaryAttack = fDelayedFire;
+
+			CWeaponPistol *pPistol = dynamic_cast<CWeaponPistol *>( pWeapon );
+			if ( pPistol )
+			{
+				pPistol->m_flSoonestPrimaryAttack = fDelayedFire;
+			}
+		}
+	}
+
 }
 
 void CHL2MP_Player::PostThink( void )
@@ -684,7 +708,7 @@ bool CHL2MP_Player::WantsLagCompensationOnEntity( const CBasePlayer *pPlayer, co
 {
 	// No need to lag compensate at all if we're not attacking in this command and
 	// we haven't attacked recently.
-	if ( !( pCmd->buttons & IN_ATTACK ) && (pCmd->command_number - m_iLastWeaponFireUsercmd > 5) )
+	if ( !( pCmd->buttons & (IN_ATTACK|IN_ATTACK2) ) && (pCmd->command_number - m_iLastWeaponFireUsercmd > 5) )
 		return false;
 
 	// If this entity hasn't been transmitted to us and acked, then don't bother lag compensating it.
@@ -873,32 +897,75 @@ void CHL2MP_Player::SetAnimation( PLAYER_ANIM playerAnim )
 
 		if (animDesired == -1)
 		{
-			animDesired = SelectWeightedSequence( idealActivity );
+			if ( idealActivity == ACT_HL2MP_IDLE )
+			{
+				animDesired = SelectWeightedSequence( ACT_IDLE );
+			}
+			else if ( idealActivity == ACT_HL2MP_WALK_CROUCH )
+			{
+				animDesired = SelectWeightedSequence( ACT_WALK );
+				if ( animDesired == -1 )
+				{
+					animDesired = SelectWeightedSequence( ACT_RUN );
+				}
+			}
+			else if ( idealActivity == ACT_HL2MP_RUN )
+			{
+				animDesired = SelectWeightedSequence( ACT_RUN );
+				if ( animDesired == -1 )
+				{
+					animDesired = SelectWeightedSequence( ACT_WALK );
+				}
+			}
+			else if ( idealActivity == ACT_HL2MP_JUMP )
+			{
+				animDesired = SelectWeightedSequence( ACT_JUMP );
+			}
 
 			if ( animDesired == -1 )
 			{
-				animDesired = 0;
+				animDesired = SelectWeightedSequence( idealActivity );
+			}
+
+			if ( animDesired == -1 )
+			{
+				// Use the physgun activities as absolutely last option
+				Activity defaultAct = ACT_INVALID;
+				if (idealActivity == ACT_HL2MP_GESTURE_RANGE_ATTACK) defaultAct = ACT_HL2MP_GESTURE_RANGE_ATTACK_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_GESTURE_RELOAD) defaultAct = ACT_HL2MP_GESTURE_RELOAD_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_IDLE) defaultAct = ACT_HL2MP_IDLE_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_IDLE_CROUCH) defaultAct = ACT_HL2MP_IDLE_CROUCH_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_JUMP) defaultAct = ACT_HL2MP_JUMP_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_RUN) defaultAct = ACT_HL2MP_RUN_PHYSGUN;
+				else if (idealActivity == ACT_HL2MP_WALK_CROUCH) defaultAct = ACT_HL2MP_WALK_CROUCH_PHYSGUN;
+				animDesired = SelectWeightedSequence( defaultAct );
 			}
 		}
-	
+
+		if (GetMoveType() == MOVETYPE_NOCLIP)
+		{
+			Activity gmodNoclipActivity = Activity(ActivityList_IndexForName("ACT_GMOD_NOCLIP_LAYER"));
+			if (gmodNoclipActivity != ACT_INVALID)
+			{
+				int noclipSeq = SelectWeightedSequence(gmodNoclipActivity);
+				if (noclipSeq != -1)
+					animDesired = noclipSeq;
+			}
+		}
+
+		if (animDesired == -1)
+			animDesired = 0;
+		
 		// Already using the desired animation?
 		if ( GetSequence() == animDesired )
 			return;
 
 		m_flPlaybackRate = 1.0;
+		// Msg( "Set animation to %d\n", animDesired );
+		// Reset to first frame of desired animation
 		ResetSequence( animDesired );
 		SetCycle( 0 );
-		return;
 	}
-
-	// Already using the desired animation?
-	if ( GetSequence() == animDesired )
-		return;
-
-	//Msg( "Set animation to %d\n", animDesired );
-	// Reset to first frame of desired animation
-	ResetSequence( animDesired );
-	SetCycle( 0 );
 }
 
 
@@ -957,59 +1024,91 @@ bool CHL2MP_Player::BumpWeapon( CBaseCombatWeapon *pWeapon )
 
 void CHL2MP_Player::ChangeTeam( int iTeam )
 {
-/*	if ( GetNextTeamChangeTime() >= gpGlobals->curtime )
+	/* if ( GetNextTeamChangeTime() >= gpGlobals->curtime )
 	{
 		char szReturnString[128];
 		Q_snprintf( szReturnString, sizeof( szReturnString ), "Please wait %d more seconds before trying to switch teams again.\n", (int)(GetNextTeamChangeTime() - gpGlobals->curtime) );
 
 		ClientPrint( this, HUD_PRINTTALK, szReturnString );
 		return;
-	}*/
+	} */
 
+	int iPrevTeam = GetTeamNumber();
 	bool bKill = false;
 
-	if ( HL2MPRules()->IsTeamplay() != true && iTeam != TEAM_SPECTATOR )
+	if ( !HL2MPRules()->IsTeamplay() && iTeam != TEAM_SPECTATOR )
 	{
 		//don't let them try to join combine or rebels during deathmatch.
 		iTeam = TEAM_UNASSIGNED;
 	}
 
-	if ( HL2MPRules()->IsTeamplay() == true )
+	BaseClass::ChangeTeam( iTeam );
+	iTeam = GetTeamNumber();
+
+	if ( HL2MPRules()->IsTeamplay() )
 	{
-		if ( iTeam != GetTeamNumber() && GetTeamNumber() != TEAM_UNASSIGNED )
+		SetPlayerTeamModel();
+		if ( iPrevTeam != TEAM_UNASSIGNED )
 		{
 			bKill = true;
 		}
-	}
-
-	BaseClass::ChangeTeam( iTeam );
-
-	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
-
-	if ( HL2MPRules()->IsTeamplay() == true )
-	{
-		SetPlayerTeamModel();
 	}
 	else
 	{
 		SetPlayerModel();
 	}
 
+	if ( iPrevTeam == iTeam )
+	{
+		// no change
+		return;
+	}
+
+	m_flNextTeamChangeTime = gpGlobals->curtime + TEAM_CHANGE_INTERVAL;
+
+	if ( bKill )
+	{
+		CommitSuicide( false, true );
+	}
+
 	if ( iTeam == TEAM_SPECTATOR )
 	{
 		RemoveAllItems( true );
+		
+		if ( FlashlightIsOn() )
+		{
+			FlashlightTurnOff();
+		}
+		
+		if ( IsInAVehicle() )
+		{
+			LeaveVehicle();
+		}
 
 		State_Transition( STATE_OBSERVER_MODE );
 	}
-
-	if ( bKill == true )
+	else
 	{
-		CommitSuicide();
+		StopObserverMode();
+		State_Transition(STATE_ACTIVE);
+	}
+	
+	if (iPrevTeam == TEAM_SPECTATOR && !IsAlive() && !IsDisconnecting() && !IsHLTV() )
+	{
+		Spawn();
 	}
 }
 
 bool CHL2MP_Player::HandleCommand_JoinTeam( int team )
 {
+	if ( team == TEAM_SPECTATOR && IsHLTV() )
+	{
+		ChangeTeam( TEAM_SPECTATOR );
+		ResetDeathCount();
+		ResetFragCount();
+		return true;
+	}
+	
 	if ( !GetGlobalTeam( team ) || team == 0 )
 	{
 		Warning( "HandleCommand_JoinTeam( %d ) - invalid team index.\n", team );
@@ -1019,35 +1118,14 @@ bool CHL2MP_Player::HandleCommand_JoinTeam( int team )
 	if ( team == TEAM_SPECTATOR )
 	{
 		// Prevent this is the cvar is set
-		if ( !mp_allowspectators.GetInt() && !IsHLTV() )
+		if ( !mp_allowspectators.GetInt() )
 		{
 			ClientPrint( this, HUD_PRINTCENTER, "#Cannot_Be_Spectator" );
 			return false;
 		}
-
-		if ( GetTeamNumber() != TEAM_UNASSIGNED && !IsDead() )
-		{
-			m_fNextSuicideTime = gpGlobals->curtime;	// allow the suicide to work
-
-			CommitSuicide();
-
-			// add 1 to frags to balance out the 1 subtracted for killing yourself
-			IncrementFragCount( 1 );
-		}
-
-		ChangeTeam( TEAM_SPECTATOR );
-
-		return true;
-	}
-	else
-	{
-		StopObserverMode();
-		State_Transition(STATE_ACTIVE);
 	}
 
-	// Switch their actual team...
 	ChangeTeam( team );
-
 	return true;
 }
 
@@ -1389,6 +1467,7 @@ void CHL2MP_Player::DeathSound( const CTakeDamageInfo &info )
 
 CBaseEntity* CHL2MP_Player::EntSelectSpawnPoint( void )
 {
+	/*
 	CBaseEntity *pSpot = NULL;
 	CBaseEntity *pLastSpawnPoint = g_pLastSpawn;
 	edict_t		*player = edict();
@@ -1483,6 +1562,94 @@ ReturnSpot:
 
 	m_flSlamProtectTime = gpGlobals->curtime + 0.5;
 
+	return pSpot;
+	*/
+
+	CBaseEntity *pSpot = NULL;
+	const char *pSpawnpointName = NULL;
+	int spawnCount = 0;
+	CBaseEntity *pEnt = NULL;
+
+	if( HL2MPRules()->IsTeamplay() == true )
+	{
+		if ( GetTeamNumber() == TEAM_COMBINE )
+			pSpawnpointName = "info_player_combine";
+		else if ( GetTeamNumber() == TEAM_REBELS )
+			pSpawnpointName = "info_player_rebel";
+	}
+
+	if (pSpawnpointName == NULL || gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+	{
+		pSpawnpointName = "info_player_deathmatch";
+		
+		if ( gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+		{
+			pSpawnpointName = "info_player_coop";
+
+			if ( gEntList.FindEntityByClassname( NULL, pSpawnpointName ) == NULL )
+			{
+				pSpawnpointName = "info_player_start";
+				while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+				{
+					#define SF_PLAYER_START_MASTER	1
+					if ( pEnt->HasSpawnFlags( SF_PLAYER_START_MASTER ) )
+					{
+						pSpot = pEnt;
+						goto ReturnSpot;
+					}
+				}
+			}
+		}
+	}
+
+	pEnt = NULL;
+	while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+	{
+		CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
+		if ( pSpawn && pSpawn->m_iDisabled == FALSE )
+		{
+			spawnCount++;
+		}
+	}
+
+	{
+		int rndspawn = random->RandomInt( 1, spawnCount );
+		spawnCount = 0;
+		pEnt = NULL;
+		while ( ( pEnt = gEntList.FindEntityByClassname( pEnt, pSpawnpointName ) ) != NULL )
+		{
+			CSpawnPoint *pSpawn = (CSpawnPoint *)pEnt;
+			if ( pSpawn && pSpawn->m_iDisabled == FALSE )
+			{
+				spawnCount++;
+				if ( spawnCount == rndspawn )
+				{
+					pSpot = pEnt;
+					goto ReturnSpot;
+				}
+			}
+		}
+	}
+
+	pSpot = CBaseEntity::Instance(INDEXENT(0));
+	goto ReturnSpot;
+
+ReturnSpot:
+
+	if ( HL2MPRules()->IsTeamplay() )
+	{
+		if ( GetTeamNumber() == TEAM_COMBINE )
+		{
+			g_pLastCombineSpawn = pSpot;
+		}
+		else if ( GetTeamNumber() == TEAM_REBELS ) 
+		{
+			g_pLastRebelSpawn = pSpot;
+		}
+	}
+
+	g_pLastSpawn = pSpot;
+	m_flSlamProtectTime = gpGlobals->curtime + 0.5;
 	return pSpot;
 } 
 

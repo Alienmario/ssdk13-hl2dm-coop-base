@@ -166,8 +166,6 @@ void CAI_FuncTankBehavior::Dismount( void )
 	{
 		GetOuter()->SpeakSentence( FUNCTANK_SENTENCE_DISMOUNTING );
 
-		Assert( m_hFuncTank->IsMarkedForDeletion() || m_hFuncTank->GetController() == GetOuter() );
-		
 		m_hFuncTank->NPC_SetInRoute( false );
 		if ( m_hFuncTank->GetController() == GetOuter() )
 			m_hFuncTank->StopControl();

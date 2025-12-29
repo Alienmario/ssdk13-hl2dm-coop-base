@@ -25,6 +25,7 @@
 #include "engine/IEngineSound.h"
 #include "team.h"
 #include "viewport_panel_names.h"
+#include "util.h" // COOPBASE
 
 #include "tier0/vprof.h"
 
@@ -58,10 +59,10 @@ void FinishClientPutInServer( CHL2MP_Player *pPlayer )
 	// notify other clients of player joining the game
 	UTIL_ClientPrintAll( HUD_PRINTNOTIFY, "#Game_connected", sName[0] != 0 ? sName : "<unconnected>" );
 
-	if ( HL2MPRules()->IsTeamplay() == true )
+	/* if ( HL2MPRules()->IsTeamplay() == true )
 	{
 		ClientPrint( pPlayer, HUD_PRINTTALK, "You are on team %s1\n", pPlayer->GetTeam()->GetName() );
-	}
+	} */
 
 	const ConVar *hostname = cvar->FindVar( "hostname" );
 	const char *title = (hostname) ? hostname->GetString() : "MESSAGE OF THE DAY";
@@ -89,6 +90,8 @@ void ClientPutInServer( edict_t *pEdict, const char *playername )
 	// Allocate a CBaseTFPlayer for pev, and call spawn
 	CHL2MP_Player *pPlayer = CHL2MP_Player::CreatePlayer( "player", pEdict );
 	pPlayer->SetPlayerName( playername );
+
+	UTIL_SendConVarValue(pEdict, "sv_footsteps", "0"); // COOPBASE
 }
 
 

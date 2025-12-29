@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\houndeye\houndside2"
+	"$bumpmap" "models\houndeye\houndside2_normal"
+	"$model" 1
+}

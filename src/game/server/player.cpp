@@ -932,7 +932,8 @@ void CBasePlayer::TraceAttack( const CTakeDamageInfo &inputInfo, const Vector &v
 				return;
 
 			// Prevent team damage here so blood doesn't appear
-			if ( info.GetAttacker()->IsPlayer() )
+			// COOPBASE: commented
+			// if ( info.GetAttacker()->IsPlayer() )
 			{
 				if ( !g_pGameRules->FPlayerCanTakeDamage( this, info.GetAttacker(), info ) )
 					return;
@@ -5606,7 +5607,10 @@ bool CBasePlayer::GetInVehicle( IServerVehicle *pVehicle, int nRole )
 	SetAbsAngles( qSeatAngles );
 	
 	// Parent to the vehicle
+	// COOPBASE: Also snap eye angles
+	QAngle qEyeAngles = EyeAngles();
 	SetParent( pEnt );
+	SnapEyeAngles( qEyeAngles - pEnt->GetAbsAngles() );
 
 	SetCollisionGroup( COLLISION_GROUP_IN_VEHICLE );
 	
@@ -5645,6 +5649,9 @@ bool CBasePlayer::GetInVehicle( IServerVehicle *pVehicle, int nRole )
 		}
 	}
 
+	// COOPBASE: fix camera jerk
+	UTIL_SendConVarValue( edict(), "sv_client_predict", "0" );
+
 	return true;
 }
 
@@ -5671,13 +5678,21 @@ void CBasePlayer::LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExi
 	if ( vecExitPoint == vec3_origin )
 	{
 		// FIXME: this might fail to find a safe exit point!!
-		pVehicle->GetPassengerExitPoint( nRole, &vNewPos, &qAngles );
+		if ( pVehicle->GetPassengerExitPoint( nRole, &vNewPos, &qAngles ) == false )
+			vNewPos = GetAbsOrigin();
 	}
 	else
 	{
 		vNewPos = vecExitPoint;
 		qAngles = vecExitAngles;
 	}
+	trace_t tr;
+	UTIL_TraceHull( vNewPos, vNewPos, VEC_HULL_MIN, VEC_HULL_MAX, MASK_PLAYERSOLID, NULL, COLLISION_GROUP_PLAYER, &tr );
+	if ( tr.startsolid && tr.fraction < 1.0 )
+	{
+		vNewPos = GetAbsOrigin();
+	}
+	
 	OnVehicleEnd( vNewPos );
 	SetAbsOrigin( vNewPos );
 	SetAbsAngles( qAngles );
@@ -5718,6 +5733,14 @@ void CBasePlayer::LeaveVehicle( const Vector &vecExitPoint, const QAngle &vecExi
 
 	// Just cut all of the rumble effects. 
 	RumbleEffect( RUMBLE_STOP_ALL, 0, RUMBLE_FLAGS_NONE );
+
+	// COOPBASE: Reset predict cvar
+	static const ConVar *pSvClientPredict;
+	if ( !pSvClientPredict )
+	{
+		pSvClientPredict = cvar->FindVar( "sv_client_predict" );
+	}
+	UTIL_SendConVarValue( edict(), "sv_client_predict", pSvClientPredict ? pSvClientPredict->GetString() : "-1" );
 
 	if ( IsPlayer() )
 	{
@@ -6685,7 +6708,6 @@ bool CBasePlayer::ClientCommand( const CCommand &args )
 				SetObserverTarget( target );
 			}
 		}
-
 		return true;
 	}
 
@@ -8101,14 +8123,14 @@ void CMovementSpeedMod::InputSpeedMod(inputdata_t &data)
 	}
 }
 
-void SendProxy_CropFlagsToPlayerFlagBitsLength( const SendProp* pProp, const void* pStruct, const void* pVarData, DVariant* pOut, int iElement, int objectID )
+
+void SendProxy_CropFlagsToPlayerFlagBitsLength( const SendProp *pProp, const void *pStruct, const void *pVarData, DVariant *pOut, int iElement, int objectID)
 {
-	int mask = ( 1 << PLAYER_FLAG_BITS ) - 1;
-	int data = *( int* )pVarData;
+	int mask = (1<<PLAYER_FLAG_BITS) - 1;
+	int data = *(int *)pVarData;
 
 	pOut->m_Int = ( data & mask );
 }
-
 // -------------------------------------------------------------------------------- //
 // SendTable for CPlayerState.
 // -------------------------------------------------------------------------------- //

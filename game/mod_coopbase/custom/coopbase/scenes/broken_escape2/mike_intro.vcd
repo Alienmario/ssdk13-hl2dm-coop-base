@@ -1,0 +1,880 @@
+// Choreo version 1
+actor "Mike"
+{
+  channel "Audio"
+  {
+    event speak "broken_escape2\vo\mike\intro_01.wav"
+    {
+      time 0.460000 10.721497
+      param "broken_escape2\vo\mike\intro_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_02_2.wav"
+    {
+      time 14.987820 19.230223
+      param "broken_escape2\vo\mike\intro_02_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_02_1.wav"
+    {
+      time 12.705129 14.974040
+      param "broken_escape2\vo\mike\intro_02_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_02_3.wav"
+    {
+      time 19.238462 23.476036
+      param "broken_escape2\vo\mike\intro_02_3.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_02_4.wav"
+    {
+      time 23.483335 27.053562
+      param "broken_escape2\vo\mike\intro_02_4.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_02_5.wav"
+    {
+      time 27.058334 31.196793
+      param "broken_escape2\vo\mike\intro_02_5.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_1.wav"
+    {
+      time 32.608334 36.845909
+      param "broken_escape2\vo\mike\intro_03_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_2.wav"
+    {
+      time 36.849998 38.284782
+      param "broken_escape2\vo\mike\intro_03_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_3.wav"
+    {
+      time 38.300007 42.937965
+      param "broken_escape2\vo\mike\intro_03_3.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_4.wav"
+    {
+      time 42.958332 46.228264
+      param "broken_escape2\vo\mike\intro_03_4.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_5.wav"
+    {
+      time 46.241669 50.112190
+      param "broken_escape2\vo\mike\intro_03_5.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_03_6.wav"
+    {
+      time 50.133331 55.007210
+      param "broken_escape2\vo\mike\intro_03_6.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_04_1.wav"
+    {
+      time 55.774998 58.844727
+      param "broken_escape2\vo\mike\intro_04_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_04_2.wav"
+    {
+      time 58.849998 62.620655
+      param "broken_escape2\vo\mike\intro_04_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_05_1.wav"
+    {
+      time 62.908337 65.310715
+      param "broken_escape2\vo\mike\intro_05_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_05_2.wav"
+    {
+      time 65.341675 69.011993
+      param "broken_escape2\vo\mike\intro_05_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_05_3.wav"
+    {
+      time 69.016670 72.620255
+      param "broken_escape2\vo\mike\intro_05_3.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_05_4.wav"
+    {
+      time 72.641670 76.290306
+      param "broken_escape2\vo\mike\intro_05_4.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_1.wav"
+    {
+      time 77.050003 80.153107
+      param "broken_escape2\vo\mike\intro_06_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_2.wav"
+    {
+      time 80.158325 83.328140
+      param "broken_escape2\vo\mike\intro_06_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_3.wav"
+    {
+      time 83.341675 87.011993
+      param "broken_escape2\vo\mike\intro_06_3.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_4.wav"
+    {
+      time 87.016663 89.152130
+      param "broken_escape2\vo\mike\intro_06_4.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_5.wav"
+    {
+      time 89.158348 92.761932
+      param "broken_escape2\vo\mike\intro_06_5.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_7.wav"
+    {
+      time 96.991676 99.660973
+      param "broken_escape2\vo\mike\intro_06_7.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_6.wav"
+    {
+      time 92.775009 96.979179
+      param "broken_escape2\vo\mike\intro_06_6.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_8.wav"
+    {
+      time 99.675003 101.977272
+      param "broken_escape2\vo\mike\intro_06_8.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_9.wav"
+    {
+      time 101.991669 105.461784
+      param "broken_escape2\vo\mike\intro_06_9.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_10.wav"
+    {
+      time 105.474998 108.978493
+      param "broken_escape2\vo\mike\intro_06_10.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_06_11.wav"
+    {
+      time 108.991669 111.659058
+      param "broken_escape2\vo\mike\intro_06_11.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_07_1.wav"
+    {
+      time 112.675003 118.180489
+      param "broken_escape2\vo\mike\intro_07_1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\intro_07_2.wav"
+    {
+      time 118.191673 121.894234
+      param "broken_escape2\vo\mike\intro_07_2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "moveto"
+  {
+    event moveto "move to target 01"
+    {
+      time 7.638333 19.085001
+      param "mike_intro_moveto1"
+      param2 "Walk"
+    }
+    event moveto "move to end door"
+    {
+      time 77.968285 121.998222
+      param "mike_intro_door_moveto"
+      param2 "Walk"
+      event_ramp
+      {
+        0.4800 1.0000
+        44.0299 1.0000
+      }
+    }
+    event moveto "move to windows"
+    {
+      time 39.611111 43.694443
+      param "mike_intro_moveto2"
+      param2 "Walk"
+      event_ramp
+      {
+        0.5580 0.9769
+        3.6400 1.0000
+      }
+    }
+  }
+  channel "lookat"
+  {
+    event lookat "look at pvs player 01"
+    {
+      time 12.829364 31.063492
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.0960 1.0000
+        17.9741 1.0000
+      }
+    }
+    event lookat "look at pvs player 01"
+    {
+      time 1.523809 12.119046
+      param "!pvsplayer"
+    }
+    event lookat "look at end door"
+    {
+      time 117.147240 119.688904
+      param "mike_intro_door_faceat"
+      event_ramp
+      {
+        0.8700 1.0000
+        1.8600 1.0000
+      }
+    }
+    event lookat "look at player after end door"
+    {
+      time 119.966675 122.313896
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.8060 1.0000
+        1.8740 0.9538
+      }
+    }
+    event lookat "look out window1"
+    {
+      time 42.361111 45.983330
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.7160 1.0000
+        3.1500 1.0000
+      }
+    }
+    event lookat "look at player after windows"
+    {
+      time 45.986111 54.963890
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.8340 1.0000
+        8.4960 1.0000
+      }
+    }
+    event lookat "look out window1"
+    {
+      time 55.852779 58.935314
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.6980 1.0000
+        2.7523 1.0000
+      }
+    }
+    event lookat "look at player after windows"
+    {
+      time 59.069046 62.623810
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.9180 1.0000
+        2.9690 1.0000
+      }
+    }
+    event lookat "look at player after windows"
+    {
+      time 81.185715 116.890480
+      param "!pvsplayer"
+      event_ramp
+      {
+        1.0420 1.0000
+        34.9950 1.0000
+      }
+    }
+    event lookat "look out window1"
+    {
+      time 62.837624 66.298950
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.8980 1.0000
+        2.8091 1.0000
+      }
+    }
+    event lookat "look at player after windows"
+    {
+      time 66.432686 76.229874
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.9320 1.0000
+        8.8994 1.0000
+      }
+    }
+    event lookat "look at pvs player 01"
+    {
+      time 32.632397 42.108948
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.7500 1.0000
+        8.9765 1.0000
+      }
+    }
+  }
+  channel "faceto"
+  {
+    event face "face pvs player 01"
+    {
+      time 12.528848 31.147894
+      param "!pvsplayer"
+    }
+    event face "face pvs player 01"
+    {
+      time 0.986111 11.605158
+      param "!pvsplayer"
+    }
+    event face "face end door"
+    {
+      time 116.700012 119.688904
+      param "mike_intro_door_faceat"
+      event_ramp
+      {
+        0.7620 0.9692
+        2.3560 0.9923
+      }
+    }
+    event face "face at player after end door"
+    {
+      time 120.188896 122.313896
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.7360 1.0000
+        1.6300 0.9077
+      }
+    }
+    event face "face at windows"
+    {
+      time 39.250000 45.974998
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.8160 1.0000
+        6.1400 1.0000
+      }
+    }
+    event face "face player after windows"
+    {
+      time 46.666668 55.519447
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.6820 1.0000
+        8.4880 1.0000
+      }
+    }
+    event face "face at windows"
+    {
+      time 56.083336 58.926590
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.6780 1.0000
+        2.2663 1.0000
+      }
+    }
+    event face "face player after windows"
+    {
+      time 59.341267 62.582939
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.8080 1.0000
+        2.8589 1.0000
+      }
+    }
+    event face "face player after windows"
+    {
+      time 81.774597 116.532944
+      param "!pvsplayer"
+      event_ramp
+      {
+        1.0440 1.0000
+        33.8815 1.0000
+      }
+    }
+    event face "face at windows"
+    {
+      time 63.007580 66.259926
+      param "mike_intro_lookat_window"
+      event_ramp
+      {
+        0.8100 1.0000
+        2.4994 1.0000
+      }
+    }
+    event face "face player after windows"
+    {
+      time 66.613991 76.128395
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.7360 1.0000
+        8.7516 1.0000
+      }
+    }
+    event face "face pvs player 01"
+    {
+      time 32.937939 39.102440
+      param "!pvsplayer"
+      event_ramp
+      {
+        0.6520 0.9846
+        5.6660 1.0000
+      }
+    }
+  }
+  channel "gesture"
+  {
+    event gesture "scratch head 1"
+    {
+      time 23.956030 27.576546
+      param "Gesture08"
+      absolutetags playback_time
+      {
+        "apex" 0.063449
+        "accent" 0.770996
+        "loop" 0.919581
+        "end" 0.944345
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.090909
+        "accent" 0.681818
+        "loop" 0.784091
+        "end" 0.795455
+      }
+      sequenceduration 2.966667
+    }
+    event gesture "movehands 1"
+    {
+      time 30.250904 32.284237
+      param "Gesture06"
+      absolutetags playback_time
+      {
+        "apex" 0.133333
+        "accent" 0.200000
+        "loop" 0.366667
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.133333
+        "accent" 0.200000
+        "loop" 0.366667
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "shake head 1"
+    {
+      time 4.347222 7.480556
+      param "E_bg_hshake"
+      absolutetags playback_time
+      {
+        "apex" 0.161290
+        "extreme" 0.397849
+        "loop" 0.591398
+        "end" 0.698925
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.161290
+        "extreme" 0.397849
+        "loop" 0.591398
+        "end" 0.698925
+      }
+      sequenceduration 3.133333
+    }
+    event gesture "im mike gesture"
+    {
+      time 12.888889 15.255556
+      param "Gesture13"
+      absolutetags playback_time
+      {
+        "in" 0.171429
+        "loop" 0.600000
+        "end" 0.685714
+        "out" 0.857143
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.171429
+        "loop" 0.600000
+        "end" 0.685714
+        "out" 0.857143
+      }
+      sequenceduration 2.366667
+    }
+    event gesture "im mike2"
+    {
+      time 14.027778 16.061111
+      param "Gesture05NP"
+      absolutetags playback_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "scared"
+    {
+      time 0.555555 4.716666
+      param "gesture_head_02"
+      absolutetags playback_time
+      {
+        "apex" 0.090436
+        "extreme" 0.139972
+        "loop" 0.476572
+        "end" 0.953333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.289474
+        "extreme" 0.394737
+        "loop" 0.605263
+        "end" 0.789474
+      }
+      sequenceduration 1.300000
+    }
+    event gesture "open door scene finish"
+    {
+      time 117.550011 119.683342
+      param "GestureButton"
+      absolutetags playback_time
+      {
+        "apex" 0.222222
+        "accent" 0.904762
+        "loop" 0.920635
+        "end" 0.936508
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.222222
+        "accent" 0.904762
+        "loop" 0.920635
+        "end" 0.936508
+      }
+      sequenceduration 2.133333
+    }
+    event gesture "crosshands1"
+    {
+      time 104.500008 106.733337
+      param "Gesture03"
+      absolutetags playback_time
+      {
+        "apex" 0.151515
+        "accent" 0.272727
+        "loop" 0.424242
+        "end" 0.575758
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.151515
+        "accent" 0.272727
+        "loop" 0.424242
+        "end" 0.575758
+      }
+      sequenceduration 2.233333
+    }
+    event gesture "Gesture08"
+    {
+      time 107.658340 110.625008
+      param "Gesture08"
+      absolutetags playback_time
+      {
+        "apex" 0.090909
+        "accent" 0.681818
+        "loop" 0.784091
+        "end" 0.795455
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.090909
+        "accent" 0.681818
+        "loop" 0.784091
+        "end" 0.795455
+      }
+      sequenceduration 2.966667
+    }
+    event gesture "Gesture06NP"
+    {
+      time 109.566673 111.600006
+      param "Gesture06NP"
+      absolutetags playback_time
+      {
+        "apex" 0.133333
+        "accent" 0.200000
+        "loop" 0.366667
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.133333
+        "accent" 0.200000
+        "loop" 0.366667
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "Gesture05"
+    {
+      time 37.183334 39.216667
+      param "Gesture05"
+      absolutetags playback_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "Gesture05"
+    {
+      time 46.833332 48.866665
+      param "Gesture05"
+      absolutetags playback_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "Gesture12"
+    {
+      time 49.150005 51.450005
+      param "Gesture12"
+      absolutetags playback_time
+      {
+        "apex" 0.147059
+        "accent" 0.264706
+        "loop" 0.367647
+        "end" 0.514706
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.147059
+        "accent" 0.264706
+        "loop" 0.367647
+        "end" 0.514706
+      }
+      sequenceduration 2.300000
+    }
+    event gesture "Gesture05NP"
+    {
+      time 61.785713 63.819046
+      param "Gesture05NP"
+      absolutetags playback_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.150000
+        "accent" 0.250000
+        "loop" 0.400000
+        "end" 0.533333
+      }
+      sequenceduration 2.033333
+    }
+    event gesture "Gesture02"
+    {
+      time 67.920639 70.153969
+      param "Gesture02"
+      absolutetags playback_time
+      {
+        "apex" 0.151515
+        "accent" 0.287879
+        "loop" 0.454545
+        "end" 0.575758
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.151515
+        "accent" 0.287879
+        "loop" 0.454545
+        "end" 0.575758
+      }
+      sequenceduration 2.233333
+    }
+    event gesture "hg_nod"
+    {
+      time 71.412697 73.212700
+      param "hg_nod"
+      absolutetags playback_time
+      {
+        "apex" 0.094340
+        "extreme" 0.188679
+        "loop" 0.301887
+        "end" 0.754717
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.094340
+        "extreme" 0.188679
+        "loop" 0.301887
+        "end" 0.754717
+      }
+      sequenceduration 1.800000
+    }
+    event gesture "Gesture13"
+    {
+      time 82.224609 84.591278
+      param "Gesture13"
+      absolutetags playback_time
+      {
+        "in" 0.171429
+        "loop" 0.600000
+        "end" 0.685714
+        "out" 0.857143
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.171429
+        "loop" 0.600000
+        "end" 0.685714
+        "out" 0.857143
+      }
+      sequenceduration 2.366667
+    }
+  }
+  channel "events"
+  {
+    event firetrigger "open end door"
+    {
+      time 119.605560 -1.000000
+      param "1"
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "40"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

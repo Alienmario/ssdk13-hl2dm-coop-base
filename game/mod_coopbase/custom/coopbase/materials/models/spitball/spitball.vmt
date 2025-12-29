@@ -1,0 +1,11 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/spitball/spitball"
+	"$bumpmap" 	"models/spitball/spitball_normal"
+	"$envmap" "env_cubemap"
+ 	"$basealphaenvmapmask" 1
+	"$envmaptint" "[ 1.0 1.0 1.0]"
+	"$surfaceprop"	"alienflesh"
+	"$selfillum"	1
+	"$model" "1"
+}

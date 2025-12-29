@@ -1165,7 +1165,6 @@ bool CBaseGameStats_Driver::AddBaseDataForSend( KeyValues *pKV, StatSendType_t s
 			{
 				const char *currentLanguage = steamapicontext->SteamApps()->GetCurrentGameLanguage();
 				pKV->SetString( "Language", currentLanguage ? currentLanguage : "unknown" );
-
 			}
 #endif
 

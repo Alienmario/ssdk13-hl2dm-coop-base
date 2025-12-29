@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo -e "\n----------------- VPC START -----------------\n"
+
+pushd `dirname $0`
+devtools/bin/vpc +dedicated /sdk2013ce /linux32 /define:SOURCESDK /mksln dedicated32
+
+echo -e "\n----------------- BUILD START -----------------\n"
+
+make -f dedicated32.mak
+
+popd

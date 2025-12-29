@@ -2430,6 +2430,7 @@ void CNPC_CombineDropship::SpawnTroop( void )
 	Vector vecSpawnOrigin;
 	QAngle vecSpawnAngles;
 	m_hContainer->GetAttachment( m_iAttachmentDeployStart, vecSpawnOrigin, vecSpawnAngles );
+	vecSpawnOrigin.z += 8.0; // COOPBASE: Ensure troops won't clip into the ground
 
 	// Spawn the templated NPC
 	CBaseEntity *pEntity = NULL;
@@ -2472,7 +2473,8 @@ void CNPC_CombineDropship::SpawnTroop( void )
 	pSequence->KeyValue( "OnEndSequence", UTIL_VarArgs("%s,NPCFinishDustoff,%s,0,-1", STRING(GetEntityName()), STRING(pNPC->GetEntityName())) );
 	pSequence->SetAbsOrigin( vecSpawnOrigin );
 	pSequence->SetAbsAngles( vecSpawnAngles );
-	pSequence->AddSpawnFlags( SF_SCRIPT_NOINTERRUPT | SF_SCRIPT_HIGH_PRIORITY | SF_SCRIPT_OVERRIDESTATE );
+	// COOPBASE: Ensure troops won't clip into the ground (SF_SCRIPT_DONT_TELEPORT_AT_END)
+	pSequence->AddSpawnFlags( SF_SCRIPT_NOINTERRUPT | SF_SCRIPT_HIGH_PRIORITY | SF_SCRIPT_OVERRIDESTATE | SF_SCRIPT_DONT_TELEPORT_AT_END );
 	pSequence->Spawn();
 	pSequence->Activate();
 	variant_t emptyVariant;

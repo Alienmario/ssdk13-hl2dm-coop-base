@@ -330,6 +330,9 @@ void CBaseHelicopter::HelicopterThink( void )
 		SetEnemy( NULL );
 	}
 
+	if( ClassMatches("npc_helicopter") )
+		RadiusDamage ( CTakeDamageInfo( this, this, 200.0, DMG_GENERIC ), GetAbsOrigin(), 400.0, CLASS_NONE, this );
+
 	HelicopterPostThink();
 }
 
@@ -831,7 +834,8 @@ void CBaseHelicopter::UpdatePlayerDopplerShift( )
 
 		// UNDONE: this needs to send different sounds to every player for multiplayer.	
 		// FIXME: this isn't the correct way to find a player!!!
-		pPlayer = gEntList.FindEntityByName( NULL, "!player" );
+		// pPlayer = gEntList.FindEntityByName( NULL, "!player" );
+		pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 		if (pPlayer)
 		{
 			Vector dir;
@@ -862,10 +866,12 @@ void CBaseHelicopter::UpdatePlayerDopplerShift( )
 			UpdateRotorSoundPitch( iPitch );
 			// Msg( "Pitch:%d\n", iPitch );
 		}
+		/*
 		else
 		{
 			Msg( "Chopper didn't find a player!\n" );
 		}
+		*/
 	}
 }
 
@@ -1133,12 +1139,12 @@ void CBaseHelicopter::StopRotorWash( void )
 //-----------------------------------------------------------------------------
 void CBaseHelicopter::DelayedKillThink( )
 {
-	// tell owner ( if any ) that we're dead.This is mostly for NPCMaker functionality.
-	CBaseEntity *pOwner = GetOwnerEntity();
-	if ( pOwner )
+	// tell the NPCMaker that we're dead.
+	CBaseEntity *pMaker = m_hMakerEntity.Get();
+	if ( pMaker )
 	{
-		pOwner->DeathNotice( this );
-		SetOwnerEntity( NULL );
+		pMaker->DeathNotice( this );
+		m_hMakerEntity = NULL;
 	}
 
 	UTIL_Remove( this );

@@ -1,0 +1,207 @@
+// Choreo version 1
+actor "glados2"
+{
+  channel "Audio"
+  {
+    event speak "maps\oc_moe_portal_lobby_v2\moegladosintro\line1.wav"
+    {
+      time 0.000000 0.831020
+      param "maps\oc_moe_portal_lobby_v2\moegladosintro\line1.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "maps\oc_moe_portal_lobby_v2\moegladosintro\line2.wav"
+    {
+      time 1.200000 3.000544
+      param "maps\oc_moe_portal_lobby_v2\moegladosintro\line2.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "maps\oc_moe_portal_lobby_v2\moegladosintro\line3.wav"
+    {
+      time 3.500000 5.485215
+      param "maps\oc_moe_portal_lobby_v2\moegladosintro\line3.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "maps\oc_moe_portal_lobby_v2\moegladosintro\line4.wav"
+    {
+      time 6.000000 8.262222
+      param "maps\oc_moe_portal_lobby_v2\moegladosintro\line4.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "maps\oc_moe_portal_lobby_v2\moegladosintro\line5.wav"
+    {
+      time 8.980000 11.103719
+      param "maps\oc_moe_portal_lobby_v2\moegladosintro\line5.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "Expression"
+  {
+    event expression "Smile_01"
+    {
+      time 0.017857 1.178571
+      param "emotions_alyx"
+      param2 "Smile_01"
+    }
+    event expression "blink_happy"
+    {
+      time 1.190476 3.027530
+      param "xenoaisam_custom_v5"
+      param2 "blink_happy"
+    }
+    event expression "use_look"
+    {
+      time 3.040923 5.517858
+      param "emotions_alyx"
+      param2 "use_look"
+    }
+    event expression "Serious_02"
+    {
+      time 5.531250 8.281250
+      param "emotions_alyx"
+      param2 "Serious_02"
+    }
+    event expression "Smile_smirk"
+    {
+      time 8.291667 11.109375
+      param "emotions_alyx"
+      param2 "Smile_smirk"
+    }
+  }
+  channel "Flex"
+  {
+    event face "look at player"
+    {
+      time 0.000000 11.111874
+      param "!pvsplayer"
+    }
+  }
+  channel "Animation"
+  {
+    event sequence "d1_town05_Nurse_Open_Door"
+    {
+      time 9.106666 11.106666
+      param "d1_town05_Nurse_Open_Door"
+      fixedlength
+    }
+    event gesture "A_g_hdclasp"
+    {
+      time 1.186666 3.832619
+      param "A_g_hdclasp"
+      absolutetags playback_time
+      {
+        "in" 0.178267
+        "loop" 0.687600
+        "end" 0.840399
+        "out" 0.871772
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.150538
+        "loop" 0.580645
+        "end" 0.709677
+        "out" 0.806452
+      }
+      sequenceduration 3.133333
+    }
+    event gesture "A_g_rthdflipout"
+    {
+      time 0.119048 3.085715
+      param "A_g_rthdflipout"
+      absolutetags playback_time
+      {
+        "apex" 0.147727
+        "accent" 0.375000
+        "loop" 0.545455
+        "end" 0.681818
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.147727
+        "accent" 0.375000
+        "loop" 0.545455
+        "end" 0.681818
+      }
+      sequenceduration 2.966667
+    }
+    event gesture "A_g_rtl_dwnshp"
+    {
+      time 3.196428 6.663095
+      param "A_g_rtl_dwnshp"
+      absolutetags playback_time
+      {
+        "apex" 0.281553
+        "accent" 0.398058
+        "loop" 0.631068
+        "end" 0.728155
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.281553
+        "accent" 0.398058
+        "loop" 0.631068
+        "end" 0.728155
+      }
+      sequenceduration 3.466667
+    }
+    event gesture "A_gesture05"
+    {
+      time 6.000000 9.625894
+      param "A_gesture05"
+      absolutetags playback_time
+      {
+        "apex" 0.148863
+        "accent" 0.241902
+        "loop" 0.418675
+        "end" 0.511714
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.192771
+        "accent" 0.313253
+        "loop" 0.542169
+        "end" 0.662651
+      }
+      sequenceduration 2.800000
+    }
+  }
+  channel "Triggers"
+  {
+    event firetrigger "Timer Start"
+    {
+      time 9.821429 -1.000000
+      param "1"
+    }
+    event firetrigger "Radio Start"
+    {
+      time 10.964285 -1.000000
+      param "2"
+    }
+    event firetrigger "Thought Sequence"
+    {
+      time 11.047619 -1.000000
+      param "3"
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "128"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

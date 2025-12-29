@@ -102,7 +102,6 @@ void CPathTrack::Link( void  )
 		if ( pTarget == this)
 		{
 			Warning("ERROR: path_track (%s) refers to itself as a target!\n", GetDebugName());
-
 			//FIXME: Why were we removing this?  If it was already connected to, we weren't updating the other linked
 			//		 end, causing problems with walking through bogus memory links!  -- jdw
 
@@ -345,7 +344,6 @@ CPathTrack *CPathTrack::GetNext( void )
 		Assert( !m_paltpath.IsValid() || m_paltpath.Get() != NULL );
 		return m_paltpath;
 	}
-
 	// The paths shouldn't normally be getting deleted so assert that if it was set, it's valid.
 	Assert( !m_pnext.IsValid() || m_pnext.Get() != NULL );
 	return m_pnext;
@@ -360,7 +358,6 @@ CPathTrack *CPathTrack::GetPrevious( void )
 		Assert( !m_paltpath.IsValid() || m_paltpath.Get() != NULL );
 		return m_paltpath;
 	}
-
 	Assert( !m_pprevious.IsValid() || m_pprevious.Get() != NULL );
 	return m_pprevious;
 }
@@ -379,7 +376,6 @@ CPathTrack *CPathTrack::GetNextInDir( bool bForward )
 {
 	if ( bForward )
 		return GetNext();
-
 	return GetPrevious();
 }
 

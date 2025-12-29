@@ -106,6 +106,7 @@ extern ConVar sk_healthkit;
 
 #include "utlbuffer.h"
 #include "gamestats.h"
+#include "gamevars_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -664,8 +665,15 @@ bool CAI_BaseNPC::PassesDamageFilter( const CTakeDamageInfo &info )
 {
 	if ( ai_block_damage.GetBool() )
 		return false;
+
+	if ( IsNPC() && info.GetAttacker() && info.GetAttacker()->IsPlayer() && IRelationType( info.GetAttacker() ) == D_LI )
+	{
+		if( !friendlyfire.GetInt() )
+			return false;
+	}
+	
 	// FIXME: hook a friendly damage filter to the npc instead?
-	if ( (CapabilitiesGet() & bits_CAP_FRIENDLY_DMG_IMMUNE) && info.GetAttacker() && info.GetAttacker() != this )
+	if ( (CapabilitiesGet() & bits_CAP_FRIENDLY_DMG_IMMUNE) && info.GetAttacker() && info.GetAttacker() != this && !info.GetAttacker()->IsPlayer())
 	{
 		// check attackers relationship with me
 		CBaseCombatCharacter *npcEnemy = info.GetAttacker()->MyCombatCharacterPointer();
@@ -777,9 +785,8 @@ int CAI_BaseNPC::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 		{
 			// See if the person that injured me is an NPC.
 			CAI_BaseNPC *pAttacker = dynamic_cast<CAI_BaseNPC *>( info.GetAttacker() );
-			CBasePlayer *pPlayer = AI_GetSinglePlayer();
 
-			if( pAttacker && pAttacker->IsAlive() && pPlayer )
+			if( pAttacker && pAttacker->IsAlive() )
 			{
 				if( pAttacker->GetSquad() != NULL && pAttacker->IsInPlayerSquad() )
 				{
@@ -3835,7 +3842,7 @@ void CAI_BaseNPC::SetPlayerAvoidState( void )
 
 		GetPlayerAvoidBounds( &vMins, &vMaxs );
 
-		CBasePlayer *pLocalPlayer = AI_GetSinglePlayer();
+		CBasePlayer *pLocalPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 
 		if ( pLocalPlayer )
 		{
@@ -6560,6 +6567,16 @@ float CAI_BaseNPC::ThrowLimit(	const Vector &vecStart,
 //-----------------------------------------------------------------------------
 void CAI_BaseNPC::SetupVPhysicsHull()
 {
+	#ifdef SDK2013CE
+
+	if ( GetModelPtr() == NULL )
+	{
+		UTIL_Remove(this);
+		return;
+	}
+
+	#endif
+
 	if ( GetMoveType() == MOVETYPE_VPHYSICS || GetMoveType() == MOVETYPE_NONE )
 		return;
 
@@ -9908,7 +9925,7 @@ CBaseEntity *CAI_BaseNPC::FindNamedEntity( const char *name, IEntityFindFilter *
 {
 	if ( !stricmp( name, "!player" ))
 	{
-		return ( CBaseEntity * )AI_GetSinglePlayer();
+		return ( CBaseEntity * )UTIL_GetNearestPlayer( GetAbsOrigin() );
 	}
 	else if ( !stricmp( name, "!enemy" ) )
 	{
@@ -9922,8 +9939,7 @@ CBaseEntity *CAI_BaseNPC::FindNamedEntity( const char *name, IEntityFindFilter *
 	else if ( !stricmp( name, "!nearestfriend" ) || !stricmp( name, "!friend" ) )
 	{
 		// FIXME: look at CBaseEntity *CNPCSimpleTalker::FindNearestFriend(bool fPlayer)
-		// punt for now
-		return ( CBaseEntity * )AI_GetSinglePlayer();
+		return ( CBaseEntity * )UTIL_GetNearestPlayer( GetAbsOrigin() );
 	}
 	else if (!stricmp( name, "self" ))
 	{
@@ -9943,7 +9959,7 @@ CBaseEntity *CAI_BaseNPC::FindNamedEntity( const char *name, IEntityFindFilter *
 		{
 			DevMsg( "ERROR: \"player\" is no longer used, use \"!player\" in vcd instead!\n" );
 		}
-		return ( CBaseEntity * )AI_GetSinglePlayer();
+		return ( CBaseEntity * )UTIL_GetNearestPlayer( GetAbsOrigin() );
 	}
 	else
 	{
@@ -10396,6 +10412,7 @@ CBaseEntity *CAI_BaseNPC::DropItem ( const char *pszItemName, Vector vecPos, QAn
 			pItem->ApplyLocalAngularVelocityImpulse( AngularImpulse( 0, random->RandomFloat( 0, 100 ), 0 ) );
 		}
 
+		pItem->AddSpawnFlags( SF_NORESPAWN );
 		return pItem;
 	}
 	else
@@ -11993,7 +12010,7 @@ void CAI_BaseNPC::Teleport( const Vector *newPosition, const QAngle *newAngles, 
 
 bool CAI_BaseNPC::FindSpotForNPCInRadius( Vector *pResult, const Vector &vStartPos, CAI_BaseNPC *pNPC, float radius, bool bOutOfPlayerViewcone )
 {
-	CBasePlayer *pPlayer = AI_GetSinglePlayer();
+	CBasePlayer *pPlayer = UTIL_GetNearestPlayer(pNPC->GetAbsOrigin());
 	QAngle fan;
 
 	fan.x = 0;
@@ -12527,16 +12544,10 @@ bool CAI_BaseNPC::IsPlayerAlly( CBasePlayer *pPlayer )
 { 
 	if ( pPlayer == NULL )
 	{
-		// in multiplayer mode we need a valid pPlayer 
-		// or override this virtual function
-		if ( !AI_IsSinglePlayer() )
-			return false;
-
-		// NULL means single player mode
-		pPlayer = UTIL_GetLocalPlayer();
+		pPlayer = UTIL_GetNearestPlayer(GetAbsOrigin());
 	}
 
-	return ( !pPlayer || IRelationType( pPlayer ) == D_LI ); 
+	return ( !pPlayer || IRelationType( pPlayer ) == D_LI );
 }
 
 //-----------------------------------------------------------------------------
@@ -12827,7 +12838,7 @@ bool CAI_BaseNPC::FindNearestValidGoalPos( const Vector &vTestPoint, Vector *pRe
 
 	if ( vCandidate != vec3_invalid )
 	{
-		AI_Waypoint_t *pPathToPoint = GetPathfinder()->BuildRoute( GetAbsOrigin(), vCandidate, AI_GetSinglePlayer(), 5*12, NAV_NONE, true );
+		AI_Waypoint_t *pPathToPoint = GetPathfinder()->BuildRoute( GetAbsOrigin(), vCandidate, UTIL_GetNearestPlayer(GetAbsOrigin()), 5*12, NAV_NONE, true );
 		if ( pPathToPoint )
 		{
 			GetPathfinder()->UnlockRouteNodes( pPathToPoint );

@@ -1405,7 +1405,11 @@ void CServerGameDLL::LevelShutdown( void )
 	// otherwise we leak them constantly on changelevel in the
 	// particle precache stringtable list.
 	g_pParticleSystemMgr->UncacheAllParticleSystems();
+
+	// COOPBASE: maintain 32bit particles.lib support
+#ifdef PLATFORM_64BITS
 	g_pParticleSystemMgr->RecreateDictionary();
+#endif
 
 	g_nCurrentChapterIndex = -1;
 

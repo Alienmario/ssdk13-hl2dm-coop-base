@@ -4725,7 +4725,6 @@ void CGameMovement::PerformFlyCollisionResolution( trace_t &pm, Vector &move )
 			else
 				backoff = 1;
 
-
 			ClipVelocity (mv->m_vecVelocity, pm.plane.normal, mv->m_vecVelocity, backoff);
 		}
 		break;

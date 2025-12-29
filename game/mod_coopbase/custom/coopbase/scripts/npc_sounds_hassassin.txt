@@ -1,0 +1,37 @@
+"HAssassin.Shot"
+{
+	"channel"	"CHAN_WEAPON"
+	"volume"	"0.6,0.8"
+	"soundlevel"	"SNDLVL_140db"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"physics/flesh/flesh_impact_bullet1.wav"
+		"wave"		"physics/flesh/flesh_impact_bullet2.wav"
+
+	}
+}
+
+"HAssassin.Beamsound"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"0.2"
+	"soundlevel"	"SNDLVL_140db"
+	"pitch"		"PITCH_NORM"
+	"wave"		"beams/beamstart5.wav"
+}
+
+"HAssassin.Footstep"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"0.5"
+	"soundlevel"	"SNDLVL_NORM"
+	"pitch"		"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"player/footsteps/dirt1.wav"
+		"wave"		"player/footsteps/dirt2.wav"
+		"wave"		"player/footsteps/dirt3.wav"
+		"wave"		"player/footsteps/dirt4.wav"
+	}
+}

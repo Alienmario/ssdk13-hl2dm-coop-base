@@ -342,7 +342,6 @@ inline void CClassMemoryPool<T>::Clear()
 	}
 
 	CUtlMemoryPool::Clear();
-
 }
 
 

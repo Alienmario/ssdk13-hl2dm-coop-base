@@ -22,9 +22,10 @@ public:
 	CWeaponAlyxGun();
 	~CWeaponAlyxGun();
 
-	DECLARE_SERVERCLASS();
+	// DECLARE_SERVERCLASS();
 	
 	void	Precache( void );
+	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) { }
 
 	virtual int		GetMinBurst( void ) { return 4; }
 	virtual int		GetMaxBurst( void ) { return 7; }

@@ -224,8 +224,11 @@ CBasePlayer *UTIL_PlayerBySteamID( const CSteamID &steamID );
 
 // NOTENOTE: Use this instead of UTIL_PlayerByIndex IF you're in single player
 // and you want the player.
-// not useable in multiplayer - see UTIL_GetListenServerHost()
+// Not intended for multiplayer
 CBasePlayer* UTIL_GetLocalPlayer( void );
+
+CBasePlayer *UTIL_GetNearestPlayer(const Vector& pos);
+CBasePlayer *UTIL_GetNearestVisiblePlayer(CBaseEntity *pEntity, int mask = MASK_BLOCKLOS);
 
 // get the local player on a listen server
 CBasePlayer *UTIL_GetListenServerHost( void );
@@ -245,6 +248,9 @@ inline CBasePlayer *UTIL_GetLocalPlayerOrListenServerHost( void )
 
 	return UTIL_GetLocalPlayer();
 }
+
+CBasePlayer* UTIL_PlayerByUserId( int userID );
+CBasePlayer* UTIL_PlayerByName( const char *name ); // not case sensitive
 
 // Returns true if the command was issued by the listenserver host, or by the dedicated server, via rcon or the server console.
 // This is valid during ConCommand execution.
@@ -354,6 +360,7 @@ void		UTIL_ScreenShakeObject	( CBaseEntity *pEnt, const Vector &center, float am
 void		UTIL_ViewPunch			( const Vector &center, QAngle angPunch, float radius, bool bInAir );
 void		UTIL_ShowMessage		( const char *pString, CBasePlayer *pPlayer );
 void		UTIL_ShowMessageAll		( const char *pString );
+void		UTIL_SendConVarValue	( edict_t *pEdict, const char *pConVarName, const char *pConVarValue );
 void		UTIL_ScreenFadeAll		( const color32 &color, float fadeTime, float holdTime, int flags );
 void		UTIL_ScreenFade			( CBaseEntity *pEntity, const color32 &color, float fadeTime, float fadeHold, int flags );
 void		UTIL_MuzzleFlash		( const Vector &origin, const QAngle &angles, int scale, int type );

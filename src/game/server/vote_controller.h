@@ -106,7 +106,6 @@ protected:
 class CVoteController : public CBaseEntity
 {
 	DECLARE_CLASS( CVoteController, CBaseEntity );
-
 public:
 	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();

@@ -1,0 +1,40 @@
+name: Windows
+
+on: 
+  push:
+    paths:
+      - '.github/**'
+      - 'src/**'
+  pull_request:
+   paths:
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on:
+      windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            src
+
+      - name: Configure dependencies
+        uses: ilammy/msvc-dev-cmd@v1
+        
+      - name: Create project
+        run: cd src;devtools/bin/vpc.exe +dedicated /sdk2013ce /win32 /define:SOURCESDK /mksln dedicated32.sln
+
+      - name: Build project
+        run: cd src;devenv dedicated32.sln /Build Release
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: coopbase-win32
+          compression-level: 9
+          path: |
+            game/mod_coopbase/bin/

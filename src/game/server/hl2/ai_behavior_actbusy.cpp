@@ -1099,11 +1099,12 @@ int	CAI_ActBusyBehavior::SelectScheduleForLeaving( void )
 			{
 				if ( !GetOuter()->IsMarkedForDeletion() )
 				{
-					CBaseEntity *pOwner = GetOuter()->GetOwnerEntity();
-					if ( pOwner )
+					// tell the NPCMaker that we're dead.
+					CBaseEntity *pMaker = GetOuter()->m_hMakerEntity.Get();
+					if ( pMaker )
 					{
-						pOwner->DeathNotice( GetOuter() );
-						GetOuter()->SetOwnerEntity( NULL );
+						pMaker->DeathNotice( GetOuter() );
+						GetOuter()->m_hMakerEntity = NULL;
 					}
 					GetOuter()->SetThink( &CBaseEntity::SUB_Remove); //SUB_Remove) ; //GetOuter()->SUB_Remove );
 					GetOuter()->SetNextThink( gpGlobals->curtime + 0.1 );

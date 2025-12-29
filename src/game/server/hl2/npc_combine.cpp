@@ -348,7 +348,6 @@ void CNPC_Combine::Spawn( void )
 	m_flAlertPatrolTime			= 0;
 
 	m_flNextAltFireTime = gpGlobals->curtime;
-
 	NPCInit();
 }
 
@@ -2565,7 +2564,11 @@ void CNPC_Combine::SpeakSentence( int sentenceType )
 //=========================================================
 // PainSound
 //=========================================================
+#ifdef SDK2013CE
+void CNPC_Combine::PainSound( const CTakeDamageInfo &info )
+#else
 void CNPC_Combine::PainSound ( void )
+#endif
 {
 	// NOTE: The response system deals with this at the moment
 	if ( GetFlags() & FL_DISSOLVING )

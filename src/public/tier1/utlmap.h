@@ -293,7 +293,6 @@ inline void CUtlMap<K, T, I, LessFunc_t>::PurgeAndDeleteElements()
 	{
 		if ( !IsValidIndex( i ) ) 
 			continue; 
-
 		delete Element( i );
 	}
 

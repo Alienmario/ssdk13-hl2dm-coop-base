@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/hassassin/Fassn_body"
+	"$bumpmap" "models/hassassin/Fassn_body-normal"
+	//"$basealphaenvmapmask" 1
+	"$envmap" "models/hassassin/hassn-env"
+	"$envmapsaturation" 0
+	"$envmapcontrast" 1.1
+
+	"VertexLitGeneric_HDR_DX9"
+	{
+		"$envmap" "env_cubemap"
+	}
+}

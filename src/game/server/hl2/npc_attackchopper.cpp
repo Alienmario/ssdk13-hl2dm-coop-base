@@ -38,6 +38,7 @@
 #include "ai_memory.h"
 #include "npc_attackchopper.h"
 
+#define HL2_EPISODIC = true;
 #ifdef HL2_EPISODIC
 #include "physics_bone_follower.h"
 #endif // HL2_EPISODIC
@@ -1703,6 +1704,9 @@ CBaseEntity *CNPC_AttackHelicopter::FindTrackBlocker( const Vector &vecViewPoint
 //-----------------------------------------------------------------------------
 bool CNPC_AttackHelicopter::FVisible( CBaseEntity *pEntity, int traceMask, CBaseEntity **ppBlocker )
 {
+	if( !pEntity )
+		return false;
+
 	if ( pEntity->GetFlags() & FL_NOTARGET )
 		return false;
 
@@ -1965,7 +1969,8 @@ void CNPC_AttackHelicopter::FireBullets( const FireBulletsInfo_t &info )
 		if ( m_nBurstHits >= m_nMaxBurstHits )
 		{
 			FireBulletsInfo_t actualInfo = info;
-			actualInfo.m_pAdditionalIgnoreEnt = GetEnemy();
+			// actualInfo.m_pAdditionalIgnoreEnt = GetEnemy();
+			actualInfo.m_iPlayerDamage = 0;
 			BaseClass::FireBullets( actualInfo );
 			return;
 		}
@@ -2029,6 +2034,7 @@ void CNPC_AttackHelicopter::DoMuzzleFlash( void )
 	
 	CEffectData data;
 
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nAttachmentIndex = LookupAttachment( "muzzle" );
 	data.m_nEntIndex = entindex();
 	DispatchEffect( "ChopperMuzzleFlash", data );
@@ -2047,7 +2053,7 @@ void CNPC_AttackHelicopter::ShootAtVehicle( const Vector &vBasePos, const Vector
 	DoMuzzleFlash();
 
 	// Do special code against episodic drivers
-	if ( hl2_episodic.GetBool() )
+	// if ( hl2_episodic.GetBool() )
 	{
 		Vector vecVelocity;
 		GetEnemyVehicle()->GetVelocity( &vecVelocity, NULL );
@@ -2536,6 +2542,7 @@ void CNPC_AttackHelicopter::CreateZapBeam( const Vector &vecTargetPos )
 void CNPC_AttackHelicopter::CreateEntityZapEffect( CBaseEntity *pEnt )
 {
 	CEffectData	data;
+	data.m_vOrigin = pEnt->GetAbsOrigin();
 	data.m_nEntIndex = pEnt->entindex();
 	data.m_flMagnitude = 10;
 	data.m_flScale = 1.0f;
@@ -3651,7 +3658,7 @@ void Chopper_BecomeChunks( CBaseEntity *pChopper )
 
 	Vector vecRight(0,0,0);
 
-	if( hl2_episodic.GetBool() )
+	// if( hl2_episodic.GetBool() )
 	{
 		// We need to get a right hand vector to toss the cockpit and tail pieces
 		// so their motion looks like a continuation of the tailspin animation
@@ -3906,7 +3913,7 @@ void CNPC_AttackHelicopter::ComputeVelocity( const Vector &vecTargetPosition,
 	pVecAccel->z = 2.0f * (deltaPos.z - GetAbsVelocity().z * dt) / (dt * dt) + HELICOPTER_GRAVITY;
 
 	float flDistFromPath = 0.0f;
-	Vector vecPoint, vecDelta;
+	Vector vecPoint, vecDelta = vec3_origin;
 	if ( flMaxDistFromSegment != 0.0f )
 	{
 		// Also, add in a little force to get us closer to our current line segment if we can
@@ -4227,7 +4234,7 @@ void CNPC_AttackHelicopter::UpdateFacingDirection( const Vector &vecActualDesire
 	{
 		if ( !IsLeading() )
 		{
-			if( IsCarpetBombing() && hl2_episodic.GetBool() )
+			if( IsCarpetBombing() /* && hl2_episodic.GetBool() */ )
 			{
 				m_vecDesiredFaceDir = vecActualDesiredPosition - GetAbsOrigin();
 			}
@@ -5041,16 +5048,16 @@ void CGrenadeHelicopter::Spawn( void )
 	m_flLifetime = BOMB_LIFETIME * 2.0;
 #endif // HL2_EPISODIC
 
-	if ( hl2_episodic.GetBool() )
+	// if ( hl2_episodic.GetBool() )
 	{
 		// Disallow this, we'd rather deal with them as physobjects
 		m_takedamage = DAMAGE_NO;
 	}
-	else
+	/* else
 	{
 		// Allow player to blow this puppy up in the air
 		m_takedamage = DAMAGE_YES;
-	}
+	} */
 
 	m_bActivated = false;
 	m_pWarnSound = NULL;
@@ -5060,7 +5067,7 @@ void CGrenadeHelicopter::Spawn( void )
 
 	g_pNotify->AddEntity( this, this );
 
-	if( hl2_episodic.GetBool() )
+	// if( hl2_episodic.GetBool() )
 	{
 		SetContextThink( &CGrenadeHelicopter::AnimateThink, gpGlobals->curtime, s_pAnimateThinkContext );
 	}
@@ -5119,7 +5126,7 @@ void CGrenadeHelicopter::BecomeActive()
 
 	SetThink( &CGrenadeHelicopter::ExplodeThink );
 	
-	if ( hl2_episodic.GetBool() )
+	// if ( hl2_episodic.GetBool() )
 	{
 		if ( HasSpawnFlags( SF_HELICOPTER_GRENADE_DUD ) == false )
 		{
@@ -5132,10 +5139,10 @@ void CGrenadeHelicopter::BecomeActive()
 			return;
 		}
 	}
-	else
+	/* else
 	{
 		SetNextThink( gpGlobals->curtime + GetBombLifetime() );
-	}
+	} */
 
 	if ( !bMegaBomb )
 	{
@@ -5312,7 +5319,7 @@ void CGrenadeHelicopter::VPhysicsCollision( int index, gamevcollisionevent_t *pE
 #endif
 	
 
-	if( hl2_episodic.GetBool() )
+	// if( hl2_episodic.GetBool() )
 	{
 		float flImpactSpeed = pEvent->preVelocity->Length();
 		if( flImpactSpeed > 400.0f && pEvent->pEntities[ 1 ]->IsWorld() )
@@ -5323,7 +5330,7 @@ void CGrenadeHelicopter::VPhysicsCollision( int index, gamevcollisionevent_t *pE
 }
 
 
-#if HL2_EPISODIC
+#ifdef HL2_EPISODIC
 //------------------------------------------------------------------------------
 // double launch velocity for ep2_outland_08
 //------------------------------------------------------------------------------
@@ -5340,7 +5347,7 @@ Vector CGrenadeHelicopter::PhysGunLaunchVelocity( const Vector &forward, float f
 //------------------------------------------------------------------------------
 float CGrenadeHelicopter::GetBombLifetime()
 {
-#if HL2_EPISODIC
+#ifdef HL2_EPISODIC
 	return m_flLifetime;
 #else
 	return BOMB_LIFETIME;
@@ -5456,7 +5463,7 @@ void CGrenadeHelicopter::ExplodeConcussion( CBaseEntity *pOther )
 		if ( pOther->IsWorld() )
 			return;
 
-		if ( hl2_episodic.GetBool() )
+		// if ( hl2_episodic.GetBool() )
 		{
 			// Don't hit anything other than vehicles
 			if ( pOther->GetCollisionGroup() != COLLISION_GROUP_VEHICLE )

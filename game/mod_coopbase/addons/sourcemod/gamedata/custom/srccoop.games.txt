@@ -1,0 +1,323 @@
+// Ascii made with https://patorjk.com/software/taag/ Font: Big
+
+"Games"
+{
+	"hl2mp"
+	{
+		"Keys"
+		{
+			"IServerGameDLL"
+			{
+				"windows"	"ServerGameDLL010"
+				"linux"		"ServerGameDLL010"
+			}
+		}
+
+		//   _    _ _      ___  __  __ _____      _____ _____ _____ _   _       _______ _    _ _____  ______  _____ 
+		//  | |  | | |    |__ \|  \/  |  __ \    / ____|_   _/ ____| \ | |   /\|__   __| |  | |  __ \|  ____|/ ____|
+		//  | |__| | |       ) | \  / | |__) |  | (___   | || |  __|  \| |  /  \  | |  | |  | | |__) | |__  | (___  
+		//  |  __  | |      / /| |\/| |  ___/    \___ \  | || | |_ | . ` | / /\ \ | |  | |  | |  _  /|  __|  \___ \ 
+		//  | |  | | |____ / /_| |  | | |        ____) |_| || |__| | |\  |/ ____ \| |  | |__| | | \ \| |____ ____) |
+		//  |_|  |_|______|____|_|  |_|_|       |_____/|_____\_____|_| \_/_/    \_\_|   \____/|_|  \_\______|_____/ 
+		
+		"Signatures"
+		{
+			// Note: This is used over CBaseEntity::SetCollisionBounds as it's more likely to be unique and references a string.
+			"SetMinMaxSize" // void SetMinMaxSize(CBaseEntity *, Vector const&, Vector const&)
+			{
+				"windows"	"\x55\x8B\xEC\x8B\x55\x0C\x33\xC9" // str: "%s: backwards mins/maxs"
+				"linux"		"@_Z12UTIL_SetSizeP11CBaseEntityRK6VectorS3_"
+			}
+			"CBaseEntity::SetNextThink" // void SetNextThink( float nextThinkTime, const char *szContext = NULL );
+			{
+				"windows"	"\x55\x8B\xEC\x51\xF3\x0F\x10\x45\x08\x0F\x2E\x05\x2A\x2A\x2A\x2A" // str: "Doing partial rebuild of Node Graph..."
+				"linux"		"@_ZN11CBaseEntity12SetNextThinkEfPKc"
+			}
+			"CreateServerRagdoll" // CBaseEntity CreateServerRagdoll(CBaseAnimating *, int, const CTakeDamageInfo *, int, bool)
+			{
+				"windows"	"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\xB8\x88\x32\x00\x00"
+				"linux" 	"@_Z19CreateServerRagdollP14CBaseAnimatingiRK15CTakeDamageInfoib"
+			}
+			"UTIL_GetLocalPlayer" // CBasePlayer UTIL_GetLocalPlayer(void)
+			{
+				"windows"	"\xA1\x2A\x2A\x2A\x2A\x56\xBE\x01\x00\x00\x00\x57" // xref str: "devshots_nextmap"
+				"linux" 	"@_Z19UTIL_GetLocalPlayerv"
+			}
+			"Pickup_ForcePlayerToDropThisObject" // void Pickup_ForcePlayerToDropThisObject(CBaseEntity *)
+			{
+				"windows"	"\x55\x8B\xEC\x53\x8B\x5D\x08\x85\xDB\x74\x2A\x8B\x8B\xE8\x01\x00\x00" // xref str: "NPC_AntlionGuard.HitHard"
+				"linux" 	"@_Z34Pickup_ForcePlayerToDropThisObjectP11CBaseEntity"
+			}
+			"CBaseAnimating::GetSequenceLinearMotion" // void CBaseAnimating::GetSequenceLinearMotion(int,Vector *)
+			{
+				// called from CAI_BaseNPC::SetPlayerAvoidState
+				"windows"	"\x55\x8B\xEC\x56\x8B\xF1\x80\xBE\x35\x03\x00\x00\x00\x75\x2A\x83\xBE\x54\x04\x00\x00\x00\x75\x2A\xE8\x2A\x2A\x2A\x2A\x85\xC0\x74\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\x8E\x54\x04\x00\x00\x85\xC9\x74\x2A\x83\x39\x00\x75\x2A\x33\xC9\xFF\x75\x0C"
+				"linux" 	"@_ZN14CBaseAnimating23GetSequenceLinearMotionEiP6Vector"
+			}
+			"GlobalEntity_GetIndex" // int GlobalEntity_GetIndex( const char *pGlobalname );
+			{
+				"windows"	"\x55\x8B\xEC\x51\xFF\x75\x08\x8D\x45\xFC" // xref str: "suit_no_sprint"
+				"linux" 	"@_Z21GlobalEntity_GetIndexPKc"
+			}
+			"GlobalEntity_GetState" // GLOBALESTATE GlobalEntity_GetState( int globalIndex );
+			{
+				"windows"	"\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8D\x0C\x40\xA1\x2A\x2A\x2A\x2A\x8B\x44\x88\x04"
+				"linux" 	"@_Z21GlobalEntity_GetStatei"
+			}
+			"GlobalEntity_GetName" // const char *GlobalEntity_GetName( int globalIndex );
+			{
+				"windows"	"\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8D\x0C\x40\xA1\x2A\x2A\x2A\x2A\x51\x8D\x04\x88\x8B\xCC\x66\x8B\x00" // xref str: "suit_no_sprint"
+				"linux"		"@_Z20GlobalEntity_GetNamei"
+			}
+			"GlobalEntity_GetCounter" // int GlobalEntity_GetCounter( int globalIndex );
+			{
+				"windows"	"\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8D\x0C\x40\xA1\x2A\x2A\x2A\x2A\x8B\x44\x88\x08"
+				"linux"		"@_Z23GlobalEntity_GetCounteri"
+			}
+			"GlobalEntity_GetMap" // const char *GlobalEntity_GetMap( int globalIndex );
+			{
+				// this func is physically located right before GlobalEntity_GetName
+				"windows"	"\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8D\x0C\x40\xA1\x2A\x2A\x2A\x2A\x51\x8D\x04\x88\x8B\xCC\x66\x8B\x40\x02"
+				"linux"		"@_Z19GlobalEntity_GetMapi"
+			}
+			"GlobalEntity_SetState" // void GlobalEntity_SetState( int globalIndex, GLOBALESTATE state )
+			{
+				"windows"	"\x55\x8B\xEC\x80\x3D\x2A\x2A\x2A\x2A\x00\x75\x2A\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8B\x4D\x0C\x8D\x14\x40\xA1\x2A\x2A\x2A\x2A\x89\x4C\x90\x04"
+				"linux"		"@_Z21GlobalEntity_SetStatei12GLOBALESTATE"
+			}
+			"GlobalEntity_SetCounter" // void GlobalEntity_SetCounter( int globalIndex, int counter )
+			{
+				"windows"	"\x55\x8B\xEC\x80\x3D\x2A\x2A\x2A\x2A\x00\x75\x2A\x8B\x45\x08\x85\xC0\x78\x2A\x3B\x05\x2A\x2A\x2A\x2A\x7D\x2A\x8B\x4D\x0C\x8D\x14\x40\xA1\x2A\x2A\x2A\x2A\x89\x4C\x90\x08"
+				"linux"		"@_Z23GlobalEntity_SetCounterii"
+			}
+			"GlobalEntity_Add" // int GlobalEntity_Add( string_t const char *pGlobalname, const char *pMapName, GLOBALESTATE state )
+			{
+				// xref str: "is_pc"
+				"windows"	"\x55\x8B\xEC\xFF\x75\x10\xB9\x2A\x2A\x2A\x2A\xFF\x75\x0C\xFF\x75\x08\xE8\x2A\x2A\x2A\x2A\x5D\xC3"
+				"linux"		"@_Z16GlobalEntity_AddPKcS0_12GLOBALESTATE"
+			}
+		}
+
+		//   _    _ _      ___  __  __ _____     __  __ ______ __  __ _____     _______ _____ _    _ ______  _____ 
+		//  | |  | | |    |__ \|  \/  |  __ \   |  \/  |  ____|  \/  |  __ \ /\|__   __/ ____| |  | |  ____|/ ____|
+		//  | |__| | |       ) | \  / | |__) |  | \  / | |__  | \  / | |__) /  \  | | | |    | |__| | |__  | (___  
+		//  |  __  | |      / /| |\/| |  ___/   | |\/| |  __| | |\/| |  ___/ /\ \ | | | |    |  __  |  __|  \___ \ 
+		//  | |  | | |____ / /_| |  | | |       | |  | | |____| |  | | |  / ____ \| | | |____| |  | | |____ ____) |
+		//  |_|  |_|______|____|_|  |_|_|       |_|  |_|______|_|  |_|_| /_/    \_\_|  \_____|_|  |_|______|_____/ 
+
+		"MemPatches"
+		{
+		}
+
+		//   _    _ _      ___  __  __ _____      ____  ______ ______ _____ ______ _______ _____ 
+		//  | |  | | |    |__ \|  \/  |  __ \    / __ \|  ____|  ____/ ____|  ____|__   __/ ____|
+		//  | |__| | |       ) | \  / | |__) |  | |  | | |__  | |__ | (___ | |__     | | | (___  
+		//  |  __  | |      / /| |\/| |  ___/   | |  | |  __| |  __| \___ \|  __|    | |  \___ \ 
+		//  | |  | | |____ / /_| |  | | |       | |__| | |    | |    ____) | |____   | |  ____) |
+		//  |_|  |_|______|____|_|  |_|_|        \____/|_|    |_|   |_____/|______|  |_| |_____/ 
+		
+		"Offsets"
+		{
+			"CBasePlayer::CreateRagdollEntity" // void CBasePlayer::CreateRagdollEntity()
+			{
+				"windows"	"424"
+				"linux"		"425"
+			}
+			"CBasePlayer::ChangeTeam" // CBasePlayer::ChangeTeam(int, bool, bool)
+			{
+				"windows"	"419"
+				"linux"		"420"
+			}
+			"CBasePlayer::Spawn" // CBasePlayer::Spawn()
+			{
+				"windows"	"22"
+				"linux" 	"23"
+			}
+			"CBaseCombatWeapon::SendWeaponAnim" // CBaseCombatWeapon::SendWeaponAnim(int)
+			{
+				"windows"	"236"
+				"linux"		"237"
+			}
+			"CBaseEntity::ShouldCollide" // CBaseEntity::ShouldCollide
+			{
+				"windows"	"16"
+				"linux"		"17"
+			}
+			"CAI_BaseNPC::ShouldPlayerAvoid" // CAI_BaseNPC::ShouldPlayerAvoid()
+			{
+				"windows"	"347"
+				"linux"		"348"
+			}
+			"CBasePlayer::RemoveAllItems" // CBasePlayer::RemoveAllItems(bool)
+			{
+				"windows"	"342"
+				"linux"		"343"
+			}
+			"CBaseEntity::IsNPC" // CBaseEntity::IsNPC() const
+			{
+				"windows"	"70"
+				"linux"		"71"
+			}
+			"CServerGameDLL::LevelInit" // CServerGameDLL::LevelInit(char const*, char const*, char const*, char const*, bool, bool)
+			{
+				"windows"	"3"
+				"linux"		"3"
+			}
+			"CServerGameDLL::GameShutdown" // CServerGameDLL::GameShutdown()
+			{
+				"windows"	"8"
+				"linux"		"8"
+			}
+			"CMultiplayRules::IsMultiplayer" // CMultiplayRules::IsMultiplayer()
+			{
+				"windows"	"34"
+				"linux"		"35"
+			}
+			"CAI_BaseNPC::RunTask"	// CAI_BaseNPC::RunTask(Task_t const*)
+			{
+				"windows"	"346"	// vtable dumper will get this wrong!! XREF: "No RunTask entry for %s\n"
+				"linux"		"345"
+			}
+			"CSceneEntity::FindNamedEntity" // CSceneEntity::FindNamedEntity(char const*, CBaseEntity*, bool, bool)
+			{
+				"windows"	"233"
+				"linux"		"238"
+			}
+			"CSceneEntity::FindNamedEntityClosest" // CSceneEntity::FindNamedEntityClosest(char const*, CBaseEntity*, bool, bool, char const*)
+			{
+				"windows"	"234"
+				"linux"		"239"
+			}
+			"CBaseEntity::SetModel" // CBaseEntity::SetModel(char const*)
+			{
+				"windows"	"24"
+				"linux"		"25"
+			}
+			"CBaseEntity::AcceptInput" // CBaseEntity::AcceptInput(char const*, CBaseEntity*, CBaseEntity*, variant_t, int)
+			{
+				"windows"	"36"
+				"linux"		"37"
+			}
+			"CBaseEntity::Think" // CBaseEntity::Think
+			{
+				"windows"	"47"
+				"linux"		"48"
+			}
+			"CBaseEntity::Event_Killed" // CBaseEntity::Event_Killed(CTakeDamageInfo const&)
+			{
+				"windows"	"66"
+				"linux"		"67"
+			}
+			"CBaseEntity::KeyValue_char" // CBaseEntity::KeyValue(char const*, char const*)
+			{
+				"windows"	"31"
+				"linux"		"30"
+			}
+			"CAI_BaseNPC::QueryHearSound"	// bool CAI_BaseNPC::QueryHearSound(CSound*)
+			{
+				"windows"	"387"
+				"linux"		"388"
+			}
+			"CAI_BaseNPC::GetSoundInterests"	// int CAI_BaseNPC::GetSoundInterests( void )
+			{
+				"windows"	"393"
+				"linux"		"394"
+			}
+			"CAI_BaseNPC::HearingSensitivity"	// float CAI_BaseNPC::HearingSensitivity()
+			{
+				"windows"	"397"
+				"linux"		"398"
+			}
+			"CAI_BaseNPC::UpdateEnemyMemory" // CAI_BaseNPC::UpdateEnemyMemory(CBaseEntity*, Vector const&, CBaseEntity*)
+			{
+				"windows"	"496"
+				"linux"		"500"
+			}
+			"CBaseEntity::Blocked" // bool CBaseEntity::Blocked(CBaseEntity*)
+			{
+				"windows"	"102"
+				"linux"		"103"
+			}
+			"CBaseCombatCharacter::Weapon_Switch" // CBaseCombatCharacter::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex /*=0*/ )
+			{
+				"windows"	"264"
+				"linux"		"265"
+			}
+			"CBaseEntity::UpdateOnRemove" // void CBaseEntity::UpdateOnRemove( void )
+			{
+				"windows"	"105"
+				"linux"		"106"
+			}
+			"CBaseEntity::WorldSpaceCenter" // const Vector& CBaseEntity::WorldSpaceCenter( ) const
+			{
+				"windows"	"149"
+				"linux"		"150"
+			}
+			"CBasePlayer::CreateViewModel" // CBasePlayer::CreateViewModel(int)
+			{
+				"windows"	"321"
+				"linux"		"322"
+			}
+			"CBaseCombatWeapon::Deploy"	// CBaseCombatWeapon::Deploy()
+			{
+				"windows"	"248"
+				"linux"		"249"
+			}
+			"CBaseCombatWeapon::ItemPostFrame"	// CBaseCombatWeapon::ItemPostFrame()
+			{
+				"windows"	"259"
+				"linux"		"260"
+			}
+			"CBaseCombatWeapon::PrimaryAttack"	// CBaseCombatWeapon::PrimaryAttack()
+			{
+				"windows"	"273"
+				"linux"		"274"
+			}
+			"CBaseCombatWeapon::GetPrimaryAttackActivity"	// CBaseCombatWeapon::GetPrimaryAttackActivity()
+			{
+				"windows"	"275"
+				"linux"		"276"
+			}
+			"CBaseCombatWeapon::GetDrawActivity"	// CBaseCombatWeapon::GetDrawActivity() const
+			{
+				"windows"	"277"
+				"linux"		"278"
+			}
+			"CBaseViewModel::SendViewModelMatchingSequence"	// CBaseViewModel::SendViewModelMatchingSequence(int)
+			{
+				"windows"	"216"
+				"linux"		"217"
+			}
+			"CPlayerInfoManager::GetGlobalVars"	// CPlayerInfoManager::GetGlobalVars()
+			{
+				"windows"	"1"
+				"linux"		"1"
+			}
+			"CTempEntsSystem::DispatchEffect" // CTempEntsSystem::DispatchEffect(IRecipientFilter&, float, Vector const&, char const*, CEffectData const&)
+			{
+				"windows"	"38"
+				"linux"		"39"
+			}
+			"CVEngineServer::GetClusterForOrigin"	// CVEngineServer::GetClusterForOrigin(Vector const&)
+			{
+				"windows"	"11"
+				"linux"		"11"
+			}
+			"CVEngineServer::GetPVSForCluster"	// CVEngineServer::GetPVSForCluster(int, int, unsigned char*)
+			{
+				"windows"	"12"
+				"linux"		"12"
+			}
+			"CVEngineServer::CheckOriginInPVS"	// CVEngineServer::CheckOriginInPVS(Vector const&, unsigned char const*, int)
+			{
+				"windows"	"13"
+				"linux"		"13"
+			}
+			"CBasePlayer::Weapon_ShootPosition"	// CBasePlayer::Weapon_ShootPosition()
+			{
+				"windows"	"265"
+				"linux"		"266"
+			}
+		}
+	}
+}

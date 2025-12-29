@@ -1,4 +1,6 @@
 buildallprojects text
+creategameprojects text
+createallprojects text
 vpc binary
 
 *.sh text
@@ -33,7 +35,9 @@ vpc binary
 *.asm text
 
 .gitignore text
-README.md text
+sourcesdk_def.mak text
+smdlexp.mak text
+README text
 CONTRIBUTING text
 LICENSE text
 
@@ -42,4 +46,7 @@ LICENSE text
 protoc binary
 ccache binary
 
-*_english.txt binary
+gtest_output_test_golden_lin.txt binary
+mod_*_english.txt binary
+
+src/utils/sapi51/** binary

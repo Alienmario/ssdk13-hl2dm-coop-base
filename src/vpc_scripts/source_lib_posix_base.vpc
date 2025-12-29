@@ -18,4 +18,3 @@ $Configuration
 		$OutputFile                                             "$OUTLIBDIR/$OUTLIBNAME$_STATICLIB_EXT"
 	}
 }
-

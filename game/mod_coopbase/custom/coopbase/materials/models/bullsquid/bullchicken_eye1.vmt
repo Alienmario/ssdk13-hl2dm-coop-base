@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\bullsquid\bullchicken_eye1"
+	"$bumpmap" "models\bullsquid\bullchicken_eye1_normal"
+	"$surfaceprop" "alienflesh"
+}

@@ -778,7 +778,9 @@ bool ShouldRemoveThisRagdoll( CBaseAnimating *pRagdoll )
 		return true;
 	}
 
+	return false;
 #else
+	/*
 	CBasePlayer *pPlayer = UTIL_GetLocalPlayer();
 
 	if( !UTIL_FindClientInPVS( pRagdoll->edict() ) )
@@ -796,9 +798,23 @@ bool ShouldRemoveThisRagdoll( CBaseAnimating *pRagdoll )
 		return true;
 	}
 
-#endif
-
 	return false;
+	*/
+
+	// COOPBASE:
+	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
+	{
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
+		if ( !pPlayer || pPlayer->IsFakeClient() )
+			continue;
+
+		if ( pPlayer->FVisible( pRagdoll, MASK_VISIBLE ) )
+			return false;
+	}
+	
+	return true;
+
+#endif
 }
 
 

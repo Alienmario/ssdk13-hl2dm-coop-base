@@ -1,0 +1,17 @@
+"VertexLitGeneric_DX6"
+{
+	//"$baseTexture" "models/hassassin/lens_chrome"
+	"$envmap" "models/hassassin/lens_chrome"
+	"$envmapsaturation" 0
+	"$envmapcontrast" 1.1
+	"$envmapsphere"			1
+	"$envmapmode" 1
+	"$selfillum" 1
+	"$envmapmask" "models/hassassin/lens_chrome-mask"
+
+	// requred to see specular on dx6+7 at all
+	"$multipass" 1
+}
+
+
+

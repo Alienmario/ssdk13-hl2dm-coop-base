@@ -1,0 +1,13 @@
+"VertexLitGeneric_DX6"
+{
+
+        "$envmap" "models/agrunt/agrunt_chrome"
+
+	"$envmapsphere"	"1"
+
+	"$envmapmode" "1"
+
+	"$surfaceprop" "metal"
+
+	"$multipass" "1"
+}

@@ -211,10 +211,10 @@ int CNPC_GroundTurret::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 	}
 
 	// Only take damage from self (kill input from my bullseye) or missiles.
-	if( info.GetInflictor() != this && info.GetInflictor()->Classify() != CLASS_MISSILE )
+	/* if( info.GetInflictor() != this && info.GetInflictor()->Classify() != CLASS_MISSILE )
 	{
 		return 0;
-	}
+	} */
 
 	CTakeDamageInfo infoCopy = info;
 
@@ -547,6 +547,7 @@ void CNPC_GroundTurret::Shoot()
 
 	// Do the AR2 muzzle flash
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nEntIndex = entindex();
 	data.m_nAttachmentIndex = LookupAttachment( "eyes" );
 	data.m_flScale = 1.0f;

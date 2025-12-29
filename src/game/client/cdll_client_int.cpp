@@ -345,7 +345,6 @@ ConVar r_lightmap_bicubic_set( "r_lightmap_bicubic_set", "0", FCVAR_ARCHIVE | FC
 bool g_bLevelInitialized;
 bool g_bTextMode = false;
 
-
 static ConVar *g_pcv_ThreadMode = NULL;
 
 //-----------------------------------------------------------------------------

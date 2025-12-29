@@ -58,6 +58,9 @@ public:
 	void	DumbFire( void );
 	void	SetGracePeriod( float flGracePeriod );
 
+	static void AddCustomDetonator( CBaseEntity *pEntity, float radius, float height = -1 );
+	static void RemoveCustomDetonator( CBaseEntity *pEntity );
+
 	int		OnTakeDamage_Alive( const CTakeDamageInfo &info );
 	void	Event_Killed( const CTakeDamageInfo &info );
 	
@@ -85,6 +88,14 @@ protected:
 	float					m_flAugerTime;		// Amount of time to auger before blowing up anyway
 	float					m_flMarkDeadTime;
 	float					m_flDamage;
+
+	struct CustomDetonator_t
+	{
+		EHANDLE hEntity;
+		float radiusSq;
+		float halfHeight;
+	};
+	static CUtlVector<CustomDetonator_t> gm_CustomDetonators;
 
 private:
 	float					m_flGracePeriodEndsAt;
@@ -189,6 +200,7 @@ public:
 	bool	Reload( void );
 	bool	WeaponShouldBeLowered( void );
 	bool	Lower( void );
+	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
 
 	bool	CanHolster( void );
 

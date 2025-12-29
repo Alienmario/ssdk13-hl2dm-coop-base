@@ -58,6 +58,7 @@ public:
 	bool	ShouldDisplayHUDHint() { return true; }
 
 	DECLARE_DATADESC();
+	DECLARE_ACTTABLE();
 
 protected:
 
@@ -74,6 +75,20 @@ LINK_ENTITY_TO_CLASS( weapon_bugbait, CWeaponBugBait );
 #ifndef HL2MP
 PRECACHE_WEAPON_REGISTER( weapon_bugbait );
 #endif
+
+acttable_t CWeaponBugBait::m_acttable[] = 
+{
+	{ ACT_RANGE_ATTACK1,				ACT_RANGE_ATTACK_SLAM,					true },
+	{ ACT_HL2MP_IDLE,					ACT_HL2MP_IDLE_SLAM,					false },
+	{ ACT_HL2MP_RUN,					ACT_HL2MP_RUN_SLAM,						false },
+	{ ACT_HL2MP_IDLE_CROUCH,			ACT_HL2MP_IDLE_CROUCH_SLAM,				false },
+	{ ACT_HL2MP_WALK_CROUCH,			ACT_HL2MP_WALK_CROUCH_SLAM,				false },
+	{ ACT_HL2MP_GESTURE_RANGE_ATTACK,	ACT_HL2MP_GESTURE_RANGE_ATTACK_SLAM,	false },
+	{ ACT_HL2MP_GESTURE_RELOAD,			ACT_HL2MP_GESTURE_RELOAD_SLAM,			false },
+	{ ACT_HL2MP_JUMP,					ACT_HL2MP_JUMP_SLAM,					false },
+};
+
+IMPLEMENT_ACTTABLE( CWeaponBugBait );
 
 BEGIN_DATADESC( CWeaponBugBait )
 
@@ -225,6 +240,7 @@ void CWeaponBugBait::PrimaryAttack( void )
 		return;
 
 	SendWeaponAnim( ACT_VM_HAULBACK );
+	pPlayer->SetAnimation( PLAYER_ATTACK1 );
 	
 	m_flTimeWeaponIdle		= FLT_MAX;
 	m_flNextPrimaryAttack	= FLT_MAX;
@@ -254,6 +270,7 @@ void CWeaponBugBait::SecondaryAttack( void )
 	CBasePlayer *pOwner = ToBasePlayer( GetOwner() );
 	if ( pOwner )
 	{
+		pOwner->SetAnimation( PLAYER_ATTACK1 );
 		m_iSecondaryAttacks++;
 		gamestats->Event_WeaponFired( pOwner, false, GetClassname() );
 	}

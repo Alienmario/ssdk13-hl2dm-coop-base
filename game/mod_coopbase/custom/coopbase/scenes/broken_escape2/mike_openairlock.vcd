@@ -1,0 +1,277 @@
+// Choreo version 1
+actor "Mike"
+{
+  channel "audio"
+  {
+    event speak "broken_escape2\vo\mike\entrancearmory_01.wav"
+    {
+      time 0.123015 2.783015
+      param "broken_escape2\vo\mike\entrancearmory_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\airlock_01.wav"
+    {
+      time 4.583332 8.322107
+      param "broken_escape2\vo\mike\airlock_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\toughai_01.wav"
+    {
+      time 12.583332 19.383331
+      param "broken_escape2\vo\mike\toughai_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\radiocontact_01.wav"
+    {
+      time 20.500000 24.799999
+      param "broken_escape2\vo\mike\radiocontact_01.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "broken_escape2\vo\mike\airlock_02.wav"
+    {
+      time 8.472221 11.043310
+      param "broken_escape2\vo\mike\airlock_02.wav"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "look at"
+  {
+    event lookat "!PVSPlayer"
+    {
+      time 0.145599 1.282703
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7015 0.8341
+        0.7198 0.8206
+        0.7566 0.7489
+        0.9875 0.8206
+      }
+    }
+    event lookat "mark_mike_look_airlockconsole"
+    {
+      time 12.135051 15.678788
+      param "mark_mike_look_airlockconsole"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8341
+        2.7318 0.8296
+        3.0510 0.7489
+      }
+    }
+    event lookat "!PVSPlayer"
+    {
+      time 3.910943 11.582491
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8206
+        1.7800 0.8341
+        5.7435 0.8341
+        6.8596 0.8206
+        7.1788 0.7489
+      }
+    }
+    event lookat "mark_mike_look_airlockmonitor"
+    {
+      time 15.773937 16.567677
+      param "mark_mike_look_airlockmonitor"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.5737 0.8450
+        0.6064 0.8495
+        0.6602 0.7489
+      }
+    }
+    event lookat "mark_mike_look_airlockconsole"
+    {
+      time 16.662828 20.206566
+      param "mark_mike_look_airlockconsole"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8341
+        2.7318 0.8296
+        3.0510 0.7489
+      }
+    }
+    event lookat "!PVSPlayer"
+    {
+      time 20.688721 25.082489
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.3846 0.7668
+        0.7731 0.8206
+        1.7800 0.8341
+        2.4657 0.8341
+        3.5818 0.8206
+        3.9010 0.7489
+      }
+    }
+  }
+  channel "move to "
+  {
+    event moveto "mark_mike_airlockconsole"
+    {
+      time 1.363492 3.633332
+      param "mark_mike_airlockconsole"
+      param2 "Walk"
+      resumecondition
+    }
+  }
+  channel "face to"
+  {
+    event face "!PVSPlayer"
+    {
+      time 3.988888 11.011483
+      param "!PVSPlayer"
+      event_ramp
+      {
+        1.0763 0.8027
+        1.3963 0.9462
+        1.8563 1.0000
+        5.4604 1.0000
+        5.9393 1.0000
+        6.8425 1.0000
+        7.0226 1.0000
+      }
+    }
+    event face "mark_mike_look_airlockconsole"
+    {
+      time 13.344443 16.627781
+      param "mark_mike_look_airlockconsole"
+      event_ramp
+      {
+        0.6500 0.7937
+        0.9700 0.9372
+        1.4300 1.0000
+        1.7211 1.0000
+        2.2000 1.0000
+        3.2833 1.0000
+      }
+    }
+    event face "!PVSPlayer"
+    {
+      time 21.079630 25.077778
+      param "!PVSPlayer"
+      event_ramp
+      {
+        0.5921 0.8161
+        0.8700 0.9731
+        1.3300 1.0000
+        2.4359 1.0000
+        2.9148 1.0000
+        3.8180 1.0000
+        3.9981 1.0000
+      }
+    }
+  }
+  channel "sequence"
+  {
+  }
+  channel "postures"
+  {
+    event gesture "NULL"
+    {
+      time 0.000000 1.411111
+      param "null1"
+    }
+    event gesture "p_ConsoleType_Rifle"
+    {
+      time 15.581745 19.859526
+      param "p_ConsoleType_Rifle"
+      absolutetags playback_time
+      {
+        "apex" 0.078828
+        "loop" 0.370492
+        "end" 0.770209
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.116279
+        "loop" 0.546512
+        "end" 0.697674
+      }
+      sequenceduration 2.900000
+    }
+    event gesture "NULL"
+    {
+      time 18.461428 19.872540
+      param "null1"
+    }
+  }
+  channel "gestures"
+  {
+    event gesture "NULL"
+    {
+      time 0.000000 1.344444
+      param "NULL"
+    }
+    event gesture "g_consoleType_rifle"
+    {
+      time 16.665873 19.010319
+      param "g_consoleType_rifle"
+      absolutetags playback_time
+      {
+        "in" 0.231410
+        "loop" 0.289263
+        "end" 0.754123
+        "out" 0.771185
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.275862
+        "loop" 0.344828
+        "end" 0.758621
+        "out" 0.775862
+      }
+      sequenceduration 1.966667
+    }
+    event gesture "NULL"
+    {
+      time 18.822540 20.166985
+      param "NULL"
+    }
+  }
+  channel "trigger"
+  {
+    event firetrigger "first pause"
+    {
+      time 3.476190 -1.000000
+      param "1"
+    }
+    event firetrigger "open door"
+    {
+      time 18.138885 -1.000000
+      param "2"
+    }
+  }
+}
+
+mapname "maps\klab_actormarks.bsp"
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "50"
+  "RampTool" "38"
+  "ExpressionTool" "40"
+  "CChoreoView" "24"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -2728,10 +2728,15 @@ void CNPC_Manhack::StartTask( const Task_t *pTask )
 
 	case TASK_MANHACK_FIND_SQUAD_MEMBER:
 		{
+			m_vSavePosition = GetAbsOrigin();
+			
 			if (m_pSquad)
 			{
 				CAI_BaseNPC *pSquadMember = m_pSquad->GetAnyMember();
-				m_vSavePosition = pSquadMember->GetAbsOrigin();
+				if ( pSquadMember )
+				{
+					m_vSavePosition = pSquadMember->GetAbsOrigin();
+				}
 
 				// find attacking members
 				AISquadIter_t iter;
@@ -2750,10 +2755,6 @@ void CNPC_Manhack::StartTask( const Task_t *pTask )
 						break;
 					}
 				}
-			}
-			else
-			{
-				m_vSavePosition = GetAbsOrigin();
 			}
 
 			TaskComplete();

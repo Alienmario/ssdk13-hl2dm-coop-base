@@ -1988,7 +1988,6 @@ void Panel::InternalMousePressed(int code)
 	}
 
 
-
 	Panel *pMouseHandler = m_hMouseEventHandler.Get();
 	if ( pMouseHandler )
 	{

@@ -57,6 +57,9 @@ acttable_t	CWeaponCrowbar::m_acttable[] =
 	{ ACT_HL2MP_GESTURE_RANGE_ATTACK,	ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE,	false },
 	{ ACT_HL2MP_GESTURE_RELOAD,			ACT_HL2MP_GESTURE_RELOAD_MELEE,			false },
 	{ ACT_HL2MP_JUMP,					ACT_HL2MP_JUMP_MELEE,					false },
+	{ ACT_MELEE_ATTACK1,				ACT_MELEE_ATTACK_SWING,					 true },
+	{ ACT_IDLE,							ACT_IDLE_ANGRY_MELEE,					false },
+	{ ACT_IDLE_ANGRY,					ACT_IDLE_ANGRY_MELEE,					false },
 };
 
 IMPLEMENT_ACTTABLE(CWeaponCrowbar);
@@ -70,6 +73,9 @@ CWeaponCrowbar::CWeaponCrowbar( void )
 {
 }
 
+ConVar    sk_plr_dmg_crowbar		( "sk_plr_dmg_crowbar","25");
+ConVar    sk_npc_dmg_crowbar		( "sk_npc_dmg_crowbar","100");
+
 //-----------------------------------------------------------------------------
 // Purpose: Get the damage amount for the animation we're doing
 // Input  : hitActivity - currently played activity
@@ -77,7 +83,10 @@ CWeaponCrowbar::CWeaponCrowbar( void )
 //-----------------------------------------------------------------------------
 float CWeaponCrowbar::GetDamageForActivity( Activity hitActivity )
 {
-	return 25.0f;
+	if ( ( GetOwner() != NULL ) && ( GetOwner()->IsPlayer() ) )
+		return sk_plr_dmg_crowbar.GetFloat();
+
+	return sk_npc_dmg_crowbar.GetFloat();
 }
 
 //-----------------------------------------------------------------------------

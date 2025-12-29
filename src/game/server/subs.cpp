@@ -22,10 +22,10 @@ void CPointEntity::Spawn( void )
 }
 
 
-class CNullEntity : public CBaseEntity
+class CNullEntity : public CServerOnlyEntity
 {
 public:
-	DECLARE_CLASS( CNullEntity, CBaseEntity );
+	DECLARE_CLASS( CNullEntity, CServerOnlyEntity );
 
 	void Spawn( void );
 };
@@ -60,8 +60,8 @@ END_DATADESC()
 
 
 // These are the new entry points to entities. 
-LINK_ENTITY_TO_CLASS(info_player_deathmatch,CBaseDMStart);
-LINK_ENTITY_TO_CLASS(info_player_start,CPointEntity);
+// LINK_ENTITY_TO_CLASS(info_player_deathmatch,CBaseDMStart);
+// LINK_ENTITY_TO_CLASS(info_player_start,CPointEntity);
 LINK_ENTITY_TO_CLASS(info_landmark,CPointEntity);
 
 bool CBaseDMStart::IsTriggered( CBaseEntity *pEntity )

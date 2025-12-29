@@ -242,7 +242,6 @@ void SharedVehicleViewSmoothing(CBasePlayer *pPlayer,
 		pData->vecOriginSaved = PrevMainViewOrigin();
 		pData->vecAnglesSaved = PrevMainViewAngles();
 #endif
-
 		// Save our initial angular error, which we will blend out over the length of the animation.
 		pData->vecAngleDiffSaved.x = AngleDiff( vehicleEyeAngles.x, pData->vecAnglesSaved.x );
 		pData->vecAngleDiffSaved.y = AngleDiff( vehicleEyeAngles.y, pData->vecAnglesSaved.y );

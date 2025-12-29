@@ -113,7 +113,6 @@ void CClientSteamContext::OnSteamServersConnected( SteamServersConnected_t *pCon
 	UpdateLoggedOnState();
 	Msg( "CClientSteamContext OnSteamServersConnected logged on = %d\n", m_bLoggedOn );
 }
-
 #endif // !defined(NO_STEAM)
 
 void CClientSteamContext::InstallCallback( CUtlDelegate< void ( const SteamLoggedOnChange_t & ) > delegate )

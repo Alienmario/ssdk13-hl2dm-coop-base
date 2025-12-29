@@ -73,6 +73,8 @@ ConVar sk_gunship_burst_dist("sk_gunship_burst_dist", "768" );
 // Number of times the gunship must be struck by explosive damage
 ConVar	sk_gunship_health_increments( "sk_gunship_health_increments", "0" );
 
+ConVar	sv_gunship_episodic( "sv_gunship_episodic", "0" );
+
 /*
 
 Wedge's notes:
@@ -223,6 +225,7 @@ public:
 	DECLARE_SERVERCLASS();
 	DEFINE_CUSTOM_AI;
 
+	bool	ShouldUseFixedPatrolLogic() { return sv_gunship_episodic.GetBool(); }
 	void	PlayPatrolLoop( void );
 	void	PlayAngryLoop( void );
 
@@ -1755,6 +1758,7 @@ void CNPC_CombineGunship::DoMuzzleFlash( void )
 	
 	CEffectData data;
 
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nAttachmentIndex = LookupAttachment( "muzzle" );
 	data.m_nEntIndex = entindex();
 	DispatchEffect( "GunshipMuzzleFlash", data );
@@ -2142,7 +2146,7 @@ void CNPC_CombineGunship::Flight( void )
 	accel.z = 2.0 * (deltaPos.z - GetAbsVelocity().z * dt + 0.5 * 384 * dt * dt) / (dt * dt);
 	
 	float flDistFromPath = 0.0f;
-	Vector vecPoint, vecDelta;
+	Vector vecPoint, vecDelta = vec3_origin;
 	if ( m_lifeState != LIFE_DYING && IsOnPathTrack() )
 	{
 		// Also, add in a little force to get us closer to our current line segment if we can
@@ -2373,7 +2377,7 @@ void CNPC_CombineGunship::UpdateRotorSoundPitch( int iPitch )
 	controller.SoundChangePitch( m_pAirExhaustSound, iPitch, 0.1 );
 
 	// FIXME: Doesn't work in multiplayer
-	CBaseEntity *pPlayer = UTIL_PlayerByIndex(1);
+	CBaseEntity *pPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 	if (pPlayer)
 	{
 		Vector pos;

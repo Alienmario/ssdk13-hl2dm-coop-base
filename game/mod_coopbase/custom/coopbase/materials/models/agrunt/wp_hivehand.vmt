@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/agrunt/wp_hivehand"
+
+	"$bumpmap" "models/agrunt/wp_hivehand_normal"
+
+	"$detail" "detail/detail_noise1"
+
+	"$detailscale" 2.5
+
+	"$halflambert" 1
+
+	"$surfaceprop" "alienflesh"
+
+	"$nodecal" "1"
+}

@@ -187,16 +187,8 @@ void CAI_Relationship::ApplyRelationshipThink( void )
 //---------------------------------------------------------
 void CAI_Relationship::ApplyRelationship( CBaseEntity *pActivator, CBaseEntity *pCaller )
 {
-	// @TODO (toml 10-22-04): sort out MP relationships 
-	
-	// The player spawns slightly after the NPCs, meaning that if we don't wait, the
-	// player will miss any relationships placed on them.
-	if ( AI_IsSinglePlayer() && !UTIL_GetLocalPlayer() )
-	{
-		SetThink( &CAI_Relationship::ApplyRelationshipThink );
-		SetNextThink( gpGlobals->curtime );
-	}
-
+	SetThink( &CAI_Relationship::ApplyRelationshipThink );
+	SetNextThink( gpGlobals->curtime );
 	if ( !m_bIsActive )
 	{
 		SetActive( true );

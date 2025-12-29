@@ -213,11 +213,13 @@ void CItem::Spawn( void )
 	SetThink( &CItem::FallThink );
 	SetNextThink( gpGlobals->curtime + 0.1f );
 #endif
+	m_vOriginalSpawnOrigin = GetAbsOrigin();
+	m_vOriginalSpawnAngles = GetAbsAngles();
 }
 
 unsigned int CItem::PhysicsSolidMaskForEntity( void ) const
 { 
-	return BaseClass::PhysicsSolidMaskForEntity() | CONTENTS_PLAYERCLIP;
+	return BaseClass::PhysicsSolidMaskForEntity() /* | CONTENTS_PLAYERCLIP */;
 }
 
 void CItem::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
@@ -292,6 +294,7 @@ void CItem::FallThink ( void )
 	SetNextThink( gpGlobals->curtime + 0.1f );
 
 #if defined( HL2MP )
+	/*
 	bool shouldMaterialize = false;
 	IPhysicsObject *pPhysics = VPhysicsGetObject();
 	if ( pPhysics )
@@ -302,16 +305,22 @@ void CItem::FallThink ( void )
 	{
 		shouldMaterialize = (GetFlags() & FL_ONGROUND) ? true : false;
 	}
+	*/
 
-	if ( shouldMaterialize )
+	if ( !HasSpawnFlags( SF_NORESPAWN ) /* shouldMaterialize */ )
 	{
 		SetThink ( NULL );
 
-		m_vOriginalSpawnOrigin = GetAbsOrigin();
-		m_vOriginalSpawnAngles = GetAbsAngles();
-
 		HL2MPRules()->AddLevelDesignerPlacedObject( this );
+
+		if ( GetOriginalSpawnOrigin() == vec3_origin )
+		{
+			m_vOriginalSpawnOrigin = GetAbsOrigin();
+			m_vOriginalSpawnAngles = GetAbsAngles();
+		}
 	}
+	
+	SetThink( &CItem::ComeToRest );
 #endif // HL2MP
 
 #if defined( TF_DLL )

@@ -792,7 +792,7 @@ void CPlayerPickupController::Use( CBaseEntity *pActivator, CBaseEntity *pCaller
 		
 		//Adrian: Oops, our object became motion disabled, let go!
 		IPhysicsObject *pPhys = pAttached->VPhysicsGetObject();
-		if ( pPhys && pPhys->IsMoveable() == false )
+		if ( !pPhys || !pPhys->IsMoveable() )
 		{
 			Shutdown();
 			return;
@@ -1765,6 +1765,7 @@ CWeaponPhysCannon::FindObjectResult_t CWeaponPhysCannon::FindObject( void )
 
 	if ( CanPickupObject( pEntity ) == false )
 	{
+		/*
 		// Make a noise to signify we can't pick this up
 		if ( !m_flLastDenySoundPlayed )
 		{
@@ -1773,6 +1774,26 @@ CWeaponPhysCannon::FindObjectResult_t CWeaponPhysCannon::FindObject( void )
 		}
 
 		return OBJECT_NOT_FOUND;
+		*/
+
+		// COOPBASE: This should allow to e.g. snatch nades from zombines - was missing in hl2mp physcannon.
+		CBaseEntity *pNewObject = Pickup_OnFailedPhysGunPickup( pEntity, start );
+		if ( pNewObject && CanPickupObject( pNewObject ) )
+		{
+			pEntity = pNewObject;
+		}
+		else
+		{
+			// Make a noise to signify we can't pick this up
+			if ( !m_flLastDenySoundPlayed )
+			{
+				m_flLastDenySoundPlayed = true;
+				WeaponSound( SPECIAL3 );
+			}
+
+			return OBJECT_NOT_FOUND;
+		}
+		// COOPBASE end
 	}
 
 	// Check to see if the object is constrained + needs to be ripped off...
@@ -3250,6 +3271,21 @@ CBaseEntity *PhysCannonGetHeldEntity( CBaseCombatWeapon *pActiveWeapon )
 
 	return NULL;
 }
+
+ // COOPBASE
+CBaseEntity *GetPlayerHeldEntity( CBasePlayer *pPlayer )
+{
+	CBaseEntity *pObject = NULL;
+	CPlayerPickupController *pPlayerPickupController = (CPlayerPickupController *)(pPlayer->GetUseEntity());
+
+	if ( pPlayerPickupController )
+	{
+		pObject = pPlayerPickupController->GetGrabController().GetAttached();
+	}
+
+	return pObject;
+}
+ // COOPBASE end
 
 float PlayerPickupGetHeldObjectMass( CBaseEntity *pPickupControllerEntity, IPhysicsObject *pHeldObject )
 {

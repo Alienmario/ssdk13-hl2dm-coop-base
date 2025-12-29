@@ -235,7 +235,8 @@ ConVar dog_debug( "dog_debug", "0" );
 //-----------------------------------------------------------------------------
 Class_T	CNPC_Dog::Classify ( void )
 {
-	return	CLASS_PLAYER_ALLY_VITAL;
+	// return	CLASS_PLAYER_ALLY_VITAL;
+	return	CLASS_NONE;
 }
 
 bool CNPC_Dog::CreateBehaviors( void )
@@ -340,7 +341,7 @@ void CNPC_Dog::SetPlayerAvoidState( void )
 		physfollower_t *pBone;
 		int i;
 
-		CBasePlayer *pLocalPlayer = AI_GetSinglePlayer();
+		CBasePlayer *pLocalPlayer = UTIL_GetNearestPlayer( GetAbsOrigin() );
 
 		if ( pLocalPlayer )
 		{
@@ -832,7 +833,7 @@ void CNPC_Dog::ThrowObject( const char *pAttachmentName )
 			}
 				
 			if ( m_hThrowTarget == NULL )
-				 m_hThrowTarget = AI_GetSinglePlayer();
+				SetupThrowTarget();
 
 			Vector vThrowDirection;
 
@@ -1176,7 +1177,10 @@ bool CNPC_Dog::CanTargetSeeMe( void )
 			if ( m_hPhysicsEnt )
 			{
 				if ( pPlayer->FVisible( m_hPhysicsEnt ) == false )
+				{
+					SetupThrowTarget();
 					return false;
+				}
 			}
 			
 			if ( pPlayer->FInViewCone( this ) )
@@ -1185,6 +1189,7 @@ bool CNPC_Dog::CanTargetSeeMe( void )
 			}
 		}
 	}
+	SetupThrowTarget();
 
 	return false;
 }
@@ -1385,7 +1390,7 @@ void CNPC_Dog::RunTask( const Task_t *pTask )
 
 				SetAim( m_hPhysicsEnt->WorldSpaceCenter() - GetAbsOrigin() );
 
-				CBasePlayer *pPlayer = AI_GetSinglePlayer();
+				CBasePlayer *pPlayer = UTIL_GetNearestVisiblePlayer( this );
 
 				float flDistanceToPlayer = flDistance;
 
@@ -1517,10 +1522,7 @@ void CNPC_Dog::RunTask( const Task_t *pTask )
 
 void CNPC_Dog::SetupThrowTarget( void )
 {
-	if ( m_hThrowTarget == NULL )
-	{
-		m_hThrowTarget = AI_GetSinglePlayer();
-	}
+	m_hThrowTarget = UTIL_GetNearestVisiblePlayer( this );
 
 	SetTarget( m_hThrowTarget );
 }
@@ -1673,8 +1675,7 @@ void CNPC_Dog::StartTask( const Task_t *pTask )
 	case TASK_DOG_DELAY_SWAT:
 		m_flNextSwat = gpGlobals->curtime + pTask->flTaskData;
 
-		if ( m_hThrowTarget == NULL )
-			m_hThrowTarget = AI_GetSinglePlayer();
+		SetupThrowTarget();
 
 		TaskComplete();
 		break;

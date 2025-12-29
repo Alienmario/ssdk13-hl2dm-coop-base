@@ -138,6 +138,9 @@ public:
 	// used so a grub can notify me that I stepped on it. Says a line.
 	void	OnSquishedGrub( const CBaseEntity *pGrub );
 
+	virtual Vector	GetActualShootPosition( const Vector &shootOrigin );
+	virtual	Vector	GetAttackSpread( CBaseCombatWeapon *pWeapon, CBaseEntity *pTarget = NULL );
+
 private:
 
 	int		NumAntlionsInRadius( float flRadius );
@@ -204,7 +207,8 @@ private:
 	inline bool		InAttackSequence( void );
 	void			ClearBeams( void );
 	void			ArmBeam( int beamType, int nHand );
-	void			ZapBeam( int nHand );
+	void			ComputeZapVectors( Vector *vecSrc, Vector *vecAim );
+	void			ZapBeam( int nHand, const Vector &vecSrc, const Vector &vecAim );
 	int				m_nLightningSprite;
 
 	// ---------------

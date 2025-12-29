@@ -207,6 +207,7 @@ void CAntlionTemplateMaker::AddChild( CNPC_Antlion *pAnt )
 	m_nLiveChildren = m_Children.Count();
 
 	pAnt->SetOwnerEntity( this );
+	pAnt->m_hMakerEntity = this ;
 }
 
 //-----------------------------------------------------------------------------

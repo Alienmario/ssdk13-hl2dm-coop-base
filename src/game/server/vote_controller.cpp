@@ -551,7 +551,6 @@ bool CVoteController::CreateVote( int iEntIndex, const char *pszTypeString, cons
 				{
 					m_iOnlyTeamToVote = ( pCurrentIssue->IsTeamRestrictedVote() ) ? GetVoterTeam( pVoteCaller ) : TEAM_UNASSIGNED;
 				}
-
 				// Now get our choices
 				m_VoteOptions.RemoveAll();
 				pCurrentIssue->GetVoteOptions( m_VoteOptions );
@@ -722,7 +721,6 @@ CVoteController::TryCastVoteResult CVoteController::TryCastVote( int iEntIndex, 
 
 	if ( nCurrentVote < VOTE_OPTION1 || nCurrentVote > VOTE_OPTION5 )
 		return CAST_FAIL_SYSTEM_ERROR;
-
 	// They're changing their vote
 #ifdef DEBUG
 	if ( nOldVote != VOTE_UNCAST )

@@ -1141,7 +1141,8 @@ void CPropAirboat::Think(void)
 		// The first few time we get into the jeep, print the jeep help
 		if ( m_iNumberOfEntries < hud_airboathint_numentries.GetInt() && !m_bExitAnimOn )
 		{
-			UTIL_HudHintText( m_hPlayer, "#Valve_Hint_BoatKeys" );
+			// COOPBASE
+			// UTIL_HudHintText( m_hPlayer, "#Valve_Hint_BoatKeys" );
 			m_iNumberOfEntries++;
 		}
 		
@@ -1550,6 +1551,7 @@ const char *CPropAirboat::GetTracerType( void )
 void CPropAirboat::DoMuzzleFlash( void )
 {
 	CEffectData data;
+	data.m_vOrigin = GetAbsOrigin();
 	data.m_nEntIndex = entindex();
 	data.m_nAttachmentIndex = m_nGunBarrelAttachment;
 	data.m_flScale = 1.0f;

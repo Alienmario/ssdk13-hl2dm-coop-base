@@ -85,8 +85,8 @@ private:
 
 	CWeaponHL2MPBase( const CWeaponHL2MPBase & );
 
-	Vector m_vOriginalSpawnOrigin;
-	QAngle m_vOriginalSpawnAngles;
+	// Vector m_vOriginalSpawnOrigin;
+	// QAngle m_vOriginalSpawnAngles;
 };
 
 

@@ -231,6 +231,8 @@ void CBaseCombatWeapon::Spawn( void )
 	m_iReloadHudHintCount = 0;
 	m_iAltFireHudHintCount = 0;
 	m_flHudHintMinDisplayTime = 0;
+	m_vOriginalSpawnOrigin = GetAbsOrigin();
+	m_vOriginalSpawnAngles = GetAbsAngles();
 }
 
 //-----------------------------------------------------------------------------
@@ -1026,7 +1028,8 @@ void CBaseCombatWeapon::SetActivity( Activity act, float duration )
 { 
 	//Adrian: Oh man...
 #if !defined( CLIENT_DLL ) && (defined( HL2MP ) || defined( PORTAL ))
-	SetModel( GetWorldModel() );
+	if (GetOwner()->IsPlayer())
+		SetModel( GetWorldModel() );
 #endif
 	
 	int sequence = SelectWeightedSequence( act ); 
@@ -1037,7 +1040,8 @@ void CBaseCombatWeapon::SetActivity( Activity act, float duration )
 
 	//Adrian: Oh man again...
 #if !defined( CLIENT_DLL ) && (defined( HL2MP ) || defined( PORTAL ))
-	SetModel( GetViewModel() );
+	if (GetOwner()->IsPlayer())
+		SetModel( GetViewModel() );
 #endif
 
 	if ( sequence != ACTIVITY_NOT_AVAILABLE )
@@ -1336,18 +1340,18 @@ void CBaseCombatWeapon::SetWeaponVisible( bool visible )
 
 	if ( visible )
 	{
-		RemoveEffects( EF_NODRAW );
+		RemoveEffects( EF_NODRAW | EF_NOSHADOW );
 		if ( vm )
 		{
-			vm->RemoveEffects( EF_NODRAW );
+			vm->RemoveEffects( EF_NODRAW | EF_NOSHADOW );
 		}
 	}
 	else
 	{
-		AddEffects( EF_NODRAW );
+		AddEffects( EF_NODRAW | EF_NOSHADOW );
 		if ( vm )
 		{
-			vm->AddEffects( EF_NODRAW );
+			vm->AddEffects( EF_NODRAW | EF_NOSHADOW );
 		}
 	}
 }
