@@ -3,7 +3,7 @@ name: Windows
 on: 
   push:
     paths:
-      - '.github/**'
+      - '.github/workflows/windows.yml'
       - 'src/**'
   pull_request:
    paths:
@@ -29,6 +29,7 @@ jobs:
         run: cd src;devtools/bin/vpc.exe +dedicated /sdk2013ce /win32 /define:SOURCESDK /mksln dedicated32.sln
 
       - name: Build project
+        shell: pwsh
         run: cd src;devenv dedicated32.sln /Build Release
 
       - name: Upload package
