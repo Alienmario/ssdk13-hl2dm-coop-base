@@ -53,3 +53,5 @@ IF NOT "%2%"=="noretry" (
 	pause
 	goto start
 )
+
+exit /b %ERRORLEVEL%
