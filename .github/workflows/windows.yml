@@ -25,13 +25,9 @@ jobs:
       - name: Configure dependencies
         uses: ilammy/msvc-dev-cmd@v1
         
-      - name: Create project
-        run: cd src;devtools/bin/vpc.exe +dedicated /sdk2013ce /win32 /define:SOURCESDK /mksln dedicated32.sln
-
-      - name: Build project
-        shell: pwsh
-        run: cd src;devenv dedicated32.sln /Build Release
-
+      - name: Build
+        run: ./src/build_server_win32.bat Release noretry
+      
       - name: Upload package
         uses: actions/upload-artifact@v4.4.3
         with:
