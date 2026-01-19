@@ -21,24 +21,22 @@ else
     fi
 fi
 
-solution_out="_vpc_/ninja/dedicated32_$VPC_NINJA_BUILD_MODE"
+solution_out="_vpc_/ninja/dedicated64_$VPC_NINJA_BUILD_MODE"
 
     
 echo -e "\n----------------- VPC START -----------------\n"
-devtools/bin/vpc +dedicated /sdk2013ce /linux32 /ninja /define:SOURCESDK /mksln "$solution_out"
+devtools/bin/vpc +dedicated /sdk2013ce /linux64 /ninja /define:SOURCESDK /mksln "$solution_out"
 
 # Generate compile commands.
 ninja -f "$solution_out.ninja" -t compdb > compile_commands.json
 # Remove some unsupported clang commands.
 sed -i 's/-fpredictive-commoning//g; s/-fvar-tracking-assignments//g' compile_commands.json
 sed -i 's|/my_mod/src|.|g' compile_commands.json
-# COOPBASE: fix 32bit compile
-sed -i 's|i386-linux-gnu-|i686-linux-gnu-|g' "$solution_out.ninja"
 
 
 echo -e "\n----------------- BUILD START -----------------\n"
 ninja -f "$solution_out.ninja" -j$(nproc)
 # COOPBASE: why the f would we want 200mb binaries valve?
-strip -S ../game/mod_coopbase/bin/server_srv.so
+strip -S ../game/mod_coopbase/bin/linux64/server_srv.so
 
 popd

@@ -28,6 +28,11 @@ obj*/
 !devtools/*.mak
 !utils/smdlexp/smdlexp.mak
 
+# ninja files
+.ninja_deps
+.ninja_log
+compile_commands.json
+
 # Specific Source build products
 client.pdb
 client.dll
