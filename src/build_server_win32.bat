@@ -34,7 +34,7 @@ echo.
 echo ----------------- BUILD START (%config%) -----------------
 echo.
 
-"%MSBUILD_CMD%" dedicated32.sln /p:Configuration=%config%
+"%MSBUILD_CMD%" dedicated32.sln /p:Configuration=%config% /p:Platform=Win32
 IF %ERRORLEVEL% GTR 0 goto retry
 
 echo.
