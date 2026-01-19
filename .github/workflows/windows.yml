@@ -24,13 +24,10 @@ jobs:
 
       - name: Configure dependencies
         uses: ilammy/msvc-dev-cmd@v1
-      
-      # Why is this necessary??
-      - name: Setup PowerShell
-        uses: mchave3/setup-pwsh@v1.0.0
-
+        
       - name: Build
         run: ./src/build_server_win32.bat Release noretry
+        shell: powershell
       
       - name: Upload package
         uses: actions/upload-artifact@v4.4.3
