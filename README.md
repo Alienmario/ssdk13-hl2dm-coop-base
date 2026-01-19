@@ -7,7 +7,7 @@
 
 #### Based on
 
-- [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013) (2025 TF2 edition)
+- [Source SDK 2013](https://github.com/ValveSoftware/source-sdk-2013) (2025 edition)
 
 With cherry-picked changes from
 
@@ -18,7 +18,7 @@ With cherry-picked changes from
 
 This project aims to provide a standardized base for creating cooperative servers or maps compatible with HL2DM.
 
-It does so using ready-to-use build scripts and working CI (thanks to SDK13-CE).
+It does so using ready-to-use build scripts and working Github CI.
 
 #### Recommended addons
 - **Downloader** - to send required files to clients.
@@ -43,7 +43,7 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
 
 | Platform      | Instructions |
 |---------------|--------------|
-| Pre-built     | Grab the latest build from the Actions tab. |
+| Pre-built     | Grab the latest build from the Actions tab |
 | Server - Windows 32    | `./src/build_server_win32.bat` |
 | Server - Windows 64    | `./src/build_server_win64.bat` |
 | Server - Linux 32      | `./src/build_server_linux32` |

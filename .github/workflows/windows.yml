@@ -22,8 +22,8 @@ jobs:
           sparse-checkout: |
             src
 
-      - name: Configure dependencies
-        uses: ilammy/msvc-dev-cmd@v1
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
         
       - name: Build
         run: ./src/build_server_win32.bat Release noretry
