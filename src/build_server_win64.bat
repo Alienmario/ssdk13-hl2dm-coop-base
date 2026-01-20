@@ -4,10 +4,16 @@ SETLOCAL
 :start
 cls
 
-IF "%MSBUILD22%"=="" (
-	echo Please set MSBUILD22 environment variable to the MSBuild.exe file.
-	echo For example: "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-	pause && exit
+set MSBUILD_CMD=%MSBUILD22%
+IF "%MSBUILD_CMD%"=="" (
+	where msbuild >nul 2>nul
+	IF %ERRORLEVEL% EQU 0 (
+		set MSBUILD_CMD=msbuild
+	) ELSE (
+		echo Please set MSBUILD22 environment variable to the MSBuild.exe file.
+		echo For example: "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+		pause && exit
+	)
 )
 
 set config=%1
@@ -28,7 +34,7 @@ echo.
 echo ----------------- BUILD START (%config%) -----------------
 echo.
 
-"%MSBUILD22%" dedicated64.sln /p:Configuration=%config%
+"%MSBUILD_CMD%" dedicated64.sln /p:Configuration=%config% /p:Platform=Win64
 IF %ERRORLEVEL% GTR 0 goto retry
 
 echo.
@@ -47,3 +53,5 @@ IF NOT "%2%"=="noretry" (
 	pause
 	goto start
 )
+
+exit /b %ERRORLEVEL%
