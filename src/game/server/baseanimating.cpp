@@ -1557,6 +1557,11 @@ void CBaseAnimating::GetBoneTransform( int iBone, matrix3x4_t &pBoneToWorld )
 	}
 
 	CBoneCache *pcache = GetBoneCache( );
+	if ( !pcache )
+	{
+		MatrixCopy( EntityToWorldTransform(), pBoneToWorld );
+		return;
+	}
 
 	matrix3x4_t *pmatrix = pcache->GetCachedBone( iBone );
 
@@ -2751,6 +2756,8 @@ CBoneCache *CBaseAnimating::GetBoneCache( void )
 {
 	CStudioHdr *pStudioHdr = GetModelPtr( );
 	Assert(pStudioHdr);
+	if ( !pStudioHdr )
+		return NULL;
 
 	CBoneCache *pcache = Studio_GetBoneCache( m_boneCacheHandle );
 	int boneMask = BONE_USED_BY_HITBOX | BONE_USED_BY_ATTACHMENT;
@@ -2847,6 +2854,8 @@ bool CBaseAnimating::TestHitboxes( const Ray_t &ray, unsigned int fContentsMask,
 		return false;
 
 	CBoneCache *pcache = GetBoneCache( );
+	if ( !pcache )
+		return false;
 
 	matrix3x4_t *hitboxbones[MAXSTUDIOBONES];
 	pcache->ReadCachedBonePointers( hitboxbones, pStudioHdr->numbones() );
@@ -3258,6 +3267,8 @@ bool CBaseAnimating::ComputeHitboxSurroundingBox( Vector *pVecWorldMins, Vector 
 		return false;
 
 	CBoneCache *pCache = GetBoneCache();
+	if ( !pCache )
+		return false;
 
 	// Compute a box in world space that surrounds this entity
 	pVecWorldMins->Init( FLT_MAX, FLT_MAX, FLT_MAX );
@@ -3298,6 +3309,9 @@ bool CBaseAnimating::ComputeEntitySpaceHitboxSurroundingBox( Vector *pVecWorldMi
 		return false;
 
 	CBoneCache *pCache = GetBoneCache();
+	if ( !pCache )
+		return false;
+
 	matrix3x4_t *hitboxbones[MAXSTUDIOBONES];
 	pCache->ReadCachedBonePointers( hitboxbones, pStudioHdr->numbones() );
 
