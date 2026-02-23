@@ -21,7 +21,7 @@ $Games
 	"PORTAL"
 	"SDK"
 	"TF"
-	"SDK2013CE"
+	"COOPBASE"
 }
 
 $Include "vpc_scripts\projects.vgc"

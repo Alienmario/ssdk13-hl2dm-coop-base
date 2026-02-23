@@ -27,7 +27,7 @@ cd %~dp0
 echo ----------------- VPC START -----------------
 echo.
 
-devtools\bin\vpc.exe +dedicated /sdk2013ce /win32 /define:SOURCESDK /mksln dedicated32.sln
+devtools\bin\vpc.exe +dedicated /coopbase /win32 /define:SOURCESDK /mksln dedicated32.sln
 IF %ERRORLEVEL% GTR 0 goto retry
 
 echo.

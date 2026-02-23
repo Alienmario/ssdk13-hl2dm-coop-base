@@ -1,1 +1,1 @@
-devtools\bin\vpc.exe /sdk2013ce +everything /define:SOURCESDK /mksln everything.sln
+devtools\bin\vpc.exe /coopbase +everything /define:SOURCESDK /mksln everything.sln

@@ -12,8 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on:
-      windows-latest
+    runs-on: windows-latest
     
     steps:
       - name: Checkout
@@ -24,15 +23,27 @@ jobs:
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
-        
-      - name: Build
+
+      - name: Build server (32bit)
         run: ./src/build_server_win32.bat Release noretry
         shell: powershell
       
-      - name: Upload package
+      - name: Upload package (32bit)
         uses: actions/upload-artifact@v4.4.3
         with:
           name: coopbase-win32
           compression-level: 9
           path: |
             game/mod_coopbase/bin/
+      
+      - name: Build server (64bit)
+        run: ./src/build_server_win64.bat Release noretry
+        shell: powershell
+      
+      - name: Upload package (64bit)
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: coopbase-win64
+          compression-level: 9
+          path: |
+            game/mod_coopbase/bin/x64/

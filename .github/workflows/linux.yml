@@ -12,8 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on:
-      ubuntu-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
@@ -27,14 +26,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y podman
 
-      - name: Build project
+      - name: Build server (32bit)
         run: ./src/build_server_linux32
 
-      - name: Upload package
+      - name: Upload package (32bit)
         uses: actions/upload-artifact@v4.4.3
         with:
           name: coopbase-linux32
           compression-level: 9
           path: |
             game/mod_coopbase/bin/
+            !**/*.dbg
+
+      - name: Build server (64bit)
+        run: ./src/build_server_linux64
+
+      - name: Upload package (64bit)
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: coopbase-linux64
+          compression-level: 9
+          path: |
+            game/mod_coopbase/bin/linux64/
             !**/*.dbg

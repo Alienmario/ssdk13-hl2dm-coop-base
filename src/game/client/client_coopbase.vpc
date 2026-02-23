@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-//	CLIENT_SDK2013CE.VPC
+//	CLIENT_COOPBASE.VPC
 //
 //	Project Script
 //-----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ $Configuration
 	}
 }
 
-$Project "Client"
+$Project "Client (COOPBASE)"
 {
 	$Folder	"Source Files"
 	{

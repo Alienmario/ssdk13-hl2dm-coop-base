@@ -25,7 +25,7 @@ solution_out="_vpc_/ninja/dedicated32_$VPC_NINJA_BUILD_MODE"
 
     
 echo -e "\n----------------- VPC START -----------------\n"
-devtools/bin/vpc +dedicated /sdk2013ce /linux32 /ninja /define:SOURCESDK /mksln "$solution_out"
+devtools/bin/vpc +dedicated /coopbase /linux32 /ninja /define:SOURCESDK /mksln "$solution_out"
 
 # Generate compile commands.
 ninja -f "$solution_out.ninja" -t compdb > compile_commands.json

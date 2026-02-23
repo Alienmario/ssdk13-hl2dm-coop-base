@@ -1,5 +1,5 @@
 #!/bin/bash
 
 pushd `dirname $0`
-devtools/bin/vpc /sdk2013ce +game /define:SOURCESDK /mksln game
+devtools/bin/vpc /coopbase +game /define:SOURCESDK /mksln game
 popd

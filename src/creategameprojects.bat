@@ -1,1 +1,1 @@
-devtools\bin\vpc.exe /sdk2013ce +game /define:SOURCESDK /mksln game.sln
+devtools\bin\vpc.exe /coopbase +game /define:SOURCESDK /mksln game.sln

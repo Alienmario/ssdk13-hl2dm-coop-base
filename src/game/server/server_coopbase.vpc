@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-//	SERVER_SDK2013CE.VPC
+//	SERVER_COOPBASE.VPC
 //
 //	Project Script
 //-----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\game\shared\hl2;$SRCDIR\game\shared\hl2mp;$SRCDIR\game\shared\sdk2013ce;.\hl2;.\hl2mp;.\hl2mp.ru;.\hl1;.\episodic"
+		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\game\shared\hl2;$SRCDIR\game\shared\hl2mp;.\hl2;.\hl2mp;.\hl2mp.ru;.\hl1;.\episodic"
 		$PreprocessorDefinitions		"$BASE;HL2MP;HL2_DLL;NEXT_BOT;SDK2013CE"
 	}
 }
