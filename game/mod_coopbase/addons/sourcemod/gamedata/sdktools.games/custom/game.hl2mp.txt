@@ -1,119 +1,19 @@
 "Games"
 {
-	/* Half-Life 2: Deathmatch */
 	"hl2mp"
 	{
 		"Signatures"
 		{
-			/* CBaseAnimating::LookupAttachment */
-			"LookupAttachment"
-			{
-				"library"	"server"
-				"windows"	"\x55\x8B\xEC\x56\x8B\xF1\x80\xBE\x35\x03\x00\x00\x00\x75\x2A\x83\xBE\x54\x04\x00\x00\x00\x75\x2A\xE8\x2A\x2A\x2A\x2A\x85\xC0\x74\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\x86\x54\x04\x00\x00\x85\xC0\x74\x2A\x83\x38\x00\x74\x2A\xFF\x75\x08\x50\xE8\x2A\x2A\x2A\x2A\x83\xC4\x08\x40"
-				"linux"		"@_ZN14CBaseAnimating16LookupAttachmentEPKc"
-			}
-			/* CBaseEntityOutput::FireOutput */
 			"FireOutput"
 			{
-				/* String: "(%0.2f) output: (%s,%s) -> (%s,%s)(%s)" */
+				/* CBaseEntityOutput::FireOutput */
+				/* String: "(%0.2f) output: (%s,%s) -> (%s,%s,%.1f)" */
 				"library"	"server"
-				"windows"	"\x55\x8B\xEC\x81\xEC\x50\x01\x00\x00\xA1\x2A\x2A\x2A\x2A\x33\xC5\x89\x45\xFC\x8B\x45\x1C"
+				"windows"	"\x55\x8B\xEC\x81\xEC\x60\x01\x00\x00\xA1\x2A\x2A\x2A\x2A\x33\xC5\x89\x45\xFC\x8B\x45\x1C"
+				"windows64"	"\x48\x8B\xC4\x48\x89\x50\x10\x48\x89\x48\x08\x41\x54"
 				"linux"		"@_ZN17CBaseEntityOutput10FireOutputE9variant_tP11CBaseEntityS2_f"
+				"linux64"	"@_ZN17CBaseEntityOutput10FireOutputE9variant_tP11CBaseEntityS2_f"
 			}
-		}
-		"Offsets"
-		{
-			"GiveNamedItem"
-			{
-				"windows"	"400"
-				"linux"		"401"
-			}
-			"RemovePlayerItem"
-			{
-				"windows"	"270"
-				"linux"		"271"
-			}
-			"Weapon_GetSlot"
-			{
-				"windows"	"268"
-				"linux"		"269"
-			}
-			"Ignite"
-			{
-				"windows"	"209"
-				"linux"		"210"
-			}
-			"Extinguish"
-			{
-				"windows"	"213"
-				"linux"		"214"
-			}
-			"Teleport"
-			{
-				"windows"	"108"
-				"linux"		"109"
-			}
-			"CommitSuicide"
-			{
-				"windows"	"439"
-				"linux"		"439"
-			}
-			"GetVelocity"
-			{
-				"windows"	"140"
-				"linux"		"141"
-			}
-			"EyeAngles"
-			{
-				"windows"	"131"
-				"linux"		"132"
-			}
-			"AcceptInput"
-			{
-				"windows"	"36"
-				"linux"		"37"
-			}
-			"SetEntityModel"
-			{
-				"windows"	"24"
-				"linux"		"25"
-			}
-			"WeaponEquip"
-			{
-				"windows"	"261"
-				"linux"		"262"
-			}
-			"Activate"
-			{
-				"windows"	"33"
-				"linux"		"34"
-			}
-			"PlayerRunCmd"
-			{
-				"windows"	"418"
-				"linux"		"419"
-			}
-			"GiveAmmo"
-			{
-				"windows"	"252"
-				"linux"		"253"
-			}
-			"SetOwnerEntity"
-			{
-				"windows"	"17"
-				"linux"		"18"
-			}
-			"GetAttachment"
-			{
-				"windows"	"205"
-				"linux"		"206"
-			}
-		}
-		
-		"Keys"
-		{
-			"GameRulesProxy"		"CHL2MPGameRulesProxy"
-			"GameRulesDataTable"	"hl2mp_gamerules_data"
 		}
 	}
 }

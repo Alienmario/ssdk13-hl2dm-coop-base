@@ -1,8 +1,8 @@
 # COOP SSDK13 Server Base for HL2DM
 
 > [!WARNING]
->### This is unfinished and work in progress. You will need to know what your're doing and will need supporting addons. There is absolutely no guarantee.
->#### A guide will be added later. Contributions are welcome.
+>### This is unfinished and work in progress. You will need to know what you're doing and will need supporting addons. There is absolutely no guarantee.
+>#### Contributions are welcome.
 
 
 #### Based on
@@ -26,7 +26,7 @@ It does so using ready-to-use build scripts and working Github CI.
 - **Entity lump editor** (Stripper:Source, SourceCoop, ..) for fixing up single-player maps or maps imported from standalone mods.
 - **Other** - Teleports/checkpoints, regen, map management, equipment management, difficulty scaling, team restrict, scoring, death notice, model select, ...  
 This is up to each server to implement! The goal of this project is to provide base fixed up binary to build on, not to seal in every player facing feature!  
-Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking for that - it even works on games without open source code.
+Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking for that - it even works with closed-source games.
 
 ## Building
 
@@ -52,6 +52,19 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
 > You can pass `debug` or `release` (default) as the first parameter.
 
 > (WIN) You can pass `noretry` as the second parameter to disable interactivity.
+
+## Installation
+These instructions are valid for HL2DM Dedicated Server (AppID 232370) on Ubuntu 22.04 or Windows, running 32bit srcds.
+- Linux only - first create these symlinks under `server/bin`
+```
+ln -s soundemittersystem_srv.so soundemittersystem.so
+ln -s scenefilecache_srv.so scenefilecache.so
+```
+- Replace the server binary under `server/hl2mp/bin`
+- Copy `game/mod_coopbase/.` from this repo into `server/hl2mp/`  
+  - Includes custom content, configs and SourceMod gamedata
+
+TODO: setup content downloads and particle precache
 
 ## ConVars
 

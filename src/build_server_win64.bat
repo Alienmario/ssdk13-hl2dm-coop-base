@@ -11,7 +11,7 @@ IF "%MSBUILD_CMD%"=="" (
 		set MSBUILD_CMD=msbuild
 	) ELSE (
 		echo Please set MSBUILD22 environment variable to the MSBuild.exe file.
-		echo For example: "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+		echo For example: "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
 		pause && exit
 	)
 )
