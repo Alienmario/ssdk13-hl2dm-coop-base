@@ -37,7 +37,7 @@ Check out [SourceCoop](https://github.com/ampreeT/SourceCoop/) if you're looking
     - Windows 11 SDK (10.0.22621.0) or Windows 10 SDK (10.0.19041.1)
 
 ### Linux prerequisites
-`sudo apt-get update && sudo apt-get install podman`
+- Podman (e.g. `sudo apt-get update && sudo apt-get install podman`)
 
 ### Build scripts
 
@@ -107,3 +107,13 @@ TODO: setup content downloads and particle precache
 - Support for CS:S ladders
 - Fixed collision rules and AI relationships
 - Removed some unnecessary messages
+
+
+## Development
+
+#### Merge commits from official SourceSDK repo into current branch
+```
+git remote add valve https://github.com/ValveSoftware/source-sdk-2013.git
+git fetch valve
+git merge valve/master
+```
